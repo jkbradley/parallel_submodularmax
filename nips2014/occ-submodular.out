@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Submodular maximization}{}% 2
+\BOOKMARK [1][-]{section.3}{Algorithm}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Sequential}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Distributed}{section.3}% 5
+\BOOKMARK [1][-]{section.4}{Distributed function computation}{}% 6
+\BOOKMARK [2][-]{subsection.4.1}{Graph cut}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.2}{Separable sums}{section.4}% 8
+\BOOKMARK [1][-]{section.5}{Upper bound on expected number of elements sent for validation}{}% 9
+\BOOKMARK [2][-]{subsection.5.1}{Tighter general bound?}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.2}{Upper bound for max graph cut}{section.5}% 11

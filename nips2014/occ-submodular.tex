@@ -1,0 +1,578 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{nips13submit_e,times}
+
+
+% For figures
+\usepackage{graphicx} % more modern
+%\usepackage{epsfig} % less modern
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{wrapfig}
+\setlength{\emergencystretch}{3em}
+\usepackage[numbers]{natbib}
+
+% For algorithms
+\usepackage[algoruled,vlined]{algorithm2e}
+%\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{multicol}
+\usepackage{comment}
+
+% As of 2011, we use the hyperref package to produce hyperlinks in the
+% resulting PDF.  If this breaks your system, please commend out the
+% following usepackage line and replace \usepackage{icml2013} with
+% \usepackage[nohyperref]{icml2013} above.
+\usepackage{hyperref}
+
+% Packages hyperref and algorithmic misbehave sometimes.  We can fix
+% this with the following command.
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+
+\graphicspath{{figures/}}
+
+
+\newcommand{\ie}{{\em i.e.,}~}
+\newcommand{\eg}{{\em e.g.,}~}
+
+\begingroup
+    \makeatletter
+    \@for\theoremstyle:=definition,remark,plain\do{%
+        \expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+            \addtolength\thm@preskip\parskip
+            }%
+        }
+\endgroup
+\newtheorem{dfn}{Definition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{exmp}[thm]{Example}
+\newtheorem{claim}{Claim}
+
+\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Program}
+
+\newenvironment{denseitemize}{
+\begin{itemize}[topsep=2pt, partopsep=0pt, leftmargin=1.5em]
+  \setlength{\itemsep}{4pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+\newenvironment{packed_enum}{
+\begin{enumerate}
+  \setlength{\itemsep}{4pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{enumerate}}
+
+
+
+
+\lstdefinelanguage{scala}{
+  morekeywords={abstract,case,catch,class,def,%
+    do,else,extends,false,final,finally,%
+    for,if,implicit,import,match,mixin,%
+    new,null,object,override,package,%
+    private,protected,requires,return,sealed,%
+    super,this,throw,trait,true,try,%
+    type,val,var,while,with,yield},
+  otherkeywords={=>,<-,<\%,<:,>:,\#,@},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[n]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+%  numbers=left,
+  morestring=[b]"""
+}
+
+
+
+% Commenting system
+\newcommand{\Comments}{1}
+\newcommand{\note}[2]{\ifnum\Comments=1\textcolor{#1}{#2}\fi}
+\newcommand{\xinghao}[1]{\note{red}{[XP: #1]}}
+\newcommand{\joey}[1]{\note{blue}{[JG: #1]}}
+\newcommand{\stef}[1]{\note{green}{[SJ: #1]}}
+\newcommand{\tb}[1]{\note{cyan}{[TB: #1]}}
+
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+
+
+
+
+
+
+%% ---------------------------------------------------------
+%% Terminology
+\newcommand{\term}[1]{\textbf{#1}}
+
+
+%% ---------------------------------------------------------
+%% Citation/Reference commands
+\newcommand{\citecf}[1]{(\cf, \cite{#1})}
+\newcommand{\tableref}[1]{Table~\ref{#1}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\listref}[1]{Listing~\ref{#1}}
+
+\newcommand{\eqnref}[1]{Eq.~(\ref{#1})}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\chapref}[1]{Chapter~\ref{#1}}
+
+\newcommand{\dfnref}[1]{Definition~\ref{#1}}
+\newcommand{\thmref}[1]{Theorem~\ref{#1}}
+\newcommand{\propref}[1]{Prop.~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
+\newcommand{\exmpref}[1]{Example~\ref{#1}}
+\newcommand{\corref}[1]{Corollary~\ref{#1}}
+\newcommand{\algref}[1]{Alg.~\ref{#1}}
+\newcommand{\procref}[1]{Proc.~\ref{#1}}
+\newcommand{\alglineref}[1]{Line~\ref{#1}}
+\newcommand{\probref}[1]{Problem~(\ref{#1})}
+\newcommand{\appendref}[1]{Appendix~\ref{#1}}
+
+%% ---------------------------------------------------------
+%% Basic Math
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+
+%% ---------------------------------------------------------
+%% special math functions
+\newcommand{\polylog}[2]{\,\mathbf{Li}_{#1}\left( #2 \right)}
+\newcommand{\harmonic}[2]{\,\mathbf{h}_{#1}\left( #2 \right)}
+
+%% ---------------------------------------------------------
+%% Norms
+\newcommand{\Lone}{L_{1}}
+\newcommand{\Linf}{L_{\infty}}
+\newcommand{\LInfNorm}[1]{\left|\left| #1 \right|\right|_{\infty}}
+\newcommand{\LOneNorm}[1]{\left|\left| #1 \right|\right|_1}
+
+
+
+%% ---------------------------------------------------------
+%% Probability notation
+\newcommand{\given}{\,|\,}
+\newcommand{\stdist}[1]{\mathbf{\pi} \left( #1 \right) }
+\newcommand{\Prb}[1]{\mathbf{P} \left( #1 \right) }
+\newcommand{\PrbEst}[1]{\mathbf{\tilde{P}} \left( #1 \right) }
+\newcommand{\Ent}[1]{\mathbf{H} \left( #1 \right) }
+\newcommand{\PiPrb}[1]{\Prb{ #1 } }
+\newcommand{\Kern}[1]{K \left( #1 \right) }
+\newcommand{\Ex}[1]{\mathbf{E} \left[ #1 \right] }
+\newcommand{\Exwrt}[2]{\mathbf{E}_{#1} \left[ #2 \right] }
+\newcommand{\Variance}[1]{\mathbf{Var} \left[ #1 \right] }
+\newcommand{\Ind}[1]{\mathbf{1}\left[ #1 \right]}
+\newcommand{\Bern}[1]{\text{Bern}( #1 ) }
+
+%% ---------------------------------------------------------
+%% Set notation
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\vecspace}{\mathcal{V}}
+\newcommand{\Union}{\bigcup}
+\newcommand{\Inter}{\bigcap}
+\newcommand{\union}{\cup}
+\newcommand{\inter}{\cap}
+\newcommand{\size}[1]{\left| #1 \right|}
+
+
+%% ---------------------------------------------------------
+%% Complexity
+\newcommand{\BigO}[1]{O\hspace{-1pt}\left( #1 \right)}
+\newcommand{\BigTheta}[1]{\Theta \left( #1 \right)}
+\newcommand{\BigOmega}[1]{\Omega \left( #1 \right)}
+
+
+
+
+
+%% ---------------------------------------------------------
+%% Algorithms
+\SetKwFor{ParForAll}{for}{do in parallel}{end}
+\SetKwFunction{Map}{Map}
+\SetKwFunction{Reduce}{Reduce}
+
+\SetKwInput{Input}{Input}
+\SetKwInput{Output}{Output}
+\SetKwInput{SideEffect}{SideEffect}
+\SetKwInput{Define}{Define}
+\SetKwInput{Global}{Global}
+\SetKwFor{DoWithProbability}{with probability}{}{}
+\SetKwFunction{DPMeansOp}{DPMeansOp}
+\SetKwFunction{DPValidate}{DPValidate}
+\SetKwFunction{OFLValidate}{OFLValidate}
+\SetKwFunction{BPMeansOp}{BPMeansOp}
+\SetKwFunction{BPValidate}{BPValidate}
+\SetKwFunction{NewClusters}{AcceptedClusters}
+
+\SetKwFunction{Mean}{Mean}
+\SetKwFunction{Ref}{Ref}
+
+
+%% ---------------------------------------------------------
+%% Paper specific notation
+
+% All the data
+\newcommand{\data}{\mathcal{D}}
+% \datablock{machine}
+\newcommand{\datablock}[1]{\data_{#1}}
+
+\newcommand{\clusters}{\mathcal{C}}
+\newcommand{\gclusters}{\hat\clusters}
+\newcommand{\newclusters}{\tilde\clusters}
+% local clusters \lclusters{machine}
+\newcommand{\lclusters}[1]{\clusters_{#1}}
+
+%\newcommand{\bregd}[2]{D_\phi\left(#1,#2\right)}
+\newcommand{\bregd}[2]{\left\|#1-#2\right\|}
+
+
+% for ofl analysis:
+\newcommand{\CFL}{C^{\text{FL}}}
+\newcommand{\muFL}{\mu^{\text{FL}}}
+
+
+\title{(Optimistic?) Concurrency Control for \\ Non-monotone Submodular Maximization}
+
+\author{
+Xinghao Pan$^1$ Joseph Gonzalez$^1$ Stefanie Jegelka$^1$ Joseph Bradley$^{1}$ Michael I. Jordan$^{1,2}$\\
+$^1$Department of Electrical Engineering and Computer Science, and $^2$Department of Statistics\\
+University of California, Berkeley\\
+Berkeley, CA USA 94720\\
+  \texttt{\{xinghao,jegonzal,stefje,tab,?\}@eecs.berkeley.edu} \\
+}
+
+% \address{University of California
+% 465 Soda Hall, MC-1776
+% Berkeley, CA 94720-1776}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+
+%\nipsfinalcopy
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+Distributed non-monotone submodular maximization, serially equivalent to sequential algorithm.
+\end{abstract}
+
+\section{Introduction}
+
+\section{Submodular maximization}
+
+\section{Algorithm}
+\subsection{Sequential}
+
+\begin{figure}[h]
+  \footnotesize
+  \centering
+  \begin{multicols}{2}
+    \begin{minipage}{0.49\textwidth}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Serial submodular maximization}
+        \label{alg:submax}
+        %\Input{}
+        $A^0 = \emptyset$, $B^0 = V$\;
+        \For{$i = 1$ to $n$}{
+          $\Delta_{+}(i) = [F(A^{i-1}\cup i) - F(A^{i-1})]_+$\;
+          $\Delta_{-}(i) = [F(B^{i-1}\backslash i) - F(B^{i-1})]_+$\;
+          Draw $u_i\sim Unif(0,1)$\;
+          \If {$u_i<\frac{\Delta_{+}(i)}{\Delta_{+}(i)+\Delta_{-}(i)}$}{
+            $A^i := A^{i-1} \cup i$;
+            $B^i := B^{i-1}$\;
+          }\Else{
+            $A^i := A^{i-1}$;
+            $B^i := B^{i-1}\backslash i$\;
+          }
+        }
+        %\Output{$A_n$}
+      \end{algorithm}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Validate($i$,$u_i$)}
+        \label{alg:submax_master}
+        \Input{$A^{i-1}$, $B^{i-1}$}
+        $\Delta_{+}(i) = [F(A^{i-1}\cup i) - F(A^{i-1})]_+$\;
+        $\Delta_{-}(i) = [F(B^{i-1}\backslash i) - F(B^{i-1})]_+$\;
+        \If {$u_i<\frac{\Delta_{+}(i)}{\Delta_{+}(i)+\Delta_{-}(i)}$}{
+          $A^i := A^{i-1} \cup i$;
+          $B^i := B^{i-1}$\;
+        }\Else{
+          $A^i := A^{i-1}$;
+          $B^i := B^{i-1}\backslash i$\;
+        }
+        %\Output{$A_n$}
+      \end{algorithm}
+    \end{minipage}
+
+    \begin{minipage}{0.49\textwidth}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Parallel processing of element $i$}
+        \label{alg:submax_worker}
+        \Input{$A^j$, $B^j$, where $i'<i$}
+        $C^{ji} = \{i'+1,\dots,i-1\}$\;
+        $\Delta_{+}^{\max}(i) = [F(A^j\cup i) - F(A^j)]_+$\;
+        $\Delta_{+}^{\min}(i) = [F(A^j\cup C^{ji}\cup i) - F(A^j\cup C^{ji})]_+$\;
+        $\Delta_{-}^{\max}(i) = [F(B^j\backslash i) - F(B^j)]_+$\;
+        $\Delta_{-}^{\min}(i) = [F(B^j\backslash C^{ji}\backslash i) - F(B^j\backslash C^{ji})]_+$\;
+          Draw $u_i\sim Unif(0,1)$\;
+          \If {$u_i<\frac{\Delta_{+}^{\min}(i)}{\Delta_{+}^{\min}(i)+\Delta_{-}^{\max}(i)}$}{
+            $A^i := A^{i-1} \cup i$;
+            $B^i := B^{i-1}$\;
+          }\ElseIf{$u_i>\frac{\Delta_{+}^{\max}(i)}{\Delta_{+}^{\max}(i)+\Delta_{-}^{\min}(i)}$}{
+            $A^i := A^{i-1}$;
+            $B^i := B^{i-1}\backslash i$\;
+          }\Else{Validate($i$,$u_i$)}
+        %\Output{$A_i$, $B_i$}
+      \end{algorithm}
+    \end{minipage}
+    
+    
+  \end{multicols}
+  \caption{ 
+The serial submodular maximization algorithm and distributed implementation. 
+}
+  \label{fig:submax}
+\end{figure}
+
+The sequential algorithm monotonically grows $A^i$ and shrinks $B^i$.
+
+\subsection{Distributed}
+We assume a total ordering on the elements, without loss of generality, let the ordering be $1,2,\dots,n$.
+Let $j$ be such that $j<i$, and $C^{ji} = \{j+1,\dots,i-1\}$.
+The properties of the (sequential) algorithm ensures that
+\begin{align*}
+A^j \subseteq &A^{i-1} \subseteq A^j\cup C^{ji},\\
+B^j\backslash C^{ji} \subseteq &B^{i-1} \subseteq B^j.
+\end{align*}
+If we let $D^k = \{k': k+1 \leq k' \leq n\}$,
+it is easy to see that $B^j = A^j \cup D^j = A^j \cup C^{ji} \cup i \cup D^i$ and $B^j\backslash C^{ji} = A^j \cup i \cup D^i$.
+We define
+\begin{align*}
+\Delta_{+}^{\min}(i) &= [F(A^j\cup C^{ji}\cup i) - F(A^j\cup C^{ji})]_+\\
+\Delta_{+}       (i) &= [F(A^{i-1}\cup i) - F(A^{i-1})]_+\\
+\Delta_{+}^{\max}(i) &= [F(A^j\cup i) - F(A^j)]_+\\
+\Delta_{-}^{\min}(i) &= [F(B^j\backslash C^{ji}\backslash i) - F(B^j\backslash C^{ji})]_+\\
+                            &= [F(A^j\cup D^i) - F(A^j\cup D^i \cup i)]_+\\
+\Delta_{-}       (i) &= [F(B^{i-1}\backslash i) - F(B^{i-1})]_+\\
+                            &= [F(A^{i-1}\cup D^i) - F(A^{i-1}\cup D^i \cup i)]_+\\
+\Delta_{-}^{\max}(i) &= [F(B^j\backslash i) - F(B^j)]_+\\
+                            &= [F(A^j\cup D^j\backslash i) - F(A^j\cup D^j)]_+\\
+                            &= [F(A^j\cup C^{ji}\cup D^i) - F(A^j\cup C^{ji}\cup D^i \cup i)]_+
+\end{align*}
+Submodularity of $F$ implies that
+\begin{align*}
+\Delta_{+}^{\min}(i) &\quad\leq\quad \Delta_{+}(i) \quad\leq\quad \Delta_{+}^{\max}(i),\\
+\Delta_{-}^{\min}(i) &\quad\leq\quad \Delta_{-}(i) \quad\leq\quad \Delta_{-}^{\max}(i),
+\end{align*}
+so we can bound
+\begin{equation*}
+lb(i) ~~:=~~
+\frac{\Delta_{+}^{\min}(i)}{\Delta_{+}^{\min}(i) + \Delta_{-}^{\max}(i)}
+\quad\leq\quad 
+\frac{\Delta_{+}(i)}{\Delta_{+}(i) + \Delta_{-}(i)}
+\quad\leq\quad 
+\frac{\Delta_{+}^{\max}(i)}{\Delta_{+}^{\max}(i) + \Delta_{-}^{\min}(i)}
+~~=:~~ ub(i).
+\end{equation*}
+Thus, if $u_i \leq lb(i)$, we can safely grow $A^i = A^{i-1} \cup i$.
+Conversely, if $u_i \geq ub(i)$, we can safely shrink $B^i = B^{i-1} \backslash i$.
+(In practice, growing $A$ or shrinking $B$ is done implicitly by setting an indicator variable.)
+
+\section{Distributed function computation}
+To make our concurrent submodular maximization algorithm work, it is essential that the computation of $\Delta$'s can be done efficiently.
+We maintain a \textit{sketch} for $A$, which contains all essential information for computing $\Delta$'s, and update the sketch as elements are added to $A$.
+Similarly, we maintain sketches for $D^i$'s; since the sets $D^i$'s are known at the start of the algorithm, we can pre-compute the sketches in advance.
+
+We'll show in the examples below that updating the sketch for $A$ and pre-computing the sketch for $D$ can be done efficiently, and that we can compute the $\Delta$'s easily from our sketches.
+
+\xinghao{See Stefanie's write-up for greater exposition on sketching functions}
+
+\subsection{Graph cut}
+$F(A) = \sum_{i\in A}\sum_{j\in V\backslash A, (i,j)\in E} w(i,j)$.
+The sketch for $A$ is simply $A$ itself, and is maintained by each processor.
+The sketch for $D^j$ is the single number $j$.
+
+\subsection{Separable sums}
+
+$F(A) = \sum_{l=1}^k g\left(\sum_{i\in A\cap S_l}w(i)\right) - \lambda\sum_{i\in A}v(i)$.
+The sketch for $A$ is the $k+1$ vector containing the sums $\sum_{i\in A\cap S_l}w(i)$ and $\sum_{i\in A}v(i)$.
+Similarly for $D$.
+Updating $A$ involves adding $w(i)$ and $v(i)$ to the sums for $A$.
+Pre-computing the sketch for $D$ requires computing $k+1$ cumulative sums, one for each $S_l$, of length $N$.
+
+
+\section{Upper bound on expected number of elements sent for validation}
+Let $N$ be the number of elements, i.e. the cardinality of the ground set.
+Let $P$ be the number of processors.
+
+We assume that the total ordering assigns elements to processors in a round robin fashion.
+Thus, we assume $C^{ji}=\{i-p+1,\dots,i-1\}$ has $p-1$ elements.
+
+We call element $i$ \textit{dependent} on $i'$ if $\exists A, F(A\cup i)-F(A) \neq F(A\cup i' \cup i)-F(A\cup i')$ or $\exists B, F(B\backslash i)-F(B) \neq F(B\cup i'\backslash i) - F(B\cup i')$, i.e. the result of the transaction on $i'$ will affect the computation of $\Delta$'s for $i$.
+For example, for the graph cut problem, every vertex is dependent on its neighbors; for the separable sums problem, $i$ is dependent on $\{i': \exists S_l, i\in S_l, i'\in S_l\}$.
+
+Let $n_i$ be the number of elements that $i$ is dependent on.
+
+Now, we note that if $C^{ji}$ does not contain any elements on which $i$ is dependent, then $\Delta_{+}^\text{max}(i) = \Delta_{+}(i) = \Delta_{+}^\text{min}(i)$ and $\Delta_{-}^\text{max}(i) = \Delta_{-}(i) = \Delta_{-}^\text{min}(i)$, so $i$ will not be validated (in either deterministic or probabilistic versions).
+Conversely, if $i$ is validated, there must be some element $i'\in C^{ji}$ such that $i$ is dependent on $i'$.
+
+\begin{align*}
+&E(\text{number of validated elements})\\
+=& \sum_i P(i \text{ validated})\\
+\leq& \sum_i P(\exists i'\in C^{ji}, i \text{ depends on } i')\\
+=& \sum_i 1-P(\forall i'\in C^{ji}, i \text{ does not depend on } i')\\
+=& \sum_i 1-\prod_{k=1}^{P-1}\frac{N-k-n_i}{N-k}\\
+=& \sum_i 1-\prod_{k=1}^{P-1}\left(1-\frac{n_i}{N-k}\right)\\
+\leq& \sum_i 1-\left(1-\sum_{k=1}^{P-1}\frac{n_i}{N-k}\right) & \text{(Weierstrass inequality)}\\
+=& \left(\sum_i n_i\right)\left(\sum_{k=1}^{P-1}\frac{1}{N-k}\right)\\
+\leq& \frac{P-1}{N-P+1}\sum_i n_i.
+\end{align*}
+
+The key quantity in the above inequality is $\sum_i n_i$.
+Typically, we expect each element $i$ to depend on a small fraction of the ground set.
+For example, in the graph cut problem, $\sum_i n_i = 2|E|$ is twice the number of edges.
+If the graph is sparse with $|E|\approx s|V|\log|V|$, where $0\leq s\ll 1$ and $P\ll N$, then $\frac{P-1}{N-P+1}\sum_i n_i \approx 2s(P-1)\log N$, which grows sublinearly with $N$.
+
+Note that the bound established above is generic to all algorithms that follow the basic transactional model we proposed (round-robin optimistic concurrency control), and is not specific to $F$ or even submodular maximization.
+Thus, while our bounds provide a fundamental limit, additional knowledge of $F$ can lead to better analyses on the algorithm's concurrency.
+
+
+
+
+\subsection{Tighter general bound?}
+Define $\rho_i = \max_{S\subseteq V} \{[F(S\cup i) - F(S)] - [F(S \cup C^{ji} \cup i) - F(S \cup C^{ji})]\} \leq F(i) - F(V) + F(V\backslash i)$
+
+\xinghao{Is there theory along these lines?}
+
+Then, we can bound
+\begin{align*}
+\Delta_+^{\min} \leq \Delta_+^{\max} \leq \Delta_+^{\min} + \rho_i && \text{(choosing $S=A^j$)}\\
+\Delta_-^{\min} \leq \Delta_-^{\max} \leq \Delta_-^{\min} + \rho_i && \text{(choosing $S=A^j\cup D^i$)}
+\end{align*}
+
+Thus,
+\begin{align*}
+&E(\text{number of validated elements})\\
+=& \sum_i P(i \text{ validated})\\
+=& \sum_i P\left(\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} \leq u_i \leq \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}}\right)\\
+=& \sum_i\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}}\\
+\leq& \sum_i\frac{\Delta_+^{\min}+\rho_i}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}}\\
+=& \sum_i\frac{\rho_i}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}}
+\end{align*}
+
+
+
+
+\subsection{Upper bound for max graph cut}
+Denote $\tilde{A}^j = V\backslash A^j\backslash C^{ji}\backslash D^i = \{1,\dots,j\}\backslash A^j$ be the elements up to $j$ that are not included in $A$.
+Let $w_i(S) = \sum_{j\in S, (i,j)\in E} w(i,j)$.
+For the max graph cut function, it is easy to see that 
+\begin{align*}
+\Delta_+^{\min} &= \max(0, - w_i(A^j) -w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j))\\
+\Delta_+^{\max} &= \max(0, - w_i(A^j) + w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j))\\
+\Delta_-^{\min} &= \max(0, + w_i(A^j) - w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j))\\
+\Delta_-^{\max} &= \max(0, + w_i(A^j) + w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j))
+\end{align*}
+
+Consider the following cases.
+\begin{itemize}
+\item $\Delta_+^{\max} = 0$. Then $\Delta_+^{\min} = 0$ and also
+\begin{align*}
+w_i(A^j) &> w_i(C^{ji})+ w_i(D^i) + w_i(\tilde{A}^j)
+\quad\implies\quad w_i(A^j) + w_i(D^i) > w_i(C^{ji}) + w_i(\tilde{A}^j)
+\end{align*}
+so $\Delta_-^{\min} > 0$ and $\Delta_-^{\max}>0$.
+Thus $\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}} = 0-0 = 0$.
+
+\item $\Delta_-^{\max} = 0$. Then $\Delta_-^{\min} = 0$ and also
+\begin{align*}
+w_i(\tilde{A}^j) &> w_i(C^{ji})+ w_i(D^i) + w_i(A^j)
+\quad\implies\quad w_i(\tilde{A}^j) + w_i(D^i) > w_i(C^{ji}) + w_i(A^j)
+\end{align*}
+so $\Delta_+^{\min} > 0$ and $\Delta_+^{\max} > 0$.
+Thus $\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}} = 1-1 = 0$.
+
+\item $\Delta_+^{\max}>0$ and $\Delta_-^{\max}>0$.
+Then,
+\begin{align*}
+&\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}} \\
+=& \frac{- w_i(A^j) + w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)}{- w_i(A^j) + w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j) + \max(0, + w_i(A^j) - w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j))}\\
+ &- \frac{\max(0, - w_i(A^j) -w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j))}{\max(0, - w_i(A^j) -w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)) + w_i(A^j) + w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j)}\\
+=& \min\left(1,\frac{ - w_i(A^j) + w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)}{2w_i(D^i)}\right)\\
+ & -\max\left(0,\frac{- w_i(A^j) - w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)}{2w_i(D^i)}\right)\\
+=& \min\left(1,\frac{ w_i(C^{ji})}{w_i(D^i)}\right)
+\end{align*}
+\end{itemize}
+
+Thus,
+\begin{align*}
+E(\text{\# of validated elements})
+= \sum_i\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}}
+\leq \sum_i \min\left(1,\frac{ w_i(C^{ji})}{w_i(D^i)}\right)
+\end{align*}
+
+\xinghao{Not sure how to sum this over $i$.}
+
+
+
+
+
+{\footnotesize
+%\subsection*{Acknowledgments}
+%This research is supported in part by NSF CISE Expeditions award CCF-1139158 and DARPA XData Award FA8750-12-2-0331, and  gifts from Amazon Web Services, Google, SAP,  Blue Goji, Cisco, Clearstory Data, Cloudera, Ericsson, Facebook, General Electric, Hortonworks, Intel, Microsoft, NetApp, Oracle, Samsung, Splunk, VMware and Yahoo!.
+%This material is also based upon work supported in part by the Office of
+%Naval Research under contract/grant number N00014-11-1-0688. 
+%X. Pan's work is also supported in part by a DSO National Laboratories Postgraduate Scholarship.
+
+% In the unusual situation where you want a paper to appear in the
+% references without citing it in the main text, use \nocite
+%\nocite{langley00}
+
+\bibliographystyle{unsrtnat}
+\bibliography{references_arxiv}
+}
+
+%\newpage
+%\appendix
+%\input{appendix}
+
+
+
+\end{document}
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was
+% created by Lise Getoor and Tobias Scheffer, it was slightly modified
+% from the 2010 version by Thorsten Joachims & Johannes Fuernkranz,
+% slightly modified from the 2009 version by Kiri Wagstaff and
+% Sam Roweis's 2008 version, which is slightly modified from
+% Prasad Tadepalli's 2007 version which is a lightly
+% changed version of the previous year's version by Andrew Moore,
+% which was in turn edited from those of Kristian Kersting and
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.
