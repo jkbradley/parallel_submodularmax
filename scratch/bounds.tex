@@ -1,0 +1,40 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+
+\newcommand{\union}{\cup}
+\newcommand{\inter}{\cap}
+\newcommand{\Dpmi}{\Delta^{\min}_+}
+\newcommand{\Dpma}{\Delta^{\max}_+}
+\newcommand{\Dmmi}{\Delta^{\min}_-}
+\newcommand{\Dmma}{\Delta^{\max}_-}
+
+\begin{document}
+
+\subsection*{Max-cut}
+
+The elements are processed as in a serial order. We here look at the cost of a single graph node $i$, and later sum over all nodes. For simplicity, for the moment we assume that all edges have the same weight.
+
+We have an arbitrary permutation of the elements. We use the following notation:
+
+\begin{itemize}
+\item Let $C$ be the batch of $c$ nodes immediately preceding $i$ -- this is an upper bound on the elements that are processed in parallel with $i$, and for which we do not have any local accurate informaion at the time $i$ is processed.
+\item Let $U$ be the set of elements that are as yet unprocessed when visiting $i$, i.e., the elements that succeed $i$ in the serial order.
+\item Let $A$ be the set of elements preceding $i$ that have been selected;
+\item Let $R$ be the set of elements preceding $i$ that have not been selected.
+\item Let $w_i(C)$ be the number of edges from $i$ to $C$.
+\end{itemize}
+So $V = A \union R \union \{i\} \union C \union U$.
+
+By Xinghao's analysis, we have the bound
+\begin{align}
+  P(i \text{ validated}) &\leq \frac{\Dpma}{\Dpma + \Dmmi} - \frac{\Dpmi}{\Dpmi + \Dmma} \leq \min\{ 1, \frac{w_i(C)}{w_i(U)} \leq w_i(C).
+\end{align}
+We may upper bound the above by either $1_{w_i(C) > 0}$ or $w_i(C)$.
+Of course, $w_i(C)$ and $w_i(U)$ depend on the order in which elements are presented. We assume each permutation to be equally likely.
+
+
+
+
+\end{document}
