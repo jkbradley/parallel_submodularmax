@@ -2,6 +2,7 @@
 
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{graphicx}
+\usepackage{stmaryrd}
 
 \newcommand{\union}{\cup}
 \newcommand{\inter}{\cap}
@@ -9,6 +10,7 @@
 \newcommand{\Dpma}{\Delta^{\max}_+}
 \newcommand{\Dmmi}{\Delta^{\min}_-}
 \newcommand{\Dmma}{\Delta^{\max}_-}
+%\newcommand{\deg}{\mathrm{deg}}
 
 \begin{document}
 
@@ -33,6 +35,30 @@ By Xinghao's analysis, we have the bound
 \end{align}
 We may upper bound the above by either $1_{w_i(C) > 0}$ or $w_i(C)$.
 Of course, $w_i(C)$ and $w_i(U)$ depend on the order in which elements are presented. We assume each permutation to be equally likely.
+
+Let us fix a position for $i$. The same analysis will hold for each position of $i$, and we can then simply average.
+The expected number of elements falling into the bin $C$ directly preceding $i$ is then the expected number -- out of $w_i(C)$ neighbors of $i$ -- that occur on $C$ when we randomly assign them to positions in an array of $n-1$ positions.
+There are ${ w_i(C) \choose k}{n-1 \choose c - k}c!$ ways to choose $k$ neighbors of $i$ and $c-k$ non-neighbors and arrange them in positions in $C$. There are $(n-1-c)!$ ways to arrange the remaining elements. Hence, the probability of exactly $k$ neighbors falling into $C$ is
+\begin{align}
+  P( C \inter \mathcal{N}(i) = k) = \frac{1}{(n-1)!}{ w_i(C) \choose k}{n-1 \choose c - k}c! (n-1-c)!
+\end{align}
+The expected number of neighbors in $C$ is then (averaging over the $n$ possible positions of $i$
+\begin{align}
+  \mathbb{E}[ w_i(C) ] \leq \frac{n}{n} \sum_{k=0}^{w_i(C)} {n-1 \choose c}^{-1}{ w_i(C) \choose k}{n-1 \choose c - k} k = \frac{c \cdot \deg(i)}{n},
+\end{align}
+using the expectation of the hypergeometric distribution.
+Averaging over all nodes gives the average degree:
+\begin{align*}
+  \sum_{i \in V} \mathbb{E}[ w_i(C^i) ] \leq   \sum_{i \in V} \mathbb{E}[ w_i(C) ] = \sum_{i} \frac{c\cdot \mathrm{deg}(i)}{n}.
+\end{align*}
+
+If we use 1 as the upper bound, we obtain
+\begin{align*}
+  \mathbb{E}[ \llbracket w_i(C) > 0 \rrbracket ] &= P(  \llbracket w_i(C) > 0 \rrbracket ) \\
+  &\leq 1 - {n \choose c}^{-1} {n-\deg(i) \choose c}.
+\end{align*}
+If $\deg(i)$ is small in comparison to $n$, then this is hopefully small.
+
 
 
 
