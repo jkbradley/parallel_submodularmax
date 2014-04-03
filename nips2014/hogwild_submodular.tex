@@ -1,0 +1,932 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{nips13submit_e,times}
+
+
+% For figures
+\usepackage{graphicx} % more modern
+%\usepackage{epsfig} % less modern
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{wrapfig}
+\setlength{\emergencystretch}{3em}
+\usepackage[numbers]{natbib}
+
+% For algorithms
+\usepackage[algoruled,vlined,linesnumbered]{algorithm2e}
+%\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{multicol}
+\usepackage{comment}
+
+% As of 2011, we use the hyperref package to produce hyperlinks in the
+% resulting PDF.  If this breaks your system, please commend out the
+% following usepackage line and replace \usepackage{icml2013} with
+% \usepackage[nohyperref]{icml2013} above.
+\usepackage{hyperref}
+
+% Packages hyperref and algorithmic misbehave sometimes.  We can fix
+% this with the following command.
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+
+\graphicspath{{figures/}}
+
+
+\newcommand{\ie}{{\em i.e.,}~}
+\newcommand{\eg}{{\em e.g.,}~}
+
+\begingroup
+    \makeatletter
+    \@for\theoremstyle:=definition,remark,plain\do{%
+        \expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+            \addtolength\thm@preskip\parskip
+            }%
+        }
+\endgroup
+\newtheorem{dfn}{Definition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{exmp}[thm]{Example}
+\newtheorem{claim}{Claim}
+
+\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Program}
+
+\newenvironment{denseitemize}{
+\begin{itemize}[topsep=2pt, partopsep=0pt, leftmargin=1.5em]
+  \setlength{\itemsep}{4pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+\newenvironment{packed_enum}{
+\begin{enumerate}
+  \setlength{\itemsep}{4pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{enumerate}}
+
+
+
+
+\lstdefinelanguage{scala}{
+  morekeywords={abstract,case,catch,class,def,%
+    do,else,extends,false,final,finally,%
+    for,if,implicit,import,match,mixin,%
+    new,null,object,override,package,%
+    private,protected,requires,return,sealed,%
+    super,this,throw,trait,true,try,%
+    type,val,var,while,with,yield},
+  otherkeywords={=>,<-,<\%,<:,>:,\#,@},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[n]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+%  numbers=left,
+  morestring=[b]"""
+}
+
+
+
+% Commenting system
+\newcommand{\Comments}{1}
+\newcommand{\note}[2]{\ifnum\Comments=1\textcolor{#1}{#2}\fi}
+\newcommand{\xinghao}[1]{\note{red}{[XP: #1]}}
+\newcommand{\joey}[1]{\note{blue}{[JG: #1]}}
+\newcommand{\stef}[1]{\note{green}{[SJ: #1]}}
+\newcommand{\tb}[1]{\note{cyan}{[TB: #1]}}
+
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+
+
+
+
+
+
+%% ---------------------------------------------------------
+%% Terminology
+\newcommand{\term}[1]{\textbf{#1}}
+
+
+%% ---------------------------------------------------------
+%% Citation/Reference commands
+\newcommand{\citecf}[1]{(\cf, \cite{#1})}
+\newcommand{\tableref}[1]{Table~\ref{#1}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\listref}[1]{Listing~\ref{#1}}
+
+\newcommand{\eqnref}[1]{Eq.~(\ref{#1})}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\chapref}[1]{Chapter~\ref{#1}}
+
+\newcommand{\dfnref}[1]{Definition~\ref{#1}}
+\newcommand{\thmref}[1]{Theorem~\ref{#1}}
+\newcommand{\propref}[1]{Prop.~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
+\newcommand{\exmpref}[1]{Example~\ref{#1}}
+\newcommand{\corref}[1]{Corollary~\ref{#1}}
+\newcommand{\algref}[1]{Alg.~\ref{#1}}
+\newcommand{\procref}[1]{Proc.~\ref{#1}}
+\newcommand{\alglineref}[1]{Line~\ref{#1}}
+\newcommand{\probref}[1]{Problem~(\ref{#1})}
+\newcommand{\appendref}[1]{Appendix~\ref{#1}}
+
+%% ---------------------------------------------------------
+%% Basic Math
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+
+%% ---------------------------------------------------------
+%% special math functions
+\newcommand{\polylog}[2]{\,\mathbf{Li}_{#1}\left( #2 \right)}
+\newcommand{\harmonic}[2]{\,\mathbf{h}_{#1}\left( #2 \right)}
+
+%% ---------------------------------------------------------
+%% Norms
+\newcommand{\Lone}{L_{1}}
+\newcommand{\Linf}{L_{\infty}}
+\newcommand{\LInfNorm}[1]{\left|\left| #1 \right|\right|_{\infty}}
+\newcommand{\LOneNorm}[1]{\left|\left| #1 \right|\right|_1}
+
+
+
+%% ---------------------------------------------------------
+%% Probability notation
+\newcommand{\given}{\,|\,}
+\newcommand{\stdist}[1]{\mathbf{\pi} \left( #1 \right) }
+\newcommand{\Prb}[1]{\mathbf{P} \left( #1 \right) }
+\newcommand{\PrbEst}[1]{\mathbf{\tilde{P}} \left( #1 \right) }
+\newcommand{\Ent}[1]{\mathbf{H} \left( #1 \right) }
+\newcommand{\PiPrb}[1]{\Prb{ #1 } }
+\newcommand{\Kern}[1]{K \left( #1 \right) }
+\newcommand{\Ex}[1]{\mathbf{E} \left[ #1 \right] }
+\newcommand{\Exwrt}[2]{\mathbf{E}_{#1} \left[ #2 \right] }
+\newcommand{\Variance}[1]{\mathbf{Var} \left[ #1 \right] }
+\newcommand{\Ind}[1]{\mathbf{1}\left[ #1 \right]}
+\newcommand{\Bern}[1]{\text{Bern}( #1 ) }
+
+%% ---------------------------------------------------------
+%% Set notation
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\vecspace}{\mathcal{V}}
+\newcommand{\Union}{\bigcup}
+\newcommand{\Inter}{\bigcap}
+\newcommand{\union}{\cup}
+\newcommand{\inter}{\cap}
+\newcommand{\size}[1]{\left| #1 \right|}
+
+
+%% ---------------------------------------------------------
+%% Complexity
+\newcommand{\BigO}[1]{O\hspace{-1pt}\left( #1 \right)}
+\newcommand{\BigTheta}[1]{\Theta \left( #1 \right)}
+\newcommand{\BigOmega}[1]{\Omega \left( #1 \right)}
+
+
+
+
+
+%% ---------------------------------------------------------
+%% Algorithms
+\SetKwFor{ParForAll}{for}{do in parallel}{end}
+\SetKwFunction{Map}{Map}
+\SetKwFunction{Reduce}{Reduce}
+
+\SetKwInput{Input}{Input}
+\SetKwInput{Output}{Output}
+\SetKwInput{SideEffect}{SideEffect}
+\SetKwInput{Define}{Define}
+\SetKwInput{Global}{Global}
+\SetKwFor{DoWithProbability}{with probability}{}{}
+\SetKwFunction{DPMeansOp}{DPMeansOp}
+\SetKwFunction{DPValidate}{DPValidate}
+\SetKwFunction{OFLValidate}{OFLValidate}
+\SetKwFunction{BPMeansOp}{BPMeansOp}
+\SetKwFunction{BPValidate}{BPValidate}
+\SetKwFunction{NewClusters}{AcceptedClusters}
+
+\SetKwFunction{Mean}{Mean}
+\SetKwFunction{Ref}{Ref}
+
+
+%% ---------------------------------------------------------
+%% Paper specific notation
+
+% All the data
+\newcommand{\data}{\mathcal{D}}
+% \datablock{machine}
+\newcommand{\datablock}[1]{\data_{#1}}
+
+\newcommand{\clusters}{\mathcal{C}}
+\newcommand{\gclusters}{\hat\clusters}
+\newcommand{\newclusters}{\tilde\clusters}
+% local clusters \lclusters{machine}
+\newcommand{\lclusters}[1]{\clusters_{#1}}
+
+%\newcommand{\bregd}[2]{D_\phi\left(#1,#2\right)}
+\newcommand{\bregd}[2]{\left\|#1-#2\right\|}
+
+
+% for ofl analysis:
+\newcommand{\CFL}{C^{\text{FL}}}
+\newcommand{\muFL}{\mu^{\text{FL}}}
+
+
+\title{Hogwild Double Greedy Submodular Maximization}
+
+\author{
+Xinghao Pan$^1$ Joseph Gonzalez$^1$ Stefanie Jegelka$^1$ Joseph Bradley$^{1}$ Michael I. Jordan$^{1,2}$\\
+$^1$Department of Electrical Engineering and Computer Science, and $^2$Department of Statistics\\
+University of California, Berkeley\\
+Berkeley, CA USA 94720\\
+  \texttt{\{xinghao,jegonzal,stefje,tab,?\}@eecs.berkeley.edu} \\
+}
+
+% \address{University of California
+% 465 Soda Hall, MC-1776
+% Berkeley, CA 94720-1776}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+
+%\nipsfinalcopy
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+Hogwild bidirectional greedy submodular maximization adds a term to the approximation.
+That is, hogwild does worse than the sequential algorithm by an additive, but not multiplicative, term in the approximation.
+\end{abstract}
+
+\section{Introduction}
+The bidirectional greedy algorithm \cite{buchbinder2012} gives an approximation of $E[F(A)] = 1/2 f(OPT)$, where $A$ is the algorithm output, and $OPT$ is an optimal solution.
+The hogwild algorithm can give an approximation of $E[F(A)] = \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$, where $\rho_i$ is the maximum difference in the marginal gain that may result from not knowing the full information when deciding whether to include or exclude element $i$.
+
+
+\section{Submodular maximization}
+
+\section{Algorithm}
+\subsection{Sequential}
+
+\begin{figure}[h]
+  \footnotesize
+  \centering
+  \begin{multicols}{2}
+    \begin{minipage}{0.49\textwidth}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Serial submodular maximization}
+        \label{alg:submax}
+        %\Input{}
+        $A^0 = \emptyset$, $B^0 = V$\;
+        \For{$i = 1$ to $n$}{
+          $\Delta_{+}(i) = F(A^{i-1}\cup i) - F(A^{i-1})$\;
+          $\Delta_{-}(i) = F(B^{i-1}\backslash i) - F(B^{i-1})$\;
+          Draw $u_i\sim Unif(0,1)$\;
+          \If {$u_i<\frac{[\Delta_{+}(i)]_+}{[\Delta_{+}(i)]_+ + [\Delta_{-}(i)]_+}$}{
+            $A^i := A^{i-1} \cup i$;\\
+            $B^i := B^{i-1}$\;
+          }\Else{
+            $A^i := A^{i-1}$;\\
+            $B^i := B^{i-1}\backslash i$\;
+          }
+        }
+        %\Output{$A_n$}
+      \end{algorithm}
+    \end{minipage}
+
+    \begin{minipage}{0.49\textwidth}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Hogwild bidirectional greedy}
+        \label{alg:hogwild}
+        For each $e\in V$, $\hat{A}(e) = 0$, $\hat{B}(e) = 1$\;
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $\Delta_{+}^{\max}(e) = F(\hat{A}\cup e) - F(\hat{A})$\;\label{alg:hogwild:deltaadd}
+            $\Delta_{-}^{\max}(e) = F(\hat{B}\backslash e) - F(\hat{B})$\;\label{alg:hogwild:deltarem}
+            Draw $u_e\sim Unif(0,1)$\;\label{alg:hogwild:time}
+            \If {$u_e<\frac{[\Delta_{+}^{\max}(e)]_+}{[\Delta_{+}^{\min}(e)]_+ + [\Delta_{-}^{\max}(e)]_+}$}{
+              $\hat{A}(e) \leftarrow 1$\;\label{alg:hogwild:add}
+            }\Else{
+              $\hat{B}(e) \leftarrow 0$\;\label{alg:hogwild:rem}
+            }
+          }
+        }
+        \Output{$A = \hat{A}$}
+      \end{algorithm}
+    \end{minipage}
+    
+    
+    
+  \end{multicols}
+\end{figure}
+
+
+\begin{figure}[h]
+\footnotesize
+\centering
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Hogwild for separable sums}
+        \label{alg:hogwildsepsum}
+        For each $e\in V$, $\hat{A}(e) = 0$\;
+        For each $l$, $\hat\sigma_l = 0$, $\hat\tau_l = \sum_{e\in S_l}w_l(e)$\;
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $\Delta_+^{\max}(e) = -\lambda v(e)$\;
+            $\Delta_-^{\max}(e) = +\lambda v(e)$\;
+            \For{$l: e \in S_l$}{
+              $\Delta_{+}^{\max}(e) \leftarrow \Delta_{+}^{\max}(e) + g(\hat\sigma_l + w_l(e)) - g(\hat\sigma_l)$\;
+              $\Delta_{-}^{\max}(e) \leftarrow \Delta_{-}^{\max}(e) + g(\hat\tau_l   - w_l(e)) - g(\hat\tau_l)$\;
+            }
+            Draw $u_e\sim Unif(0,1)$\;
+            \If {$u_e<\frac{[\Delta_{+}^{\max}(e)]_+}{[\Delta_{+}^{\min}(e)]_+ + [\Delta_{-}^{\max}(e)]_+}$}{
+              $\hat{A}(e) \leftarrow 1$\;
+              \For{$l: e \in S_l$}{
+                $\hat\sigma_l \leftarrow \hat\sigma_l + w_l(e)$
+              }
+            }\Else{
+              \For{$l: e \in S_l$}{
+                $\hat\tau_l \leftarrow \hat\tau_l - w_l(e)$
+              }
+            }
+          }
+        }
+        \Output{$A = \hat{A}$}
+      \end{algorithm}
+  \caption{ 
+The serial submodular maximization algorithm and parallel implementation. 
+}
+  \label{fig:submax}
+\end{figure}
+
+
+
+The sequential bidirectional greedy \cite{buchbinder2012} algorithm monotonically grows $A^i$ and shrinks $B^i$.
+
+\subsection{Hogwild for arbitrary submodular $F$}
+Algorithm \ref{alg:hogwild} is the hogwild parallel bidirectional greedy unconstrained submodular maximization algorithm.
+We associate with each element $e$ a time $T_e$ at which Algorithm \ref{alg:hogwild} line \ref{alg:hogwild:time} is executed, and order the elements according to the times $T_e$.
+Let $\iota(e)$ be the position of $e$ in this ordering.
+This total ordering on elements also allows us to define sets $A^i$, $B^i$ corresponding to that obtained by the serial algorithm;
+specifically, $A^i = \{e' : e' \in A, \iota(e') < i\}$ and $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
+
+Note that in Algorithm \ref{alg:hogwild}, lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem} may be executed in parallel with lines \ref{alg:hogwild:add} and \ref{alg:hogwild:rem}.
+Hence, $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ (lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem}) may be computed with different values of $\hat{A}(e')$.
+We denote by $\hat{A}_e$ and $\hat{B}_e$ respectively the vectors of $\hat{A}$ and $\hat{B}$ that are used in the computation of $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$.
+
+\begin{lem}\label{lem:set_bound} For any $e\in V$, $\hat{A}_e \subseteq A^{\iota(e)-1}$, $\hat{B}_e \supseteq B^{\iota(e)-1}$.
+\end{lem}
+\begin{proof}
+Consider any element $e'\in V$.
+If $e'\in \hat{A}_e$, it must be the case that the algorithm set $\hat{A}(e')$ to 1 (line \ref{alg:hogwild:add}) before $T_e$, which implies $\iota(e') < \iota(e)$, and hence $e' \in A^{\iota(e)-1}$.
+So $\hat{A}_e \subseteq A^{\iota(e)-1}$.
+
+Similarly, if $e'\not\in \hat{B}_e$, then the algorithm set $\hat{B}(e')$ to 0 (line \ref{alg:hogwild:rem}) before $T_e$, so $\iota(e') < \iota(e)$.
+Also, $e'\not\in A$ because the execution of line \ref{alg:hogwild:rem} excludes the execution of line \ref{alg:hogwild:add}.
+Therefore, $e'\not\in A^{\iota(e)-1}$, and $e'\not\in B^{\iota(e)-1}$.
+So $\hat{B}_e \subseteq B^{\iota(e)-1}$.
+\end{proof}
+
+It's easy to see that
+\begin{align*}
+\Delta_{+}       (e) &= F(A^{i-1}\cup i) - F(A^{i-1})\\
+\Delta_{+}^{\max}(e) &= F(\hat{A}_e\cup i) - F(\hat{A}_e)\\
+\Delta_{-}       (e) &= F(B^{i-1}\backslash i) - F(B^{i-1})\\
+\Delta_{-}^{\max}(e) &= F(\hat{B}_e\backslash i) - F(\hat{B}_e)\\
+\end{align*}
+
+\begin{cor}\label{cor:delta_bound}
+Submodularity of $F$ implies that
+\begin{align*}
+\Delta_{+}(e) \quad\leq\quad \Delta_{+}^{\max}(e),\\
+\Delta_{-}(e) \quad\leq\quad \Delta_{-}^{\max}(e).
+\end{align*}
+\end{cor}
+
+\subsection{Hogwild for separable sums $F$}
+For some functions $F$, we can maintain sketches / statistics to aid the computation of $\Delta_+^{\max}$, $\Delta_-^{\max}$, and obtain the bounds given in Corollary \ref{cor:delta_bound}.
+In particular, we consider functions of the form
+\begin{align*}
+F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i),
+\end{align*}
+where $S_l \subseteq V$ are (possibly overlapping) groups of elements in the ground set, $g$ is a non-decreasing concave scalar function, and $w_l(i)$ and $v(i)$ are non-negative scalar weights.
+It is easy to see that
+\begin{align*}
+F(X \cup e) - F(X) = \sum_{l: e\in S_l} \left[g\left(w_l(e) + \sum_{i\in X\cup S_l} w_l(i)\right) - g\left(\sum_{i\in X\cup S_l} w_l(i)\right)\right] - \lambda v(e).
+\end{align*}
+Define
+\begin{align*}
+  \hat\sigma_l              &= \sum_{j\in \hat{A}\cup S_l} w_l(j),
+& \hat\sigma_{l,e}          &= \sum_{j\in \hat{A}_e\cup S_l} w_l(j),
+& \sigma_l^{\iota(e)-1} &= \sum_{j\in A^{\iota(e)-1}\cup S_l} w_l(j).\\
+  \hat\tau_l              &= \sum_{j\in \hat{B}\cup S_l} w_l(j),
+& \hat\tau_{l,e}          &= \sum_{j\in \hat{B}_e\cup S_l} w_l(j),
+& \tau_l^{\iota(e)-1} &= \sum_{j\in B^{\iota(e)-1}\cup S_l} w_l(j).
+\end{align*}
+We can update $\hat\sigma_l$ and $\hat\tau_l$ according to Algorithm \ref{alg:hogwildsepsum}.
+Following arguments analogous to that of Lemma \ref{lem:set_bound}, we can show the following:
+
+\begin{lem} For each $l$ and $e\in V$, $\hat\sigma_{l,e} \leq \sigma_l^{\iota(e)-1}$ and $\hat\tau_{l,e} \geq \tau_l^{\iota(e)-1}$.
+\end{lem}
+
+\begin{cor} Concavity of $g$ implies
+\begin{align*}
+\Delta_+^{\max}(e)
+&= \sum_{l:e\in S_l} \left[g(\hat\sigma_{l,e} + w_l(e)) - g(\hat\sigma_{l,e})\right] - \lambda v(e)\\
+&\geq \sum_{l:e\in S_l} \left[g(\hat\sigma_l^{\iota(e)-1} + w_l(e)) - g(\hat\sigma_l^{\iota(e)-1})\right] - \lambda v(e)\\
+&= \Delta_+(e),\\
+\Delta_-^{\max}(e)
+&= \sum_{l:e\in S_l} \left[g(\hat\tau_{l,e} - w_l(e)) - g(\hat\tau_{l,e})\right] + \lambda v(e)\\
+&\geq \sum_{l:e\in S_l} \left[g(\hat\tau_l^{\iota(e)-1} - w_l(e)) - g(\hat\tau_l^{\iota(e)-1})\right] + \lambda v(e)\\
+&= \Delta_-(e),
+\end{align*}
+\end{cor}
+
+\section{Approximation of hogwild bidirectional greedy}
+\begin{thm}\label{thm:randomapprox} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
+The hogwild bidirectional greedy algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
+\[
+E[F(A)] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^n E[\rho_i],
+\]
+where $A$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i$ is a random variable such that $\rho_i \geq \Delta_+^{\max}(i) - \Delta_+(i)$ and $\rho_i \geq \Delta_-^{\max}(i) - \Delta_-(i)$.
+\end{thm}
+
+\subsection{Assumption}
+$F$ is submodular and non-negative.
+
+We assume that we can bound
+\begin{align*}
+\Delta_+^{\max} - \rho_i \leq \Delta_+ \leq \Delta_+^{\max} \leq \Delta_+ + \rho_i\\
+\Delta_-^{\max} - \rho_i \leq \Delta_- \leq \Delta_-^{\max} \leq \Delta_- + \rho_i
+\end{align*}
+
+This is possible, for example, by defining
+\begin{align*}
+\rho_i
+&= \max_{S,T\subseteq V} \{[F(S\cup i) - F(S)] - [F(S \cup T \cup i) - F(S \cup T)]\}\\
+&\leq F(i) - F(\emptyset) - F(V) + F(V\backslash i)\\
+&\leq F(i)\left(1 - \frac{F(V) - F(V\backslash i)}{F(i)}\right)\\
+&= F(i)\kappa_F
+\end{align*}
+where $S$ plays the role of $A^j$ and $T$ plays the role of $\{j+1,\dots, i-1\}$, and $\kappa_F$ is the total curvature of $F$.
+Summing over $i$ then gives us $\sum_i \rho_i \leq \kappa_F\sum_i F(i)$.
+
+
+\xinghao{Is there theory along these lines?}
+
+Alternatively, we could assume that $|A^{\iota(e)-1} \backslash \hat{A}_e| \leq \xi$, which would be the case if the lag between processors is bounded.
+Letting $T = A^{\iota(e)-1} \backslash \hat{A}_e$, we could define
+\begin{align*}
+\rho_i
+&= F(i) - F(\emptyset) - F(T \cup i) + F(T).
+\end{align*}
+\xinghao{Need to check above statement.}
+
+\subsection{Proof}
+We follow the proof outline of \cite{buchbinder2012}.
+
+Let $OPT$ be an optimal solution to the problem.
+Define $O^i := (OPT \cup A^i) \cap B^i$.
+Note that $O^i$ coincides with $A^i$ and $B^i$ on elements $1,\dots,i$, and $O^i$ coincides with $OPT$ on elements $i+1,\dots, n$.
+Hence,
+\begin{align*}
+O^i \backslash i+1 &\supseteq A^i\\
+O^i \cup i+1 &\subseteq B^i.
+\end{align*}
+
+\begin{lem}\label{lem:positivesum} For every $1 \leq i \leq n$, $\Delta_+(i) + \Delta_-(i) \geq 0$.
+\end{lem}
+\begin{proof} This is just Lemma II.1 of \cite{buchbinder2012}.
+\end{proof}
+
+\begin{lem}\label{lem:singleelement} For every $1 \leq i \leq n$,
+\[E[F(O^{i-1})-F(O^i)] \leq \frac{1}{2} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1}) + \rho_i].\]
+\end{lem}
+\begin{proof}
+We follow the proof outline of \cite{buchbinder2012}.
+First, note that it suffices to prove the inequality conditioned on knowing $A^{i-1}$ and $j$, then applying the law of total expectation.
+Under this conditioning, we also know $B^{i-1}$, $O^{i-1}$, $\Delta_+(i)$, $\Delta_+^{\max}(i)$, $\Delta_-(i)$, $\Delta_-^{\max}(i)$, and $\rho_i$.
+
+We consider the following 9 cases.
+
+\begin{description}
+\item\textbf{Case 1:} $\Delta_+(i) \leq \Delta_+^{\max}(i) \leq 0$, $\Delta_-(i) \leq \Delta_-^{\max}(i) \leq 0$.
+This is not possible, by Lemma \ref{lem:positivesum}.
+
+\item\textbf{Case 2:} $\Delta_+(i) \leq \Delta_+^{\max}(i) \leq 0$, $\Delta_-(i) \leq 0 < \Delta_-^{\max}(i)$.
+This is not possible, by Lemma \ref{lem:positivesum}.
+
+\item\textbf{Case 3:} $\Delta_+(i) \leq \Delta_+^{\max}(i) \leq 0$, $0 < \Delta_-(i) \leq \Delta_-^{\max}(i)$.
+In this case, the algorithm always choses to exclude $i$, so $A^i = A^{i-1}$, $B^i = B^{i-1} \backslash i$ and $O^i = O^{i-1} \backslash i$:
+\begin{align*}
+E[F(A^i) - F(A^{i-1}) | A^{i-1}, j] &= F(A^{i-1}) - F(A^{i-1}) = 0\\
+E[F(B^i) - F(B^{i-1}) | A^{i-1}, j] &= F(B^{i-1} \backslash) - F(B^{i-1}) = \Delta_-(i) > 0\\
+E[F(O^{i-1}) - F(O^i) | A^{i-1}, j] &= F(O^{i-1}) - F(O^{i-1} \backslash i) \\
+&\leq \begin{cases}F(A^{i-1} \cup i) - F(A^{i-1}) & \text{if $i\in OPT$} \\ 0 & \text{if $i\not\in OPT$}\end{cases}\\
+&= \begin{cases}\Delta_+(i) & \text{if $i\in OPT$} \\ 0 & \text{if $i\not\in OPT$}\end{cases}\\
+&\leq 0\\
+&< \frac{1}{2} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1}) + \rho_i | A^{i-1},j]
+\end{align*}
+where the first inequality is due to submodularity: $O^{i-1}\backslash i \supseteq A^{i-1}$.
+
+\item\textbf{Case 4:} $\Delta_+(i) \leq 0 < \Delta_+^{\max}(i)$, $\Delta_-(i) \leq \Delta_-^{\max}(i) \leq 0$.
+This is not possible, by Lemma \ref{lem:positivesum}.
+
+\item\textbf{Case 5:} $\Delta_+(i) \leq 0 < \Delta_+^{\max}(i)$, $\Delta_-(i) \leq 0 < \Delta_-^{\max}(i)$.
+This is not possible, by Lemma \ref{lem:positivesum}.
+
+\item\textbf{Case 6:} $\Delta_+(i) \leq 0 < \Delta_+^{\max}(i)$, $0 < \Delta_-(i) < \Delta_-^{\max}(i)$.
+Since both $\Delta_+^{\max}(i)>0$ and $\Delta_-^{\max}(i)>0$, the probability of including $i$ is just $\Delta_+^{\max}(i) / (\Delta_+^{\max}(i) + \Delta_-^{\max}(i))$, and the probability of excluding $i$ is $\Delta_-^{\max}(i) / (\Delta_+^{\max}(i) + \Delta_-^{\max}(i))$.
+\begin{align*}
+E[F(A^i) - F(A^{i-1}) | A^{i-1}, j]
+&= \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(A^{i-1}\cup i) - F(A^{i-1}))\\
+&= \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} \Delta_+(i)\\
+&\geq \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (\Delta_+^{\max}(i) - \rho_i)\\
+E[F(B^i) - F(B^{i-1}) | A^{i-1}, j]
+&= \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(B^{i-1}\backslash i) - F(B^{i-1}))\\
+&= \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} \Delta_-(i)\\
+&\geq \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (\Delta_-^{\max}(i) - \rho_i)
+\end{align*}
+\begin{align*}
+&E[F(O^{i-1}) - F(O^i) | A^{i-1}, j]\\
+=&   \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(O^{i-1}) - F(O^{i-1} \cup i)) \\
+ & + \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(O^{i-1}) - F(O^{i-1} \backslash i)) \\
+=&\begin{cases}
+    \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(O^{i-1}) - F(O^{i-1} \cup i))       & \text{if $i\not\in OPT$}\\
+    \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(O^{i-1}) - F(O^{i-1} \backslash i)) & \text{if $i    \in OPT$}\\
+\end{cases}\\
+\leq&\begin{cases}
+    \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(B^{i-1}\backslash i) - F(B^{i-1})) & \text{if $i\not\in OPT$}\\
+    \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(A^{i-1}\cup i) - F(A^{i-1}))       & \text{if $i    \in OPT$}\\
+\end{cases}\\
+=&\begin{cases}
+    \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} \Delta_-(i) & \text{if $i\not\in OPT$}\\
+    \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} \Delta_+(i) & \text{if $i    \in OPT$}\\
+\end{cases}\\
+\leq&\begin{cases}
+    \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} \Delta_-^{\max}(i) & \text{if $i\not\in OPT$}\\
+    \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} \Delta_+^{\max}(i) & \text{if $i    \in OPT$}\\
+\end{cases}\\
+=& \frac{\Delta_+^{\max}(i)\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}
+\end{align*}
+where the first inequality is due to submodularity: $O^{i-1}\backslash i \supseteq A^{i-1}$ and $O^{i-1}\cup i \subseteq B^{i-1}$.
+
+Putting the above inequalities together:
+\begin{align*}
+&E[F(O^{i-1}) - F(O^i) | A^{i-1}, j] - \frac{1}{2} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1}) + \rho_i  | A^{i-1}, j]\\
+&\leq \frac{1/2}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}\bigg[
+2\Delta_+^{\max}(i)\Delta_-^{\max}(i)
+- \Delta_-^{\max}(i)(\Delta_-^{\max}(i) - \rho_i)\\
+&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad- \Delta_+^{\max}(i)(\Delta_+^{\max}(i) - \rho_i)
+\bigg]- \frac{1}{2}\rho_i\\
+&= \frac{1/2}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}\bigg[-(\Delta_+^{\max}(i) - \Delta_-^{\max}(i))^2 + \rho_i(\Delta_+^{\max}(i) + \Delta_-^{\max}(i))\bigg] - \frac{1}{2}\rho_i\\
+&\leq \frac{\frac{1}{2}\rho_i(\Delta_+^{\max}(i) + \Delta_-^{\max}(i))}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} - \frac{1}{2}\rho_i\\
+&= 0.
+\end{align*}
+
+\item\textbf{Case 7:} $0 < \Delta_+(i) \leq \Delta_+^{\max}(i)$, $\Delta_-(i) \leq \Delta_-^{\max}(i) \leq 0$.
+Analogous to Case 3.
+
+\item\textbf{Case 8:} $0 < \Delta_+(i) \leq \Delta_+^{\max}(i)$, $\Delta_-(i) \leq 0 < \Delta_-^{\max}(i)$.
+Analogous to Case 6.
+
+\item\textbf{Case 8:} $0 < \Delta_+(i) \leq \Delta_+^{\max}(i)$, $0 < \Delta_-(i) \leq \Delta_-^{\max}(i)$.
+In the proof of Case 6, we only required that $\Delta_+^{\max}(i) > 0$ and $\Delta_-^{\max}(i) > 0$, but did not use the fact that $\Delta_+^{\max}(i) \leq 0$.
+Thus the proof of Case 6 also holds for Case 8.
+
+\end{description}
+\end{proof}
+
+(\xinghao{Note} If we weaken the assumption of $\Delta_+(i) \leq \Delta_+^{\max}(i)$ to $\Delta_+(i) \leq \Delta_+^{\max}(i) + \epsilon_i$, then in Case 6 above, we can instead bound
+\begin{align*}
+E[F(O^{i-1})-F(O^i)|A^{i-1}, j]
+&\leq \frac{\Delta_+^{\max}(i) \Delta_-^{\max}(i) + \epsilon\max(\Delta_+^{\max}(i), \Delta_-^{\max})}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}\\
+&\leq \frac{\Delta_+^{\max}(i) \Delta_-^{\max}(i) + \epsilon(\Delta_+^{\max}(i) + \Delta_-^{\max})}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}.
+\end{align*}
+The bound of Lemma \ref{lem:singleelement} becomes
+\[E[F(O^{i-1})-F(O^i)] \leq \frac{1}{2} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1}) + \rho_i + 2\epsilon_i],\]
+and the bound of Theorem \ref{thm:randomapprox} becomes $E[F(A)] \geq \frac{1}{2} F^* - \frac{1}{4}\sum_iE[\rho_i + 2\epsilon_i]$.
+)
+
+~
+
+We will now prove Theorem \ref{thm:randomapprox}.
+
+\begin{proof} [Theorem \ref{thm:randomapprox}]
+Summing up the statement of Lemma \ref{lem:singleelement} for all $i$ gives us a telescoping sum, which reduces to:
+\begin{align*}
+E[F(O^0)-F(O^n)]
+&\leq \frac{1}{2} E[F(A^n) - F(A^0) + F(B^n) - F(B^0)] + \frac{1}{2}\sum_{i=1}^nE[\rho_i]\\
+&\leq \frac{1}{2} E[F(A^n) + F(B^n)] + \frac{1}{2}\sum_{i=1}^nE[\rho_i].
+\end{align*}
+Note that $O^0 = OPT$ and $O^n = A^n = B^n$, so $E[F(A^n)] \geq \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$.
+\end{proof}
+
+
+
+
+\begin{comment}
+\section{Approximation of hogwild bidirectional greedy}
+
+\subsection{Assumption}
+We assume that we can bound
+\begin{align*}
+\Delta_+^{\min} \leq \Delta_+^{\max} \leq \Delta_+^{\min} + \rho_i\\
+\Delta_-^{\min} \leq \Delta_-^{\max} \leq \Delta_-^{\min} + \rho_i
+\end{align*}
+
+This is possible, for example, by defining $\rho_i = \max_{S\subseteq V} \{[F(S\cup i) - F(S)] - [F(S \cup C^{ji} \cup i) - F(S \cup C^{ji})]\} \leq F(i) - F(V) + F(V\backslash i)$.
+The choice of $S=A^j$ and $S=A^j \cup D^i$ gives us the required bounds.
+
+\xinghao{Is there theory along these lines?}
+
+
+\subsection{Proof}
+We follow the proof outline of \cite{buchbinder2012}.
+
+Let $OPT$ be an optimal solution to the problem.
+Define $OPT^i := (OPT \cup X_i) \cap Y_i$.
+
+\begin{lem}\label{lem:positivesum} For every $1 \leq i \leq n$, $\Delta_+(i) + \Delta_-(i) \geq 0$.
+\end{lem}
+\begin{proof} This is just Lemma II.1 of \cite{buchbinder2012}.
+\end{proof}
+
+\begin{lem}\label{lem:singleelement} For every $1 \leq i \leq n$,
+\[E[f(OPT^{i-1})-f(OPT^i)] \leq \frac{1}{2} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1})] + E[\rho_i].\]
+\end{lem}
+\begin{proof}
+We follow the proof outline of \cite{buchbinder2012}.
+First, note that it suffices to prove the inequality conditioned on knowing $A^{i-1}$ and applying the law of total expectation.
+Under this conditioning, we also know $B^{i-1}$, $OPT^{i-1}$, $\Delta_+^{\min}(i)$, $\Delta_+(i)$, $\Delta_+^{\max}(i)$, $\Delta_-^{\min}(i)$, $\Delta_-(i)$, $\Delta_-^{\max}(i)$.
+
+Lemma \ref{lem:positivesum} allows us to not consider the case where $\Delta_+(i) < 0$ and $\Delta_-(i) \leq 0$.
+The cases of $\Delta_+(i) \geq 0$, $\Delta_-(i) \leq 0$ and $\Delta_+(i) < 0$, $\Delta_-(i) \geq 0$ are no different that that of \cite{buchbinder2012} Lemma III.1. \xinghao{need to check this.}
+
+Thus, we consider only the case where $\Delta_+(i)\geq 0$, $\Delta_-(i)\geq 0$.
+Then, with probability greater than $\Delta_+^{\min}(i) / (\Delta_+^{\min}(i) + \Delta_-^{\max}(i))$, we set $A^i = A^{i-1} \cup i$ (and otherwise $A^i = A^{i-1}$ is unchanged).
+\begin{align*}
+E[F(A^i) - F(A^{i-1})]
+&\geq \frac{\Delta_+^{\min}(i)}{\Delta_+^{\min}(i) + \Delta_-^{\max}(i)} [F(A^{i-1}\cup i) - F(A^{i-1})] \\
+&= \frac{\Delta_+^{\min}(i)}{\Delta_+^{\min}(i) + \Delta_-^{\max}(i)} \Delta_+(i) \\
+&\geq \frac{\Delta_+^{\min}(i)}{\Delta_+^{\min}(i) + \Delta_-^{\min}(i) + \rho_i} \Delta_+(i) \\
+&\geq \frac{(\Delta_+^{\min}(i))^2}{\Delta_+^{\min}(i) + \Delta_-^{\min}(i) + \rho_i}
+\end{align*}
+
+Similarly, with probability greater than $\Delta_-^{\min}(i) / (\Delta_+^{\max}(i) + \Delta_-^{\min}(i))$, we set $B^i = B^{i-1} \backslash i$ (and otherwise $B^i = B^{i-1}$ is unchanged).
+\begin{align*}
+E[F(B^i) - F(B^{i-1})]
+&\geq \frac{\Delta_-^{\min}(i)}{\Delta_+^{\max}(i) + \Delta_+^{\min}(i)} [F(B^{i-1}\backslash i) - F(B^{i-1})] \\
+&= \frac{\Delta_-^{\min}(i)}{\Delta_+^{\max}(i) + \Delta_+^{\min}(i)} \Delta_-(i) \\
+&\geq \frac{(\Delta_-^{\min}(i))^2}{\Delta_+^{\min}(i) + \Delta_+^{\min}(i) + \rho_i}
+\end{align*}
+
+Now we upper bound $E[F(OPT^{i-1} - F(OPT^i)]$.
+First, suppose $i \not\in OPT^{i-1}$.
+Then with probability less than $\Delta_+^{\max}(i) / (\Delta_+^{\max}(i) + \Delta_-^{\min}(i)$ we include $i$ and set $OPT^i = OPT^{i-1} \cup i$ (and otherwise $OPT^i = OPT^{i-1}$ is unchanged).
+\begin{align*}
+E[F(OPT^{i-1}) - F(OPT^i)]
+&\leq \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\min}(i)} [F(OPT^{i-1}) - F(OPT^{i-1} \cup i)] \\
+&\leq \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\min}(i)} [F(B^{i-1} \backslash i) - F(B^{i-1})] \\
+&= \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\min}(i)} \Delta_-(i) \\
+&\leq \frac{\Delta_+^{\min}(i) + \rho_i}{\Delta_+^{\min}(i) + \Delta_-^{\min}(i) + \rho_i} (\Delta_-^{\min}(i) + \rho_i)
+\end{align*}
+The second inequality above is due to submodularity: $OPT^{i-1} \subseteq B^{i-1}\backslash i$.
+
+On the other hand, if $i \in OPT^{i-1}$, then with probability less than $\Delta_-^{\max}(i) / (\Delta_+^{\min}(i) + \Delta_-^{\max}(i)$ we exclude $i$ and set $OPT^i = OPT^{i-1} \backslash i$ (and otherwise $OPT^i = OPT^{i-1}$ is unchanged).
+\begin{align*}
+E[F(OPT^{i-1}) - F(OPT^i)]
+&\leq \frac{\Delta_-^{\max}(i)}{\Delta_+^{\min}(i) + \Delta_-^{\max}(i)} [F(OPT^{i-1}) - F(OPT^{i-1} \backslash i)] \\
+&\leq \frac{\Delta_-^{\max}(i)}{\Delta_+^{\min}(i) + \Delta_-^{\max}(i)} [F(A^{i-1} \cup i) - F(A^{i-1})] \\
+&= \frac{\Delta_-^{\max}(i)}{\Delta_+^{\min}(i) + \Delta_-^{\max}(i)} \Delta_+(i) \\
+&\leq \frac{\Delta_-^{\min}(i) + \rho_i}{\Delta_+^{\min}(i) + \Delta_-^{\min}(i) + \rho_i} (\Delta_+^{\min}(i) + \rho_i)
+\end{align*}
+The second inequality above is due to submodularity: $OPT^{i-1} \backslash i \supseteq A^{i-1}$.
+
+Putting the above together, we get the following:
+\begin{align*}
+&2E[F(OPT^{i-1}) - F(OPT^i)] - E[F(A^i) - F(A^{i-1})] - E[F(B^i) - F(B^{i-1})] \\
+&\leq \frac{2(\Delta_-^{\min}(i) + \rho_i)(\Delta_+^{\min}(i) + \rho_i) - (\Delta_+^{\min}(i))^2 - (\Delta_-^{\min}(i))^2}{\Delta_+^{\min}(i) + \Delta_-^{\min}(i) + \rho_i}\\
+&\leq \frac{2\Delta_-^{\min}(i)\Delta_+^{\min}(i) + 2\rho_i(\Delta_-^{\min}(i) + \Delta_+^{\min}(i) + \rho_i) - (\Delta_+^{\min}(i))^2 - (\Delta_-^{\min}(i))^2}{\Delta_+^{\min}(i) + \Delta_-^{\min}(i) + \rho_i}\\
+&\leq \frac{-(\Delta_-^{\min}(i) - \Delta_+^{\min}(i))^2}{\Delta_+^{\min}(i) + \Delta_-^{\min}(i) + \rho_i} + 2\rho_i\\
+&\leq 2\rho_i.
+\end{align*}
+\end{proof}
+
+\begin{thm} The hogwild bidirectional greedy algorithm gives an expected approximation of $E[F(A^n)] \geq \frac{1}{2} F(OPT) - \frac{1}{2}\sum_iE[\rho_i]$.
+\end{thm}
+\begin{proof}
+Summing up the statement of Lemma \ref{lem:singleelement} for all $i$ gives us a telescoping sum, which reduces to:
+\begin{align*}
+E[F(OPT^0)-F(OPT^n)]
+&\leq \frac{1}{2} E[F(A^n) - F(A^0) + F(B^n) - F(B^0)] + \sum_{i=1}^nE[\rho_i]\\
+&\leq \frac{1}{2} E[F(A^n) + F(B^n)] + \sum_{i=1}^nE[\rho_i].
+\end{align*}
+Note that $OPT^0 = OPT$ and $OPT^n = A^n = B^n$, so $E[F(A^n)] \geq \frac{1}{2} F(OPT) - \frac{1}{2}\sum_iE[\rho_i]$.
+\end{proof}
+
+\end{comment}
+
+
+
+
+\subsection{Example: max graph cut}
+Let $C^{ji} = \{j+1,\dots,i-1\}$, $D^i = \{i+1,\dots,n\}$.
+Denote $\tilde{A}^j = V\backslash A^j\backslash C^{ji}\backslash D^i = \{1,\dots,j\}\backslash A^j$ be the elements up to $j$ that are not included in $A$.
+Let $w_i(S) = \sum_{j\in S, (i,j)\in E} w(i,j)$.
+For the max graph cut function, it is easy to see that 
+\begin{align*}
+\Delta_+        &\geq - w_i(A^j) -w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)\\
+\Delta_+^{\max} &=    - w_i(A^j) + w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)\\
+\Delta_-        &\geq + w_i(A^j) - w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j)\\
+\Delta_-^{\max} &= + w_i(A^j) + w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j)
+\end{align*}
+
+Thus, we can set $\rho_i = 2w_i(C^{ji})$.
+
+Suppose we have $P$ processors, so $|C^{ji}| = (1+\alpha) P$ for some small $\alpha \geq 0$.
+Then $w_i(C^{ji})$ has a hypergeometric distribution with mean $\frac{\text{deg}(i)}{n}(1+\alpha)P$, and $E[\rho_i] = 2(1+\alpha)P\frac{\text{deg}(i)}{n}$.
+The approximation of the hogwild algorithm is then $E[F(A^n)] \geq \frac{1}{2} F(OPT) - \frac{1}{4}(1+\alpha)P\sum_i\frac{\text{deg}(i)}{n} = \frac{1}{2} F(OPT) - (1+\alpha)P\frac{\#\text{edges}}{2n}$.
+In sparse graphs, the hogwild algorithm is off by a small additional term, which albeit grows linearly in $P$.
+
+\section{Additional comments}
+
+I was unable to work through the analysis for the algorithm that includes $i$ with probability $\Delta_+^{\min}/(\Delta_+^{\min} + \Delta_-^{\max})$, excludes $i$ with probability $\Delta_+^{\min}/(\Delta_+^{\min} + \Delta_-^{\max})$, and otherwise takes a random action.
+Although this is closer to the spirit of the OCC algorithm, it seems that the random action can break the bounds quite badly.
+Intuitively, the probability of taking the wrong action could be higher than that presented in the hogwild analysis above.
+
+In any case, the ability to run hogwild as-above allows us to do without computing the lower bounds $\Delta_+^{\min}$, $\Delta_-^{\min}$, which can be significantly because we only need to maintain sketches of $A^j$ and $B^j$ on-the-fly.
+
+We are also able to be more `order-agnostic', i.e. do away with the need of a pre-determined global ordering of elements.
+Each processor can complete its computations based only on $A^j$, without knowing $C^{ji}$.
+Hence, processors can read a snapshot of the current global state, perform their computations, and update their indicator variables independently.
+
+However, it might take more effort to extend the hogwild approach to a constrained setting.
+The concurrency control approach has, ultimately, a serialization ordering, which can ensure that we're always feasible at any point of time.
+
+
+
+\newpage
+\section{OCC}
+
+\subsection{$F$ given by value oracle}
+
+The serialization order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ:time} of Algorithm \ref{alg:occ}.
+
+\begin{lem} $\hat{A}_e \subseteq A^{\iota(e)-1} \subseteq \tilde{A}_e$, and $\hat{B}_e \supseteq B^{\iota(e)-1} \supseteq \tilde{B}_e$.
+\end{lem}
+\begin{proof}
+There are 4 parts to this proof.
+\begin{enumerate}
+\item $e' \in \hat{A}_e \implies e' \in A^{\iota(e)-1}$.
+\item $e' \in A^{\iota(e)-1} \implies e' \in\tilde{A}_e$.
+\item $e' \not\in \hat{B}_e \implies e' \not\in B^{\iota(e)-1}$.
+\item $e' \not\in B^{\iota(e)-1} \implies e' \not\in\tilde{B}_e$.
+\end{enumerate}
+\end{proof}
+
+\begin{cor} By submodularity of $F$, $\Delta_+^{\min}(e) \leq \Delta_+(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) \leq \Delta_-^{\max}(e)$.
+\end{cor}
+
+\begin{thm} OCC bidirectional greedy is serially equivalent to bidirectional greedy.
+\end{thm}
+\begin{proof}
+Outline of proof: We need to show 2 things.
+Firstly, that the sampling using $\Delta_+^{min}$, $\Delta_+^{max}$, $\Delta_-^{min}$, $\Delta_-^{max}$ is `safe', i.e. is equivalently to sampling using $\Delta_+$ and $\Delta_-$.
+Secondly, that the validation process is correct -- specifically that when the validation is executed, it is in fact the case that $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
+\end{proof}
+
+
+\subsection{Separable sums $F$}
+We maintain $\tilde\sigma_l$, $\hat\sigma_l$, $\tilde\tau_l$, $\hat\tau_l$.
+
+It can be shown that $\hat\sigma_{l,e} \leq \sigma^{\iota(e)-1} \leq \tilde\sigma_{l,e} - w_l(e)$ and $\hat\sigma_{l,e} \geq \tau^{\iota(e)-1} \geq \tilde\tau_{l,e} + w_l(e)$, which then allows us to compute our bounds for $\Delta$'s.
+
+\begin{figure}[h]
+\footnotesize
+\centering
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\caption{OCC bidirectional greedy}
+\label{alg:occ}
+For each $e\in V$, set $\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$\;
+For each $i = 1,\dots,|V|$, set result$(i) = 0$, processed$(i) = false$\;
+For each $p = 1,\dots,P$, set maxResult$(p) = 0$, maxProcessed$(p) = 0$\;
+$\iota = 0$\;
+\ParForAll{$p \in \set{1, \ldots, P}$}{
+  \While{$\exists$ element to process}{
+    $e = $ next element to process\;
+    \CommentSty{// Aggressively grow $\tilde{A}$ and shrink $\tilde{B}$.}\;
+    $\tilde{A}(e) \leftarrow 1$\;
+    $\tilde{B}(e) \leftarrow 0$\;
+    $i = \iota$; $\iota \leftarrow \iota + 1$ \CommentSty{$\quad\quad\quad\quad\quad\quad\quad\quad$// Get serialization order.}\;\label{alg:occ:time}
+    $\Delta_+^{\min}(e) = F(\tilde{A} \cup e) - F(\tilde{A})$\;
+    $\Delta_+^{\max}(e) = F(\hat{A}   \cup e) - F(\hat{A})$\;
+    $\Delta_-^{\min}(e) = F(\tilde{B} \backslash e) - F(\tilde{B})$\;
+    $\Delta_-^{\max}(e) = F(\hat{B}   \backslash e) - F(\hat{B})$\;
+    Draw $u_e \sim Unif(0,1)$\;
+    \CommentSty{// Try to determine result for $e$.}\;
+    \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{
+      result$(i) \leftarrow 1$\;
+    }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
+      result$(i) \leftarrow -1$\;
+    }
+    \CommentSty{// Ensure no earlier ordered element needs validation.}\;
+    \While {maxResult$(p) < i$}{
+      \If {result(maxResult($p$)) $\neq 0$}{$\text{maxResult}(p) \leftarrow \text{maxResult}(p) + 1$}
+    }
+    \If {result$(i) = 0$}{
+      validate($p$, $e$, $i$) \CommentSty{$\quad\quad\quad\quad\quad\quad\quad\quad$// Validate if necessary.}
+    }
+    \CommentSty{// Can process $e$ now.}\;
+    \If {result$(i) = 1$}{
+      $\hat{A}(e)   \leftarrow 1$ \CommentSty{$\quad\quad\quad\quad\quad\quad\quad\quad$// Unroll wrong update to $\tilde{B}$.}\;
+      $\tilde{B}(e) \leftarrow 1$\;
+    }\Else{
+      $\tilde{A}(e) \leftarrow 0$ \CommentSty{$\quad\quad\quad\quad\quad\quad\quad\quad$// Unroll wrong update to $\tilde{A}$.}\;
+      $\hat{B}(e)   \leftarrow 0$\;
+    }
+    processed$(i) = true$\;
+  }
+}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\caption{validate($p$, $e$, $i$)}
+\label{alg:occvalidate}
+      \CommentSty{// Wait for all earlier results to be processed.}\;
+      \While {maxProcessed$(p) < i$}{
+        \If {processed(maxProcessed($p$))}{$\text{maxProcessed}(p) \leftarrow \text{maxProcessed}(p) + 1$}
+      }
+      \CommentSty{// Can assign $e$ now: $A^{i-1} = \hat{A}$ and $B^{i-1} = \hat{B}$.}\;
+      $\Delta_+(e) = F(\hat{A} \cup e) - F(\hat{A})$\;
+      $\Delta_-(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;
+      \If {$u_e < \frac{[\Delta_+(e)]_+}{[\Delta_+(e)]_+ + [\Delta_-(e)]_+}$}{
+        result$(i) \leftarrow 1$\;
+      }\Else{
+        result$(i) \leftarrow -1$\;
+      }
+\end{algorithm}
+
+\end{figure}
+
+{\footnotesize
+%\subsection*{Acknowledgments}
+%This research is supported in part by NSF CISE Expeditions award CCF-1139158 and DARPA XData Award FA8750-12-2-0331, and  gifts from Amazon Web Services, Google, SAP,  Blue Goji, Cisco, Clearstory Data, Cloudera, Ericsson, Facebook, General Electric, Hortonworks, Intel, Microsoft, NetApp, Oracle, Samsung, Splunk, VMware and Yahoo!.
+%This material is also based upon work supported in part by the Office of
+%Naval Research under contract/grant number N00014-11-1-0688. 
+%X. Pan's work is also supported in part by a DSO National Laboratories Postgraduate Scholarship.
+
+% In the unusual situation where you want a paper to appear in the
+% references without citing it in the main text, use \nocite
+%\nocite{langley00}
+
+\bibliographystyle{unsrtnat}
+\bibliography{references_arxiv}
+}
+
+%\newpage
+%\appendix
+%\input{appendix}
+
+
+
+\end{document}
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was
+% created by Lise Getoor and Tobias Scheffer, it was slightly modified
+% from the 2010 version by Thorsten Joachims & Johannes Fuernkranz,
+% slightly modified from the 2009 version by Kiri Wagstaff and
+% Sam Roweis's 2008 version, which is slightly modified from
+% Prasad Tadepalli's 2007 version which is a lightly
+% changed version of the previous year's version by Andrew Moore,
+% which was in turn edited from those of Kristian Kersting and
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.

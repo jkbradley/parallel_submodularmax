@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2012)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: hogwild_submodular.aux
+The style file: unsrtnat.bst
+Database file #1: references_arxiv.bib
+You've used 1 entry,
+            2481 wiz_defined-function locations,
+            563 strings with 4848 characters,
+and the built_in function-call counts, 646 in all, are:
+= -- 64
+> -- 27
+< -- 1
++ -- 10
+- -- 8
+* -- 49
+:= -- 102
+add.period$ -- 7
+call.type$ -- 1
+change.case$ -- 2
+chr.to.int$ -- 1
+cite$ -- 1
+duplicate$ -- 31
+empty$ -- 50
+format.name$ -- 9
+if$ -- 142
+int.to.chr$ -- 1
+int.to.str$ -- 2
+missing$ -- 1
+newline$ -- 16
+num.names$ -- 3
+pop$ -- 6
+preamble$ -- 1
+purify$ -- 1
+quote$ -- 0
+skip$ -- 23
+stack$ -- 0
+substring$ -- 34
+swap$ -- 11
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 7
+warning$ -- 0
+while$ -- 5
+width$ -- 0
+write$ -- 29

@@ -1,0 +1,14 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Submodular maximization}{}% 2
+\BOOKMARK [1][-]{section.3}{Algorithm}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Sequential}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Hogwild for arbitrary submodular F}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Hogwild for separable sums F}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Approximation of hogwild bidirectional greedy}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Assumption}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.2}{Proof}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.3}{Example: max graph cut}{section.4}% 10
+\BOOKMARK [1][-]{section.5}{Additional comments}{}% 11
+\BOOKMARK [1][-]{section.6}{OCC}{}% 12
+\BOOKMARK [2][-]{subsection.6.1}{F given by value oracle}{section.6}% 13
+\BOOKMARK [2][-]{subsection.6.2}{Separable sums F}{section.6}% 14

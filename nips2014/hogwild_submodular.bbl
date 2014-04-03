@@ -1,0 +1,20 @@
+\begin{thebibliography}{1}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Buchbinder et~al.(2012)Buchbinder, Feldman, Naor, and
+  Schwartz]{buchbinder2012}
+Niv Buchbinder, Moran Feldman, Joseph~(Seffi) Naor, and Roy Schwartz.
+\newblock A tight linear time (1/2)-approximation for unconstrained submodular
+  maximization.
+\newblock In \emph{Proceedings of the 2012 IEEE 53rd Annual Symposium on
+  Foundations of Computer Science}, FOCS '12, pages 649--658, Washington, DC,
+  USA, 2012. IEEE Computer Society.
+\newblock ISBN 978-0-7695-4874-6.
+\newblock \doi{10.1109/FOCS.2012.73}.
+\newblock URL \url{http://dx.doi.org/10.1109/FOCS.2012.73}.
+
+\end{thebibliography}
