@@ -479,7 +479,7 @@ Thus,
 \begin{align*}
 &E(\text{number of validated elements})\\
 =& \sum_i P(i \text{ validated})\\
-=& \sum_i P\left(\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} \leq u_i \leq \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}}\right)\\
+=& \sum_i P\left(\frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}} \leq u_i \leq \frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}}\right)\\
 =& \sum_i\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}}\\
 \leq& \sum_i\frac{\Delta_+^{\min}+\rho_i}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}}\\
 =& \sum_i\frac{\rho_i}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}}

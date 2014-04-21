@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  3 APR 2014 06:39
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  20 APR 2014 00:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -34,7 +34,7 @@ File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(./nips13submit_e.sty
+(./nips14submit_e.sty
 (/usr/local/texlive/2012/texmf-dist/tex/latex/eso-pic/eso-pic.sty
 Package: eso-pic 2010/10/06 v2.0c eso-pic (RN)
 
@@ -337,6 +337,9 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count129
 )
+(/usr/local/texlive/2012/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen145
+)
 (/usr/local/texlive/2012/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
 Package: algorithm2e 2008/00/00 v3.10 algorithms environments
 \c@AlgoLine=\count130
@@ -380,12 +383,12 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 \skiplength=\skip61
 \algomargin=\skip62
 \skipalgocfslide=\skip63
-\algowidth=\dimen145
-\inoutsize=\dimen146
-\inoutline=\dimen147
-\interspacetitleruled=\dimen148
-\interspacealgoruled=\dimen149
-\interspacetitleboxruled=\dimen150
+\algowidth=\dimen146
+\inoutsize=\dimen147
+\inoutline=\dimen148
+\interspacetitleruled=\dimen149
+\interspacealgoruled=\dimen150
+\interspacetitleboxruled=\dimen151
 \algocf@inoutbox=\box61
 \algocf@inputbox=\box62
 \AlCapSkip=\skip64
@@ -468,7 +471,7 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 (/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
-\@linkdim=\dimen151
+\@linkdim=\dimen152
 \Hy@linkcounter=\count138
 \Hy@pagecounter=\count139
 
@@ -495,8 +498,8 @@ Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4653.
 \Fld@menulength=\count142
-\Field@Width=\dimen152
-\Fld@charsize=\dimen153
+\Field@Width=\dimen153
+\Fld@charsize=\dimen154
 Package hyperref Info: Hyper figures OFF on input line 5773.
 Package hyperref Info: Link nesting OFF on input line 5778.
 Package hyperref Info: Hyper index ON on input line 5781.
@@ -534,21 +537,21 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 (./hogwild_submodular.aux)
 \openout1 = `hogwild_submodular.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 271.
-LaTeX Font Info:    ... okay on input line 271.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 271.
-LaTeX Font Info:    ... okay on input line 271.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 271.
-LaTeX Font Info:    ... okay on input line 271.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 271.
-LaTeX Font Info:    ... okay on input line 271.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 271.
-LaTeX Font Info:    ... okay on input line 271.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 271.
-LaTeX Font Info:    ... okay on input line 271.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 271.
-LaTeX Font Info:    ... okay on input line 271.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 271.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 275.
+LaTeX Font Info:    ... okay on input line 275.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 275.
+LaTeX Font Info:    ... okay on input line 275.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 275.
+LaTeX Font Info:    ... okay on input line 275.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 275.
+LaTeX Font Info:    ... okay on input line 275.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 275.
+LaTeX Font Info:    ... okay on input line 275.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 275.
+LaTeX Font Info:    ... okay on input line 275.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 275.
+LaTeX Font Info:    ... okay on input line 275.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 275.
 
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/ot1ptm.fd
@@ -559,13 +562,13 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 (/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count152
-\scratchdimen=\dimen154
+\scratchdimen=\dimen155
 \scratchbox=\box69
 \nofMPsegments=\count153
 \nofMParguments=\count154
 \everyMPshowfont=\toks34
 \MPscratchCnt=\count155
-\MPscratchDim=\dimen155
+\MPscratchDim=\dimen156
 \MPnumerator=\count156
 \makeMPintoPDFobject=\count157
 \everyMPtoPDFconversion=\toks35
@@ -591,7 +594,7 @@ Package caption Info: listings package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count158
-LaTeX Info: Redefining \microtypecontext on input line 271.
+LaTeX Info: Redefining \microtypecontext on input line 275.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -605,7 +608,7 @@ Package microtype Info: No adjustment of character kerning.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/microtype/mt-ptm.cfg
 File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
-Package hyperref Info: Link coloring OFF on input line 271.
+Package hyperref Info: Link coloring OFF on input line 275.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
@@ -615,22 +618,22 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count159
 )
-LaTeX Info: Redefining \ref on input line 271.
-LaTeX Info: Redefining \pageref on input line 271.
-LaTeX Info: Redefining \nameref on input line 271.
+LaTeX Info: Redefining \ref on input line 275.
+LaTeX Info: Redefining \pageref on input line 275.
+LaTeX Info: Redefining \nameref on input line 275.
 
 (./hogwild_submodular.out) (./hogwild_submodular.out)
 \@outlinefile=\write4
 \openout4 = `hogwild_submodular.out'.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 275.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 279.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 File: mt-cmr.cfg 2009/11/09 v2.0 microtype config. file: Computer Modern Roman 
 (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 275.
+LaTeX Font Info:    Try loading font information for U+msa on input line 279.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
@@ -638,7 +641,7 @@ File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 (/usr/local/texlive/2012/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 275.
+LaTeX Font Info:    Try loading font information for U+msb on input line 279.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
@@ -647,27 +650,103 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 275.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 275.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 279.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 279.
 
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 277.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 281.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 302.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 345.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6.25002> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 302.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 345.
 
-Overfull \hbox (1.02733pt too wide) in paragraph at lines 296--318
+Overfull \hbox (1.02733pt too wide) in paragraph at lines 339--412
  []$[]$ 
  []
 
 
-Overfull \hbox (1.02733pt too wide) in paragraph at lines 319--341
+Overfull \hbox (1.02733pt too wide) in paragraph at lines 413--469
  []$[]$ 
+ []
+
+
+Overfull \vbox (38.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (37.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (36.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (35.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (34.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (33.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (32.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (31.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (30.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (29.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (28.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (27.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (26.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (25.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (24.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (23.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (22.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (21.49469pt too high) detected at line 472
+ []
+
+
+Overfull \vbox (20.49469pt too high) detected at line 472
  []
 
 
@@ -675,93 +754,161 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 391.
+(hyperref)                removing `math shift' on input line 482.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 391.
+(hyperref)                removing `math shift' on input line 482.
 
 [1{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-[2]
+Underfull \vbox (badness 4805) has occurred while \output is active []
+
+ [2]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 431.
+(hyperref)                removing `math shift' on input line 522.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 431.
+(hyperref)                removing `math shift' on input line 522.
 
-[3] [4]
+[3]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 591.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 591.
+
+[4] [5]
+Overfull \hbox (14.96146pt too wide) in paragraph at lines 709--720
+[][] 
+ []
+
+
+Overfull \hbox (24.96146pt too wide) in paragraph at lines 723--734
+[][] 
+ []
+
+(./hogwild_submodular.bbl) [6] (./hogwildproof.texpdfTeX warning (ext4): destin
+ation with the same identifier (name{section.1}) has been already used, duplica
+te ignored
+<to be read again> 
+                   \relax 
+l.1 \section{Proof of bound for hogwild}
+                                        
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [5]
-[6] [7]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 797.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 797.
+ [7]
+[8] [9]
+Overfull \hbox (13.55728pt too wide) in paragraph at lines 227--227
+[] 
+ []
 
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 825.
+Package amsmath Warning: Foreign command \atopwithdelims;
+(amsmath)                \frac or \genfrac should be used instead
+(amsmath)                 on input line 231.
+
+[10]
+Overfull \hbox (8.07831pt too wide) in paragraph at lines 240--240
+[] 
+ []
+
+) [11] (./occproof.texpdfTeX warning (ext4): destination with the same identifi
+er (name{section.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1 ...ted number of elements sent for validation}
+                                                   [12]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 77.
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 77.
+
+Overfull \hbox (0.64856pt too wide) in paragraph at lines 102--102
+[] 
+ []
 
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 825.
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [13]
+Overfull \hbox (8.9961pt too wide) in paragraph at lines 138--138
+[] 
+ []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+Overfull \hbox (19.36421pt too wide) in paragraph at lines 149--149
+[] 
+ []
 
-(./hogwild_submodular.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 920.
- [8] [9]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 920.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [14])
+[15]pdfTeX warning (ext4): destination with the same identifier (name{section.3
+}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.758 \newpage\section{Lemma}
+                             
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 822.
+ [16]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 822.
  (./hogwild_submodular.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 920.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 920.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 822.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 822.
 Package rerunfilecheck Info: File `hogwild_submodular.out' has not changed.
-(rerunfilecheck)             Checksum: D99D3ECFEED37CB355248663C406807E;866.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 920.
+(rerunfilecheck)             Checksum: C166111C010F764C9F1D0159329DB71D;1988.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 822.
  ) 
 Here is how much of TeX's memory you used:
- 12526 strings out of 493488
- 184109 string characters out of 3141326
- 346193 words of memory out of 3000000
- 15410 multiletter control sequences out of 15000+200000
- 33715 words of font info for 129 fonts, out of 3000000 for 9000
+ 12617 strings out of 493488
+ 185580 string characters out of 3141326
+ 384638 words of memory out of 3000000
+ 15472 multiletter control sequences out of 15000+200000
+ 36772 words of font info for 148 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 37i,24n,39p,359b,769s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 37i,23n,39p,392b,770s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2012/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/local
 /texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/
-texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/te
-xlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texl
-ive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texliv
-e/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/
-2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/20
-12/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2012/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2012/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2012/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2012/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2012/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2012/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2012/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2012/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2012/texmf-dist/fonts/t
-ype1/urw/courier/ucrr8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw
-/helvetic/uhvb8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/
-utmb8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
-></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on hogwild_submodular.pdf (9 pages, 269233 bytes).
+texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/t
+exlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/tex
+live/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texli
+ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive
+/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2
+012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/201
+2/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2012/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2012/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2012/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2012/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2012/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2012/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2012/texmf-dist/font
+s/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2012/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2012/texmf-dist/fonts/ty
+pe1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2012/texmf-dist/font
+s/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/
+urw/helvetic/uhvb8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/tim
+es/utmb8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utmr8a.
+pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on hogwild_submodular.pdf (16 pages, 313004 bytes).
 PDF statistics:
- 373 PDF objects out of 1000 (max. 8388607)
- 336 compressed objects within 4 object streams
- 139 named destinations out of 1000 (max. 500000)
- 26737 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 462 PDF objects out of 1000 (max. 8388607)
+ 401 compressed objects within 5 object streams
+ 137 named destinations out of 1000 (max. 500000)
+ 27369 words of extra memory for PDF output out of 29859 (max. 10000000)
 
