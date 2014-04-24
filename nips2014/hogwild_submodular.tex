@@ -713,36 +713,43 @@ Under the same settings as for the hogwild analysis, the expected number of vali
 \subsection{Implementation}
 Code in Java / Scala.
 
-\subsection{Experiments}
-Experiments run on laptop.
+\begin{comment}
+\subsection{Experiments, laptop}
+Experiments run on laptop. Averaged over 10 iterations.
 
-\textbf{Set Cover:} 5000 elements, covering 500,000 groups, in a random graph with edge probability of 0.002
-
+\begin{table}[ht]
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
 \multirow{2}{*}{\# threads} & \multicolumn{3}{c|}{OCC} & \multicolumn{4}{c|}{Hogwild}\\
  & Runtime & Relative & \# validated & Runtime & Relative & $F(A)$ & \# diff from seq.\\\hline
-Sequential &	 405 &	 2.55 &	 0 &	 328 &	 1.67 &	 496516 &	 0\\\hline
-1&	 1032&	 1&	 0&	 549&	 1&	 496516&	 0\\\hline
-2&	 504&	 2.05&	 0&	 341&	 1.61&	 496516&	 1\\\hline
-3&	 367&	 2.81&	 2&	 171&	 3.21&	 496515&	 4\\\hline
-4&	 327&	 3.16&	 7&	 149&	 3.68&	 496516&	 5\\\hline
-5&	 299&	 3.45&	 6&	 129&	 4.26&	 496516&	 6\\\hline
+Seq.	&3493	&2.54	&0.0	&3493	&1.23	&496595	&0.0\\\hline
+1	&8872	&1.00	&0.0	&4289	&1.00	&496595	&0.0\\\hline
+2	&5276	&1.68	&0.0	&2271	&1.89	&496595	&0.0\\\hline
+3	&4112	&2.16	&0.7	&1693	&2.53	&496595	&2.5\\\hline
+4	&3793	&2.34	&3.1	&1445	&2.97	&496595	&6.8\\\hline
+5	&3361	&2.64	&4.9	&1305	&3.29	&496595	&11.4\\\hline
+6	&3051	&2.91	&5.1	&1161	&3.69	&496594	&12.0\\\hline
 \end{tabular}
+\caption{\textbf{Set Cover:} 50,000 elements, covering 500,000 groups, in a random graph with edge probability of 0.002}
+\end{table}
 
-\textbf{Graph Cut:} 20,000 vertices, in a random graph with edge probability of 0.2
 
+\begin{table}[ht]
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
 \multirow{2}{*}{\# threads} & \multicolumn{3}{c|}{OCC} & \multicolumn{4}{c|}{Hogwild}\\
  & Runtime & Relative & \# validated & Runtime & Relative & $F(A)$ & \# diff from seq.\\\hline
-Sequential &	 1142 &	 1.21 &	 0 &	 1482 &	 0.90 &	 40047848 &	 0\\\hline
-1&	 1381&	 1&	 0&	 1341&	 1&	 40047848&	 0\\\hline
-2&	 666&	 2.07&	 2&	 649&	 2.07&	 40047682&	 24\\\hline
-3&	 461&	 3.00&	 7&	 465&	 2.88&	 40047702&	 22\\\hline
-4&	 448&	 3.08&	 14&	 385&	 3.48&	 40047920&	 5\\\hline
-5&	 379&	 3.64&	 19&	 337&	 3.98&	 40047664&	 24\\\hline
+Seq.	&1229	&1.03	&0.0	&1229	&0.97	&62662830	&0.0\\\hline
+1	&1264	&1.00	&0.0	&1196	&1.00	&62662830	&0.0\\\hline
+2	&821	&1.54	&0.2	&605	&1.98	&62662830	&0.0\\\hline
+3	&602	&2.10	&0.4	&439	&2.72	&62662830	&0.0\\\hline
+4	&528	&2.39	&1.3	&393	&3.04	&62662745	&6.3\\\hline
+5	&507	&2.49	&1.8	&325	&3.68	&62662831	&1.4\\\hline
+6	&421	&3.00	&1.4	&287	&4.17	&62662747	&5.7\\\hline
 \end{tabular}
+\caption{\textbf{Graph Cut:} 50,000 vertices, in a random graph with edge probability of 0.05}
+\end{table}
+
 
 Runtime is given in milliseconds.
 `Relative' runtime refers to the runtime relative to that of using 1 thread.
@@ -758,8 +765,234 @@ The hogwild algorithm has better scaling than OCC, since it requires almost no c
 We also measured the objective value $F(A)$ for hogwild.
 For the set cover problem, hogwild performs just as well as the sequential algorithm, even though it does not provide exactly the same output set.
 On the graph cut problem, the difference in the objective value is less than 0.01\%.
+\end{comment}
 
 
+
+\subsection{Experiments, synthetic}
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cc}
+	  \begin{subfigure}[b]{0.5\textwidth}
+	  	\includegraphics[width=200pt]{images/runtime_setcover_500000.png}
+			\caption{Runtime, set cover}
+			\label{fig:runtime_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.5\textwidth}
+	  	\includegraphics[width=200pt]{images/scaleup_setcover_500000.png}
+			\caption{Scale-up, set cover}
+			\label{fig:scale_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.5\textwidth}
+	  	\includegraphics[width=200pt]{images/diffFA_Hogwild_setcover_500000.png}
+			\caption{Hogwild diff $F(A)$, set cover}
+			\label{fig:hogdiffFA_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.5\textwidth}
+	  	\includegraphics[width=200pt]{images/validated_OCC_setcover_500000.png}
+			\caption{OCC \# validated, set cover}
+			\label{fig:occsvalidated_setcover}
+	  \end{subfigure} \\
+	\end{tabular}
+	\caption{\textbf{Synthetic data, Set Cover:} 500,000 elements, covering 500,000 groups, in a random graph with edge probability of 0.002}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cc}
+	  \begin{subfigure}[b]{0.5\textwidth}
+	  	\includegraphics[width=200pt]{images/runtime_maxgraphcut_500000_2.png}
+			\caption{Runtime, max graph cut}
+			\label{fig:runtime_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.5\textwidth}
+	  	\includegraphics[width=200pt]{images/scaleup_maxgraphcut_500000_2.png}
+			\caption{Scale-up, max graph cut}
+			\label{fig:scale_maxgraphcut}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.5\textwidth}
+	  	\includegraphics[width=200pt]{images/diffFA_Hogwild_maxgraphcut_500000_2.png}
+			\caption{Hogwild diff $F(A)$, max graph cut}
+			\label{fig:hogdiffFA_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.5\textwidth}
+	  	\includegraphics[width=200pt]{images/validated_OCC_maxgraphcut_500000_2.png}
+			\caption{OCC \# validated, max graph cut}
+			\label{fig:occsvalidated_maxgraphcut}
+	  \end{subfigure} \\
+	\end{tabular}
+	\caption{\textbf{Synthetic data, Graph Cut:} 500,000 vertices, in a random graph with edge probability of 0.002}
+\end{figure}
+
+Experiments run on EC2, single cc2.8xlarge (32 vCPUs, 60.5GiB memory) machine.
+
+Averaged over 10 iterations.
+
+
+
+
+\subsection{Experiments, real graphs}
+Experiments were run on the following real graphs.
+Graphs were pre-processed to remove self-loops.
+We found that vertices were typically indexed such that vertices close to each another in the graph were also close in their indices.
+To reduce this dependency, we randomly permuted the ordering of vertices.
+
+For the max graph cut problem, we removed directions on edges to obtain undirected graphs.
+The set cover problem is reduced to a vertex cover on the directed graph.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|}\hline
+Graph & \# vertices & \# undirected edges & \# directed edges\\\hline\hline
+Google & 875,713 & 2,359,034 & 4,563,235\\\hline
+BerkStan & 685,230 & 3,860,581 & 7,600,595\\\hline
+Live Journal & 3,997,962 & 33,099,465 & 68,475,391\\\hline
+Orkut & 3,072,441 & 117,181,608 & 117,181,608\\\hline
+Friendster\footnote{We used only a subset consisting of the first 8 million vertices so that we would not run into out-of-memory errors.} & 8,000,000 &  & 239,763,187\\\hline
+\end{tabular}
+\end{table}
+
+
+
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{ccc}
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/runtime_webberkstan_setcover.png}
+			\caption{Runtime, BerkStan}
+			\label{fig:runtime_webberkstan_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/runtime_orkut_setcover.png}
+			\caption{Runtime, Orkut}
+			\label{fig:runtime_orkut_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/runtime_livejournal_setcover.png}
+			\caption{Runtime, Live Journal}
+			\label{fig:runtime_livejournal_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/scaleup_webberkstan_setcover.png}
+			\caption{Scale-up, BerkStan}
+			\label{fig:scaleup_webberkstan_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/scaleup_orkut_setcover.png}
+			\caption{Scale-up, Orkut}
+			\label{fig:scaleup_orkut_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/scaleup_livejournal_setcover.png}
+			\caption{Scale-up, Live Journal}
+			\label{fig:scaleup_livejournal_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_webberkstan_setcover.png}
+			\caption{Hogwild $F(A)$, BerkStan}
+			\label{fig:diffFA_Hogwild_webberkstan_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_orkut_setcover.png}
+			\caption{Hogwild $F(A)$, Orkut}
+			\label{fig:diffFA_Hogwild_orkut_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_livejournal_setcover.png}
+			\caption{Hogwild $F(A)$, Live Journal}
+			\label{fig:diffFA_Hogwild_livejournal_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/validated_OCC_webberkstan_setcover.png}
+			\caption{OCC \# validated, BerkStan}
+			\label{fig:validated_OCC_webberkstan_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/validated_OCC_orkut_setcover.png}
+			\caption{OCC \# validated, Orkut}
+			\label{fig:validated_OCC_orkut_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/validated_OCC_livejournal_setcover.png}
+			\caption{OCC \# validated, Live Journal}
+			\label{fig:validated_OCC_livejournal_setcover}
+	  \end{subfigure} \\
+  \end{tabular}
+  \caption{Set cover on 3 real graphs.}
+\end{figure}
+
+
+
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{ccc}
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/runtime_webberkstan_maxgraphcut.png}
+			\caption{Runtime, BerkStan}
+			\label{fig:runtime_webberkstan_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/runtime_orkut_maxgraphcut.png}
+			\caption{Runtime, Orkut}
+			\label{fig:runtime_orkut_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/runtime_livejournal_maxgraphcut.png}
+			\caption{Runtime, Live Journal}
+			\label{fig:runtime_livejournal_maxgraphcut}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/scaleup_webberkstan_maxgraphcut.png}
+			\caption{Scale-up, BerkStan}
+			\label{fig:scaleup_webberkstan_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/scaleup_orkut_maxgraphcut.png}
+			\caption{Scale-up, Orkut}
+			\label{fig:scaleup_orkut_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/scaleup_livejournal_maxgraphcut.png}
+			\caption{Scale-up, Live Journal}
+			\label{fig:scaleup_livejournal_maxgraphcut}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_webberkstan_maxgraphcut.png}
+			\caption{Hogwild $F(A)$, BerkStan}
+			\label{fig:diffFA_Hogwild_webberkstan_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_orkut_maxgraphcut.png}
+			\caption{Hogwild $F(A)$, Orkut}
+			\label{fig:diffFA_Hogwild_orkut_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_livejournal_maxgraphcut.png}
+			\caption{Hogwild $F(A)$, Live Journal}
+			\label{fig:diffFA_Hogwild_livejournal_maxgraphcut}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/validated_OCC_webberkstan_maxgraphcut.png}
+			\caption{OCC \# validated, BerkStan}
+			\label{fig:validated_OCC_webberkstan_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/validated_OCC_orkut_maxgraphcut.png}
+			\caption{OCC \# validated, Orkut}
+			\label{fig:validated_OCC_orkut_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.31\textwidth}
+	  	\includegraphics[width=150pt]{images/validated_OCC_livejournal_maxgraphcut.png}
+			\caption{OCC \# validated, Live Journal}
+			\label{fig:validated_OCC_livejournal_maxgraphcut}
+	  \end{subfigure} \\
+  \end{tabular}
+  \caption{Max graph cut on 3 real graphs.}
+\end{figure}
+
+
+
+\section{Discussions}
 
 {\footnotesize
 %\subsection*{Acknowledgments}

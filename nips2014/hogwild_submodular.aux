@@ -45,35 +45,100 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Hogwild for separable sums $F$}{3}{subsection.4.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Concurrency control}{4}{section.5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Separable sums $F$}{4}{subsection.5.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Analysis of algorithms}{5}{section.6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Approximation of hogwild bidirectional greedy}{5}{subsection.6.1}}
-\newlabel{thm:randomapprox}{{6.1}{5}{\relax }{thm.6.1}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Assumption}{5}{subsubsection.6.1.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.2}Example: max graph cut}{5}{subsubsection.6.1.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.3}Example: set cover}{5}{subsubsection.6.1.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Analysis of algorithms}{4}{section.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Approximation of hogwild bidirectional greedy}{4}{subsection.6.1}}
+\newlabel{thm:randomapprox}{{6.1}{4}{\relax }{thm.6.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Correctness of OCC}{5}{subsection.6.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Scalability of OCC}{5}{subsection.6.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Evaluation}{5}{section.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Implementation}{5}{subsection.7.1}}
 \bibstyle{unsrtnat}
 \bibdata{references_arxiv}
 \bibcite{buchbinder2012}{{1}{2012}{{Buchbinder et~al.}}{{Buchbinder, Feldman, Naor, and Schwartz}}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Scalability of OCC}{6}{subsection.6.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.1}Example: max graph cut}{6}{subsubsection.6.3.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.2}Example: set cover}{6}{subsubsection.6.3.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Evaluation}{6}{section.7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Implementation}{6}{subsection.7.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Experiments}{6}{subsection.7.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Experiments, synthetic}{6}{subsection.7.2}}
+\newlabel{fig:runtime_setcover}{{1a}{6}{Runtime, set cover\relax \relax }{figure.caption.2}{}}
+\newlabel{sub@fig:runtime_setcover}{{a}{6}{Runtime, set cover\relax \relax }{figure.caption.2}{}}
+\newlabel{fig:scale_setcover}{{1b}{6}{Scale-up, set cover\relax \relax }{figure.caption.2}{}}
+\newlabel{sub@fig:scale_setcover}{{b}{6}{Scale-up, set cover\relax \relax }{figure.caption.2}{}}
+\newlabel{fig:hogdiffFA_setcover}{{1c}{6}{Hogwild diff $F(A)$, set cover\relax \relax }{figure.caption.2}{}}
+\newlabel{sub@fig:hogdiffFA_setcover}{{c}{6}{Hogwild diff $F(A)$, set cover\relax \relax }{figure.caption.2}{}}
+\newlabel{fig:occsvalidated_setcover}{{1d}{6}{OCC \# validated, set cover\relax \relax }{figure.caption.2}{}}
+\newlabel{sub@fig:occsvalidated_setcover}{{d}{6}{OCC \# validated, set cover\relax \relax }{figure.caption.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Synthetic data, Set Cover:} 500,000 elements, covering 500,000 groups, in a random graph with edge probability of 0.002\relax }}{6}{figure.caption.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Experiments, real graphs}{6}{subsection.7.3}}
+\newlabel{fig:runtime_maxgraphcut}{{2a}{7}{Runtime, max graph cut\relax \relax }{figure.caption.3}{}}
+\newlabel{sub@fig:runtime_maxgraphcut}{{a}{7}{Runtime, max graph cut\relax \relax }{figure.caption.3}{}}
+\newlabel{fig:scale_maxgraphcut}{{2b}{7}{Scale-up, max graph cut\relax \relax }{figure.caption.3}{}}
+\newlabel{sub@fig:scale_maxgraphcut}{{b}{7}{Scale-up, max graph cut\relax \relax }{figure.caption.3}{}}
+\newlabel{fig:hogdiffFA_maxgraphcut}{{2c}{7}{Hogwild diff $F(A)$, max graph cut\relax \relax }{figure.caption.3}{}}
+\newlabel{sub@fig:hogdiffFA_maxgraphcut}{{c}{7}{Hogwild diff $F(A)$, max graph cut\relax \relax }{figure.caption.3}{}}
+\newlabel{fig:occsvalidated_maxgraphcut}{{2d}{7}{OCC \# validated, max graph cut\relax \relax }{figure.caption.3}{}}
+\newlabel{sub@fig:occsvalidated_maxgraphcut}{{d}{7}{OCC \# validated, max graph cut\relax \relax }{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Synthetic data, Graph Cut:} 500,000 vertices, in a random graph with edge probability of 0.002\relax }}{7}{figure.caption.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Discussions}{7}{section.8}}
 \citation{buchbinder2012}
+\newlabel{fig:runtime_webberkstan_setcover}{{3a}{8}{Runtime, BerkStan\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:runtime_webberkstan_setcover}{{a}{8}{Runtime, BerkStan\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:runtime_orkut_setcover}{{3b}{8}{Runtime, Orkut\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:runtime_orkut_setcover}{{b}{8}{Runtime, Orkut\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:runtime_livejournal_setcover}{{3c}{8}{Runtime, Live Journal\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:runtime_livejournal_setcover}{{c}{8}{Runtime, Live Journal\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:scaleup_webberkstan_setcover}{{3d}{8}{Scale-up, BerkStan\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:scaleup_webberkstan_setcover}{{d}{8}{Scale-up, BerkStan\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:scaleup_orkut_setcover}{{3e}{8}{Scale-up, Orkut\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:scaleup_orkut_setcover}{{e}{8}{Scale-up, Orkut\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:scaleup_livejournal_setcover}{{3f}{8}{Scale-up, Live Journal\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:scaleup_livejournal_setcover}{{f}{8}{Scale-up, Live Journal\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:diffFA_Hogwild_webberkstan_setcover}{{3g}{8}{Hogwild $F(A)$, BerkStan\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:diffFA_Hogwild_webberkstan_setcover}{{g}{8}{Hogwild $F(A)$, BerkStan\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:diffFA_Hogwild_orkut_setcover}{{3h}{8}{Hogwild $F(A)$, Orkut\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:diffFA_Hogwild_orkut_setcover}{{h}{8}{Hogwild $F(A)$, Orkut\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:diffFA_Hogwild_livejournal_setcover}{{3i}{8}{Hogwild $F(A)$, Live Journal\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:diffFA_Hogwild_livejournal_setcover}{{i}{8}{Hogwild $F(A)$, Live Journal\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:validated_OCC_webberkstan_setcover}{{3j}{8}{OCC \# validated, BerkStan\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:validated_OCC_webberkstan_setcover}{{j}{8}{OCC \# validated, BerkStan\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:validated_OCC_orkut_setcover}{{3k}{8}{OCC \# validated, Orkut\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:validated_OCC_orkut_setcover}{{k}{8}{OCC \# validated, Orkut\relax \relax }{figure.caption.5}{}}
+\newlabel{fig:validated_OCC_livejournal_setcover}{{3l}{8}{OCC \# validated, Live Journal\relax \relax }{figure.caption.5}{}}
+\newlabel{sub@fig:validated_OCC_livejournal_setcover}{{l}{8}{OCC \# validated, Live Journal\relax \relax }{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Set cover on 3 real graphs.\relax }}{8}{figure.caption.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Proof of bound for hogwild}{8}{section.1}}
+\newlabel{app:proofhogwild}{{A}{8}{Proof of bound for hogwild\relax }{section.1}{}}
 \citation{buchbinder2012}
+\newlabel{fig:runtime_webberkstan_maxgraphcut}{{4a}{9}{Runtime, BerkStan\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:runtime_webberkstan_maxgraphcut}{{a}{9}{Runtime, BerkStan\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:runtime_orkut_maxgraphcut}{{4b}{9}{Runtime, Orkut\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:runtime_orkut_maxgraphcut}{{b}{9}{Runtime, Orkut\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:runtime_livejournal_maxgraphcut}{{4c}{9}{Runtime, Live Journal\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:runtime_livejournal_maxgraphcut}{{c}{9}{Runtime, Live Journal\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:scaleup_webberkstan_maxgraphcut}{{4d}{9}{Scale-up, BerkStan\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:scaleup_webberkstan_maxgraphcut}{{d}{9}{Scale-up, BerkStan\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:scaleup_orkut_maxgraphcut}{{4e}{9}{Scale-up, Orkut\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:scaleup_orkut_maxgraphcut}{{e}{9}{Scale-up, Orkut\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:scaleup_livejournal_maxgraphcut}{{4f}{9}{Scale-up, Live Journal\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:scaleup_livejournal_maxgraphcut}{{f}{9}{Scale-up, Live Journal\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:diffFA_Hogwild_webberkstan_maxgraphcut}{{4g}{9}{Hogwild $F(A)$, BerkStan\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:diffFA_Hogwild_webberkstan_maxgraphcut}{{g}{9}{Hogwild $F(A)$, BerkStan\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:diffFA_Hogwild_orkut_maxgraphcut}{{4h}{9}{Hogwild $F(A)$, Orkut\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:diffFA_Hogwild_orkut_maxgraphcut}{{h}{9}{Hogwild $F(A)$, Orkut\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:diffFA_Hogwild_livejournal_maxgraphcut}{{4i}{9}{Hogwild $F(A)$, Live Journal\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:diffFA_Hogwild_livejournal_maxgraphcut}{{i}{9}{Hogwild $F(A)$, Live Journal\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:validated_OCC_webberkstan_maxgraphcut}{{4j}{9}{OCC \# validated, BerkStan\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:validated_OCC_webberkstan_maxgraphcut}{{j}{9}{OCC \# validated, BerkStan\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:validated_OCC_orkut_maxgraphcut}{{4k}{9}{OCC \# validated, Orkut\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:validated_OCC_orkut_maxgraphcut}{{k}{9}{OCC \# validated, Orkut\relax \relax }{figure.caption.6}{}}
+\newlabel{fig:validated_OCC_livejournal_maxgraphcut}{{4l}{9}{OCC \# validated, Live Journal\relax \relax }{figure.caption.6}{}}
+\newlabel{sub@fig:validated_OCC_livejournal_maxgraphcut}{{l}{9}{OCC \# validated, Live Journal\relax \relax }{figure.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Max graph cut on 3 real graphs.\relax }}{9}{figure.caption.6}}
+\newlabel{lem:positivesum}{{A.1}{9}{\relax }{thm.1.1}{}}
 \citation{buchbinder2012}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Proof of bound for hogwild}{7}{section.1}}
-\newlabel{app:proofhogwild}{{A}{7}{Proof of bound for hogwild\relax }{section.1}{}}
-\newlabel{lem:positivesum}{{A.1}{7}{\relax }{thm.1.1}{}}
-\newlabel{lem:singleelement}{{A.2}{7}{\relax }{thm.1.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Example: max graph cut}{9}{subsection.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Example: set cover}{10}{subsection.1.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Upper bound on expected number of elements sent for validation}{12}{section.2}}
-\newlabel{app:proofocc}{{B}{12}{Upper bound on expected number of elements sent for validation\relax }{section.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Tighter general bound?}{12}{subsection.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Upper bound for max graph cut}{13}{subsection.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.3}Upper bound for set cover}{14}{subsection.2.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {C}Lemma}{16}{section.3}}
-\newlabel{lem:sumbinomial}{{C.1}{16}{\relax }{thm.3.1}{}}
+\newlabel{lem:singleelement}{{A.2}{10}{\relax }{thm.1.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Example: max graph cut}{12}{subsection.1.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Example: set cover}{12}{subsection.1.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Upper bound on expected number of elements sent for validation}{15}{section.2}}
+\newlabel{app:proofocc}{{B}{15}{Upper bound on expected number of elements sent for validation\relax }{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Tighter general bound?}{15}{subsection.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Upper bound for max graph cut}{16}{subsection.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.3}Upper bound for set cover}{17}{subsection.2.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Lemma}{19}{section.3}}
+\newlabel{lem:sumbinomial}{{C.1}{19}{\relax }{thm.3.1}{}}

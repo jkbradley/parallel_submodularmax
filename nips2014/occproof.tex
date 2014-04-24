@@ -1,0 +1,170 @@
+\section{Upper bound on expected number of elements sent for validation}
+\label{app:proofocc}
+Let $N$ be the number of elements, i.e. the cardinality of the ground set.
+Let $P$ be the number of processors.
+
+We assume that the total ordering assigns elements to processors in a round robin fashion.
+Thus, we assume $C^{ji}=\{i-p+1,\dots,i-1\}$ has $p-1$ elements.
+
+We call element $i$ \textit{dependent} on $i'$ if $\exists A, F(A\cup i)-F(A) \neq F(A\cup i' \cup i)-F(A\cup i')$ or $\exists B, F(B\backslash i)-F(B) \neq F(B\cup i'\backslash i) - F(B\cup i')$, i.e. the result of the transaction on $i'$ will affect the computation of $\Delta$'s for $i$.
+For example, for the graph cut problem, every vertex is dependent on its neighbors; for the separable sums problem, $i$ is dependent on $\{i': \exists S_l, i\in S_l, i'\in S_l\}$.
+
+Let $n_i$ be the number of elements that $i$ is dependent on.
+
+Now, we note that if $C^{ji}$ does not contain any elements on which $i$ is dependent, then $\Delta_{+}^\text{max}(i) = \Delta_{+}(i) = \Delta_{+}^\text{min}(i)$ and $\Delta_{-}^\text{max}(i) = \Delta_{-}(i) = \Delta_{-}^\text{min}(i)$, so $i$ will not be validated (in either deterministic or probabilistic versions).
+Conversely, if $i$ is validated, there must be some element $i'\in C^{ji}$ such that $i$ is dependent on $i'$.
+
+\begin{align*}
+&E(\text{number of validated elements})\\
+=& \sum_i P(i \text{ validated})\\
+\leq& \sum_i P(\exists i'\in C^{ji}, i \text{ depends on } i')\\
+=& \sum_i 1-P(\forall i'\in C^{ji}, i \text{ does not depend on } i')\\
+=& \sum_i 1-\prod_{k=1}^{P-1}\frac{N-k-n_i}{N-k}\\
+=& \sum_i 1-\prod_{k=1}^{P-1}\left(1-\frac{n_i}{N-k}\right)\\
+\leq& \sum_i 1-\left(1-\sum_{k=1}^{P-1}\frac{n_i}{N-k}\right) & \text{(Weierstrass inequality)}\\
+=& \left(\sum_i n_i\right)\left(\sum_{k=1}^{P-1}\frac{1}{N-k}\right)\\
+\leq& \frac{P-1}{N-P+1}\sum_i n_i.
+\end{align*}
+
+The key quantity in the above inequality is $\sum_i n_i$.
+Typically, we expect each element $i$ to depend on a small fraction of the ground set.
+For example, in the graph cut problem, $\sum_i n_i = 2|E|$ is twice the number of edges.
+If the graph is sparse with $|E|\approx s|V|\log|V|$, where $0\leq s\ll 1$ and $P\ll N$, then $\frac{P-1}{N-P+1}\sum_i n_i \approx 2s(P-1)\log N$, which grows sublinearly with $N$.
+
+Note that the bound established above is generic to all algorithms that follow the basic transactional model we proposed (round-robin optimistic concurrency control), and is not specific to $F$ or even submodular maximization.
+Thus, while our bounds provide a fundamental limit, additional knowledge of $F$ can lead to better analyses on the algorithm's concurrency.
+
+
+
+
+\subsection{Tighter general bound?}
+Define $\rho_i = \max_{S\subseteq V} \{[F(S\cup i) - F(S)] - [F(S \cup C^{ji} \cup i) - F(S \cup C^{ji})]\} \leq F(i) - F(V) + F(V\backslash i)$
+
+\taunghao{Is there theory along these lines?}
+
+Then, we can bound
+\begin{align*}
+\Delta_+^{\min} \leq \Delta_+^{\max} \leq \Delta_+^{\min} + \rho_i && \text{(choosing $S=A^j$)}\\
+\Delta_-^{\min} \leq \Delta_-^{\max} \leq \Delta_-^{\min} + \rho_i && \text{(choosing $S=A^j\cup D^i$)}
+\end{align*}
+
+Thus,
+\begin{align*}
+&E(\text{number of validated elements})\\
+=& \sum_i P(i \text{ validated})\\
+=& \sum_i P\left(\frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}} \leq u_i \leq \frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}}\right)\\
+=& \sum_i\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}}\\
+\leq& \sum_i\frac{\Delta_+^{\min}+\rho_i}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}}\\
+=& \sum_i\frac{\rho_i}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}}
+\end{align*}
+
+
+
+
+\subsection{Upper bound for max graph cut}
+Denote $\tilde{A}^j = V\backslash A^j\backslash C^{ji}\backslash D^i = \{1,\dots,j\}\backslash A^j$ be the elements up to $j$ that are not included in $A$.
+Let $w_i(S) = \sum_{j\in S, (i,j)\in E} w(i,j)$.
+For the max graph cut function, it is easy to see that 
+\begin{align*}
+\Delta_+^{\min} &= \max(0, - w_i(A^j) -w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j))\\
+\Delta_+^{\max} &= \max(0, - w_i(A^j) + w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j))\\
+\Delta_-^{\min} &= \max(0, + w_i(A^j) - w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j))\\
+\Delta_-^{\max} &= \max(0, + w_i(A^j) + w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j))
+\end{align*}
+
+Consider the following cases.
+\begin{itemize}
+\item $\Delta_+^{\max} = 0$. Then $\Delta_+^{\min} = 0$ and also
+\begin{align*}
+w_i(A^j) &> w_i(C^{ji})+ w_i(D^i) + w_i(\tilde{A}^j)
+\quad\implies\quad w_i(A^j) + w_i(D^i) > w_i(C^{ji}) + w_i(\tilde{A}^j)
+\end{align*}
+so $\Delta_-^{\min} > 0$ and $\Delta_-^{\max}>0$.
+Thus $\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}} = 0-0 = 0$.
+
+\item $\Delta_-^{\max} = 0$. Then $\Delta_-^{\min} = 0$ and also
+\begin{align*}
+w_i(\tilde{A}^j) &> w_i(C^{ji})+ w_i(D^i) + w_i(A^j)
+\quad\implies\quad w_i(\tilde{A}^j) + w_i(D^i) > w_i(C^{ji}) + w_i(A^j)
+\end{align*}
+so $\Delta_+^{\min} > 0$ and $\Delta_+^{\max} > 0$.
+Thus $\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}} = 1-1 = 0$.
+
+\item $\Delta_+^{\max}>0$ and $\Delta_-^{\max}>0$.
+Then,
+\begin{align*}
+&\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}} \\
+=& \frac{- w_i(A^j) + w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)}{- w_i(A^j) + w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j) + \max(0, + w_i(A^j) - w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j))}\\
+ &- \frac{\max(0, - w_i(A^j) -w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j))}{\max(0, - w_i(A^j) -w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)) + w_i(A^j) + w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j)}\\
+=& \min\left(1,\frac{ - w_i(A^j) + w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)}{2w_i(D^i)}\right)\\
+ & -\max\left(0,\frac{- w_i(A^j) - w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)}{2w_i(D^i)}\right)\\
+=& \min\left(1,\frac{ w_i(C^{ji})}{w_i(D^i)}\right)
+\end{align*}
+\end{itemize}
+
+Thus,
+\begin{align*}
+E(\text{\# of validated elements})
+= \sum_i\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}}
+\leq \sum_i \min\left(1,\frac{ w_i(C^{ji})}{w_i(D^i)}\right)
+\end{align*}
+
+\taunghao{Not sure how to sum this over $i$.}
+
+\[
+\sum_\pi \sum_i \min(1, w_i(C) / w(D^i)) \leq  E( \sum_i w_i(C))  =  c* \sum_i deg(i) / n
+\]
+
+
+\subsection{Upper bound for set cover}
+
+We make the same assumptions as before in the hogwild analysis, i.e. the sets $S_l$ form a partition of $V$, there is a bounded delay $\tau$.
+
+
+Observe that for any $e\in S_l$, $\Delta_-^{\min}(e) \neq \Delta_-^{\max}(e)$ if $\hat{B}_e\backslash e \cap S_l \neq\emptyset$ and $\tilde{B}_e\backslash e \cap S_l = \emptyset$.
+
+This is only possible if $e_l^{n_l} \not\in \tilde{B}_e$ and $\tilde{B}_e\supset\hat{A}_e \cap S_l = \emptyset$, that is $\pi(e) \geq \pi(e_l^{n_l}) - \tau$ and $\forall e' \in S_l, (\pi(e') < \pi(e_l^{n_l}) - \tau) \implies (e' \not\in A)$.
+The latter condition is achieved with probability $\lambda^{n_l-m_l}$, where $m_l = \#\{e' : \pi(e') \geq \pi(e_l^{n_l})-\tau\}$.
+Thus,
+\begin{align*}
+\mathbb{E}\left[\#\{e : \Delta_-^{\min}(e)\neq\Delta_-^{\max}(e)\}\right]
+&= \mathbb{E}[m_l ~ 1(\forall e' \in S_l, (\pi(e') < \pi(e_l^{n_l}) - \tau) \implies (e' \not\in A))]\\
+&= \mathbb{E}[\mathbb{E}[m_l ~ 1(\forall e' \in S_l, (\pi(e') < \pi(e_l^{n_l}) - \tau) \implies (e' \not\in A))|u_{1:N}]]\\
+&= \mathbb{E}[m_l ~ \mathbb{E}[1(\forall e' \in S_l, (\pi(e') < \pi(e_l^{n_l}) - \tau) \implies (e' \not\in A))|u_{1:N}]]\\
+&= \mathbb{E}[m_l \lambda^{n_l-m_l}]\\
+&\leq \lambda^{(n_l-\tau)_+} \mathbb{E}[m_l]\\
+&= \lambda^{(n_l-\tau)_+} \mathbb{E}[\mathbb{E}[m_l | \pi(e_l^{n_l}) = k]]\\
+&= \lambda^{(n_l-\tau)_+} \sum_{k=n_l}^N P(\pi(e_l^{n_l}) = k) \mathbb{E}[m_l | \pi(e_l^{n_l}) = k]].
+\end{align*}
+Conditioned on $\pi(e_l^{n_l}) = k$, $m_l$ is a hypergeometric random variable with mean $\frac{n_l-1}{k-1}\tau$.
+Also $P(\pi(e_l^{n_l}) = k) = \frac{n_l}{N} {n_l-1 \choose 0} {N-n_l \choose N-k} / {N-1 \choose N-k}$.
+The above expression is therefore
+\begin{align*}
+&\mathbb{E}\left[\#\{e : \Delta_-^{\min}(e)\neq\Delta_-^{\max}(e)\}\right]\\
+&= \lambda^{(n_l-\tau)_+} \sum_{k=n_l}^N \frac{n_l}{N} \frac{{n_l-1 \choose 0} {N-n_l \choose N-k}}{{N-1 \choose N-k}} \frac{n_l-1}{k-1}\tau\\
+&= \lambda^{(n_l-\tau)_+} \frac{n_l}{N} \tau \sum_{k=n_l}^N \frac{{N-k \choose 0} {k-1 \choose n_l-1}}{{N-1 \choose n_l-1}} \frac{n_l-1}{k-1} & \text{(symmetry of hypergeometric)} \\
+&= \lambda^{(n_l-\tau)_+} \frac{n_l}{N} \frac{\tau}{{N-1 \choose n_l-1}} \sum_{k=n_l}^N {N-k \choose 0} {k-2 \choose n_l-2} \\
+&= \lambda^{(n_l-\tau)_+} \frac{n_l}{N} \frac{\tau}{{N-1 \choose n_l-1}} {N-1 \choose n_l-1} & \text{(Lemma \ref{lem:sumbinomial}, $a=N-2$, $b=n_l-2$, $j=2$, $t=n_l$)} \\
+&= \lambda^{(n_l-\tau)_+} \frac{n_l}{N} \tau.
+\end{align*}
+
+Now we consider any element $e \in S_l$ with $\pi(e) < \pi(e_l^{n_l}) - \tau$ that is validated.
+(Note that $e_l^{n_l} \in \hat{B}_e$ and $\tilde{B}_e$, so $\Delta_-^{\min}(e) = \Delta_-^{\max}(e) = \lambda$.)
+It must be the case that $\hat{A}_e \cap S_l = \emptyset$, for otherwise $\Delta_+^{\min}(e) = \Delta_+^{\max}(e) = -\lambda$ and we do not need to validate.
+This implies that $\Delta_+^{\max}(e) = 1-\lambda \geq u_i$.
+At validation, if $A^{\iota(e)-1} \cap S_l = \emptyset$, we accept $e$ into $A$.
+Otherwise, $A^{\iota(e)-1} \cap S_l \neq \emptyset$, which implies that some other element $e' \in S_l$ has been accepted.
+Thus, we conclude that every element $e\in S_l$ that is validated must be within $\tau$ of the first accepted element $e_l^\eta \ in S_l$.
+The expected number of such elements is exactly as we computed in the hogwild analysis: $\frac{n_l}{N}\tau$.
+
+Hence, the expected number of elements that we need to validate is upper bounded as
+\begin{align*}
+\mathbb{E}[\#\text{validated}]
+&\leq \sum_l (1+\lambda^{(n_l-\tau)_+}) \frac{n_l}{N} \tau\\
+&\leq \sum_l 2\frac{n_l}{N} \tau\\
+&= 2\tau.
+\end{align*}
+
+
+
+
