@@ -12,15 +12,13 @@
 \BOOKMARK [2][-]{subsection.6.2}{Correctness of OCC}{section.6}% 12
 \BOOKMARK [2][-]{subsection.6.3}{Scalability of OCC}{section.6}% 13
 \BOOKMARK [1][-]{section.7}{Evaluation}{}% 14
-\BOOKMARK [2][-]{subsection.7.1}{Implementation}{section.7}% 15
-\BOOKMARK [2][-]{subsection.7.2}{Experiments, synthetic}{section.7}% 16
-\BOOKMARK [2][-]{subsection.7.3}{Experiments, real graphs}{section.7}% 17
-\BOOKMARK [1][-]{section.8}{Discussions}{}% 18
-\BOOKMARK [1][-]{section.1}{Proof of bound for hogwild}{}% 19
-\BOOKMARK [2][-]{subsection.1.1}{Example: max graph cut}{section.1}% 20
-\BOOKMARK [2][-]{subsection.1.2}{Example: set cover}{section.1}% 21
-\BOOKMARK [1][-]{section.2}{Upper bound on expected number of elements sent for validation}{}% 22
-\BOOKMARK [2][-]{subsection.2.1}{Tighter general bound?}{section.2}% 23
-\BOOKMARK [2][-]{subsection.2.2}{Upper bound for max graph cut}{section.2}% 24
-\BOOKMARK [2][-]{subsection.2.3}{Upper bound for set cover}{section.2}% 25
-\BOOKMARK [1][-]{section.3}{Lemma}{}% 26
+\BOOKMARK [1][-]{section.8}{Discussions}{}% 15
+\BOOKMARK [1][-]{section.1}{Proof of bound for hogwild}{}% 16
+\BOOKMARK [2][-]{subsection.1.1}{Example: max graph cut}{section.1}% 17
+\BOOKMARK [2][-]{subsection.1.2}{Example: set cover}{section.1}% 18
+\BOOKMARK [1][-]{section.2}{Upper bound on expected number of elements sent for validation}{}% 19
+\BOOKMARK [2][-]{subsection.2.1}{Tighter general bound?}{section.2}% 20
+\BOOKMARK [2][-]{subsection.2.2}{Upper bound for max graph cut}{section.2}% 21
+\BOOKMARK [2][-]{subsection.2.3}{Upper bound for set cover}{section.2}% 22
+\BOOKMARK [1][-]{section.3}{Lemma}{}% 23
+\BOOKMARK [1][-]{section.4}{Full experiment results}{}% 24

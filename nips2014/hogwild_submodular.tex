@@ -18,6 +18,7 @@
 \setlength{\emergencystretch}{3em}
 \usepackage[numbers]{natbib}
 
+
 \usepackage{multirow}
 
 % For algorithms
@@ -105,10 +106,10 @@
 % Commenting system
 \newcommand{\Comments}{1}
 \newcommand{\note}[2]{\ifnum\Comments=1\textcolor{#1}{#2}\fi}
-\newcommand{\taunghao}[1]{\note{red}{[XP: #1]}}
+\newcommand{\xinghao}[1]{\note{red}{[XP: #1]}}
 \newcommand{\joey}[1]{\note{blue}{[JG: #1]}}
 \newcommand{\stef}[1]{\note{green}{[SJ: #1]}}
-\newcommand{\tb}[1]{\note{cyan}{[TB: #1]}}
+\newcommand{\joseph}[1]{\note{cyan}{[JB: #1]}}
 
 \newcommand{\argmin}{\operatornamewithlimits{argmin}}
 
@@ -279,7 +280,7 @@ Berkeley, CA USA 94720\\
 
 
 \begin{abstract}
-Bidirectional greedy is a sequential algorithm that does not scale well to problems of large scale.
+Bidirectional greedy is a sequential algorithm that does not speed well to problems of large speed.
 We present 2 approaches to extend the bidirectional greedy algorithm to a parallel setting.
 The first, `hogwild' approach emphasizes speed at the cost of worsening the approximation by an additive factor;
 the second approach guarantees the same approximation bound by sacrificing concurrency.
@@ -290,7 +291,7 @@ The bidirectional greedy algorithm \cite{buchbinder2012} gives an approximation 
 
 The hogwild algorithm can give an approximation of $E[F(A)] = \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$, where $\rho_i$ is the maximum difference in the marginal gain that may result from not knowing the full information when deciding whether to include or exclude element $i$.
 
-The OCC algorithm \taunghao{for the lack of a better name} guarantees an outcome that is equivalent to a sequential run of the bidirectional greedy algorithm.
+The OCC algorithm \xinghao{for the lack of a better name} guarantees an outcome that is equivalent to a sequential run of the bidirectional greedy algorithm.
 Theoretical properties of the bidirectional greedy algorithm immediately translates to the OCC algorithm -- in particular, the OCC algorithm gives the same approximation factor of $1/$.
 In contrast to the hogwild approach, OCC introduces more coordination and thus provides less concurrency.
 
@@ -646,7 +647,7 @@ This is possible, for example, by defining
 where $S$ plays the role of $A^j$ and $T$ plays the role of $\{j+1,\dots, i-1\}$, and $\kappa_F$ is the total curvature of $F$.
 Summing over $i$ then gives us $\sum_i \rho_i \leq \kappa_F\sum_i F(i)$.
 
-\taunghao{Is there theory along these lines? Can we tighten this for non-monotone functions?}
+\xinghao{Is there theory along these lines? Can we tighten this for non-monotone functions?}
 
 
 \textbf{Example: max graph cut}
@@ -659,7 +660,7 @@ In sparse graphs, the hogwild algorithm is off by a small additional term, which
 
 \textbf{Example: set cover}
 
-\taunghao{For now, consider a toy problem, with (1) disjoint sets, (2) bounded delay, (3) $\lambda \leq 1$.}
+\xinghao{For now, consider a toy problem, with (1) disjoint sets, (2) bounded delay, (3) $\lambda \leq 1$.}
 
 Consider the simple set cover function,
 $F(A) = \sum_{l=1}^L \min(1,|A\cap S_l|) - \lambda|A| = |\{l: A\cap S_l \neq\emptyset\}| - \lambda|A|$,
@@ -710,289 +711,175 @@ Under the same settings as for the hogwild analysis, the expected number of vali
 
 \section{Evaluation}
 
-\subsection{Implementation}
-Code in Java / Scala.
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cccc}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_bigsynthetic_maxgraphcut.png}
+			\caption{}
+			\label{fig:runtime_bigsynthetic_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_zigzag_setcover.png}
+			\caption{}
+			\label{fig:runtime_zigzag_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_uk2005_maxgraphcut.png}
+			\caption{}
+			\label{fig:runtime_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_arabic2005_setcover.png}
+			\caption{}
+			\label{fig:runtime_arabic2005_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_bigsynthetic_maxgraphcut.png}
+			\caption{}
+			\label{fig:speedup_bigsynthetic_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_zigzag_setcover.png}
+			\caption{}
+			\label{fig:speedup_zigzag_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_uk2005_maxgraphcut.png}
+			\caption{}
+			\label{fig:speedup_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_arabic2005_setcover.png}
+			\caption{}
+			\label{fig:speedup_arabic2005_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png}
+			\caption{}
+			\label{fig:diffFA_Hogwild_bigsynthetic_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_zigzag_setcover.png}
+			\caption{}
+			\label{fig:diffFA_Hogwild_zigzag_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_uk2005_maxgraphcut.png}
+			\caption{}
+			\label{fig:diffFA_Hogwild_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_arabic2005_setcover.png}
+			\caption{}
+			\label{fig:diffFA_Hogwild_arabic2005_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_OCC_bigsynthetic_maxgraphcut.png}
+			\caption{}
+			\label{fig:validated_OCC_bigsynthetic_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_OCC_zigzag_setcover.png}
+			\caption{}
+			\label{fig:validated_OCC_zigzag_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_OCC_uk2005_maxgraphcut.png}
+			\caption{}
+			\label{fig:validated_OCC_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_OCC_arabic2005_setcover.png}
+			\caption{}
+			\label{fig:validated_OCC_arabic2005_setcover}
+	  \end{subfigure} \\
+  \end{tabular}
+  \caption{\footnotesize Experimental results.
+  Average runtimes are shown on the first row (\ref{fig:runtime_bigsynthetic_maxgraphcut}, \ref{fig:runtime_zigzag_setcover}, \ref{fig:runtime_uk2005_maxgraphcut}, \ref{fig:runtime_arabic2005_setcover}).
+  Average speedups are shown on the second row (\ref{fig:speedup_bigsynthetic_maxgraphcut}, \ref{fig:speedup_zigzag_setcover}, \ref{fig:speedup_uk2005_maxgraphcut}, \ref{fig:speedup_arabic2005_setcover}).
+  The median difference between $F(A)$ given by hogwild and the sequential algorithm is shown on the third row (\ref{fig:diffFA_Hogwild_bigsynthetic_maxgraphcut}, \ref{fig:diffFA_Hogwild_zigzag_setcover}, \ref{fig:diffFA_Hogwild_uk2005_maxgraphcut}, \ref{fig:diffFA_Hogwild_arabic2005_setcover}).
+  The median fraction of elements validated by OCC is shown on the fourth row (\ref{fig:validated_OCC_bigsynthetic_maxgraphcut}, \ref{fig:validated_OCC_zigzag_setcover}, \ref{fig:validated_OCC_uk2005_maxgraphcut}, \ref{fig:validated_OCC_arabic2005_setcover}).
+  The columns show the results for the
+  random Erdos-Renyi (\ref{fig:runtime_bigsynthetic_maxgraphcut}, \ref{fig:speedup_bigsynthetic_maxgraphcut}, \ref{fig:diffFA_Hogwild_bigsynthetic_maxgraphcut}, \ref{fig:validated_OCC_bigsynthetic_maxgraphcut}),
+  ZigZag (\ref{fig:runtime_zigzag_setcover}, \ref{fig:speedup_zigzag_setcover}, \ref{fig:diffFA_Hogwild_zigzag_setcover}, \ref{fig:validated_OCC_zigzag_setcover}),
+  UK-2005 (\ref{fig:runtime_uk2005_maxgraphcut}, \ref{fig:speedup_uk2005_maxgraphcut}, \ref{fig:diffFA_Hogwild_uk2005_maxgraphcut}, \ref{fig:validated_OCC_uk2005_maxgraphcut}), and
+  Arabic-2005 (\ref{fig:runtime_arabic2005_setcover}, \ref{fig:speedup_arabic2005_setcover}, \ref{fig:diffFA_Hogwild_arabic2005_setcover}, \ref{fig:validated_OCC_arabic2005_setcover}) graphs.
+  }
+\label{fig:results}
+\end{figure}
 
-\begin{comment}
-\subsection{Experiments, laptop}
-Experiments run on laptop. Averaged over 10 iterations.
+%\begin{table}[h]
+%\centering
+%\begin{tabular}{|c|c|c|c|}\hline
+%Graph & \# vertices & \# undirected edges & \# directed edges\\\hline\hline
+%Google       &    875,713 &     3,852,985 &   4,563,235\\\hline
+%BerkStan     &    685,230 &     6,649,470 &   7,600,595\\\hline
+%Live Journal &  3,997,962 &    40,592,387 &  40,592,387\\\hline
+%Orkut        &  3,072,441 &   117,181,608 & 117,181,608\\\hline
+%Friendster   &  8,000,000 &   239,730,456 & 239,730,456\\\hline
+%Friendster   & 10,000,000 &   625,279,786 & 625,279,786\\\hline
+%Arabic-2005  & 22,744,080 & 1,107,806,146 & 631,153,669\\\hline
+%UK-20005     & 39,459,925 & 1,566,054,250 & 921,345,078\\\hline
+%\end{tabular}
+%\end{table}
+%\end{comment}
 
-\begin{table}[ht]
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{\# threads} & \multicolumn{3}{c|}{OCC} & \multicolumn{4}{c|}{Hogwild}\\
- & Runtime & Relative & \# validated & Runtime & Relative & $F(A)$ & \# diff from seq.\\\hline
-Seq.	&3493	&2.54	&0.0	&3493	&1.23	&496595	&0.0\\\hline
-1	&8872	&1.00	&0.0	&4289	&1.00	&496595	&0.0\\\hline
-2	&5276	&1.68	&0.0	&2271	&1.89	&496595	&0.0\\\hline
-3	&4112	&2.16	&0.7	&1693	&2.53	&496595	&2.5\\\hline
-4	&3793	&2.34	&3.1	&1445	&2.97	&496595	&6.8\\\hline
-5	&3361	&2.64	&4.9	&1305	&3.29	&496595	&11.4\\\hline
-6	&3051	&2.91	&5.1	&1161	&3.69	&496594	&12.0\\\hline
+\begin{table}[h]
+\centering\footnotesize
+\begin{tabular}{|c|c|c|c|}\hline
+Graph & \# vertices & \# edges & Description \\\hline\hline
+Erdos-Renyi & 20,000,000 & $\approx 2 \times 10^6$ & Each edge is included with probability $5\times 10^{-6}$.\\\hline
+\multirow{3}{*}{ZigZag}      & \multirow{3}{*}{25,000,000} &  \multirow{3}{*}{2,025,000,000} & Expander graph. The 81-regular zig-zag product \\
+& & & between the Cayley graph on $\mathbb{Z}_{2500000}$ with generating \\
+& & & set $\{\pm 1,\dots,\pm 5\}$, and the complete graph $K_{10}$.\\\hline
+Friendster  & 10,000,000 &    625,279,786 & Subgraph of social network. \cite{snap}\\\hline
+Arabic-2005 & 22,744,080 &    631,153,669 & 2005 crawl of Arabic web sites \cite{BoVWFI, BRSLLP, BCSU3}. \\\hline
+UK-20005    & 39,459,925 &    921,345,078 & 2005 crawl of the .uk domain \cite{BoVWFI, BRSLLP, BCSU3}. \\\hline
 \end{tabular}
-\caption{\textbf{Set Cover:} 50,000 elements, covering 500,000 groups, in a random graph with edge probability of 0.002}
+\caption{\footnotesize Synthetic and real graphs used in the evaluation of our parallel algorithms.}
+\label{tab:graphstats}
 \end{table}
 
 
-\begin{table}[ht]
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{\# threads} & \multicolumn{3}{c|}{OCC} & \multicolumn{4}{c|}{Hogwild}\\
- & Runtime & Relative & \# validated & Runtime & Relative & $F(A)$ & \# diff from seq.\\\hline
-Seq.	&1229	&1.03	&0.0	&1229	&0.97	&62662830	&0.0\\\hline
-1	&1264	&1.00	&0.0	&1196	&1.00	&62662830	&0.0\\\hline
-2	&821	&1.54	&0.2	&605	&1.98	&62662830	&0.0\\\hline
-3	&602	&2.10	&0.4	&439	&2.72	&62662830	&0.0\\\hline
-4	&528	&2.39	&1.3	&393	&3.04	&62662745	&6.3\\\hline
-5	&507	&2.49	&1.8	&325	&3.68	&62662831	&1.4\\\hline
-6	&421	&3.00	&1.4	&287	&4.17	&62662747	&5.7\\\hline
-\end{tabular}
-\caption{\textbf{Graph Cut:} 50,000 vertices, in a random graph with edge probability of 0.05}
-\end{table}
+We implemented the parallel and sequential double greedy algorithms in Java / Scala.
+Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16 threads, for 10 iterations.
 
+We measured the runtime and speedup (ratio of runtime on 1 thread to runtime on $p$ threads).
+For the hogwild algorithm, we measured $F(A_{hog})-F(A_{seq})$, the difference between the objective value on the sets returned by hogwild and the sequential algorithms.
+We verified the correctness of the OCC algorithm by comparing the sets returned by the OCC and sequential algorithms, and also measured the fraction of elements that are validated by OCC.
 
-Runtime is given in milliseconds.
-`Relative' runtime refers to the runtime relative to that of using 1 thread.
-Ideally, the runtime of the parallel algorithm should be lesser than the sequential algorithm, and have a relative runtime that scales linearly with the number of threads (e.g. running on 5 threads should have a relative runtime of 5).
-
-Due to the effort needed for coordination and maintaining additional sets, the OCC algorithm is initially slower than the sequential algorithm, but quickly outperforms it as more threads are added.
-We counted the number of elements that had to be validated, which required major coordination and slow down in the algorithm.
-The number of validated elements increased with the number of threads (which explains the failure of OCC to scale less than linearly), but is still less than 1\% of the total number of elements when 5 threads are used.
-
-We also verified the correctness of the OCC algorithm by comparing the output sets with the sequential algorithm executed under the same ordering of elements.
-
-The hogwild algorithm has better scaling than OCC, since it requires almost no coordination.
-We also measured the objective value $F(A)$ for hogwild.
-For the set cover problem, hogwild performs just as well as the sequential algorithm, even though it does not provide exactly the same output set.
-On the graph cut problem, the difference in the objective value is less than 0.01\%.
-\end{comment}
-
-
-
-\subsection{Experiments, synthetic}
-\begin{figure}[ht]
-  \centering
-  \begin{tabular}{cc}
-	  \begin{subfigure}[b]{0.5\textwidth}
-	  	\includegraphics[width=200pt]{images/runtime_setcover_500000.png}
-			\caption{Runtime, set cover}
-			\label{fig:runtime_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.5\textwidth}
-	  	\includegraphics[width=200pt]{images/scaleup_setcover_500000.png}
-			\caption{Scale-up, set cover}
-			\label{fig:scale_setcover}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.5\textwidth}
-	  	\includegraphics[width=200pt]{images/diffFA_Hogwild_setcover_500000.png}
-			\caption{Hogwild diff $F(A)$, set cover}
-			\label{fig:hogdiffFA_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.5\textwidth}
-	  	\includegraphics[width=200pt]{images/validated_OCC_setcover_500000.png}
-			\caption{OCC \# validated, set cover}
-			\label{fig:occsvalidated_setcover}
-	  \end{subfigure} \\
-	\end{tabular}
-	\caption{\textbf{Synthetic data, Set Cover:} 500,000 elements, covering 500,000 groups, in a random graph with edge probability of 0.002}
-\end{figure}
-
-\begin{figure}[ht]
-  \centering
-  \begin{tabular}{cc}
-	  \begin{subfigure}[b]{0.5\textwidth}
-	  	\includegraphics[width=200pt]{images/runtime_maxgraphcut_500000_2.png}
-			\caption{Runtime, max graph cut}
-			\label{fig:runtime_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.5\textwidth}
-	  	\includegraphics[width=200pt]{images/scaleup_maxgraphcut_500000_2.png}
-			\caption{Scale-up, max graph cut}
-			\label{fig:scale_maxgraphcut}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.5\textwidth}
-	  	\includegraphics[width=200pt]{images/diffFA_Hogwild_maxgraphcut_500000_2.png}
-			\caption{Hogwild diff $F(A)$, max graph cut}
-			\label{fig:hogdiffFA_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.5\textwidth}
-	  	\includegraphics[width=200pt]{images/validated_OCC_maxgraphcut_500000_2.png}
-			\caption{OCC \# validated, max graph cut}
-			\label{fig:occsvalidated_maxgraphcut}
-	  \end{subfigure} \\
-	\end{tabular}
-	\caption{\textbf{Synthetic data, Graph Cut:} 500,000 vertices, in a random graph with edge probability of 0.002}
-\end{figure}
-
-Experiments run on EC2, single cc2.8xlarge (32 vCPUs, 60.5GiB memory) machine.
-
-Averaged over 10 iterations.
-
-
-
-
-\subsection{Experiments, real graphs}
-Experiments were run on the following real graphs.
+We tested the max graph cut and set cover problems on two synthetic graphs and three real datasets (Table \ref{tab:graphstats}).
 Graphs were pre-processed to remove self-loops.
 We found that vertices were typically indexed such that vertices close to each another in the graph were also close in their indices.
 To reduce this dependency, we randomly permuted the ordering of vertices.
-
 For the max graph cut problem, we removed directions on edges to obtain undirected graphs.
 The set cover problem is reduced to a vertex cover on the directed graph.
 
-\begin{table}[h]
-\centering
-\begin{tabular}{|c|c|c|c|}\hline
-Graph & \# vertices & \# undirected edges & \# directed edges\\\hline\hline
-Google & 875,713 & 2,359,034 & 4,563,235\\\hline
-BerkStan & 685,230 & 3,860,581 & 7,600,595\\\hline
-Live Journal & 3,997,962 & 33,099,465 & 68,475,391\\\hline
-Orkut & 3,072,441 & 117,181,608 & 117,181,608\\\hline
-Friendster\footnote{We used only a subset consisting of the first 8 million vertices so that we would not run into out-of-memory errors.} & 8,000,000 &  & 239,763,187\\\hline
-\end{tabular}
-\end{table}
+
+Due to space constraints, we only present part of our results in Figure \ref{fig:results}, deferring full results to Appendix \ref{app:exptresults}.
+\textbf{Runtime, Speedup:} Both parallel algorithms are faster than the sequential algorithm with three or more threads, and show good speedup properties as more threads are added ($\sim$ 10x or more for all graphs and both functions).
+\textbf{Objective value:} The objective value of the hogwild algorithm decreases with the number of threads, but differs from the sequential objective value by less than $0.01\%$.
+\textbf{Validations:} The OCC algorithm validates more elements as threads are added, but less than 0.0125\% are validated with 16 threads, which has negligible effect on the runtime / speedup.
 
 
 
-\begin{figure}[ht]
-  \centering
-  \begin{tabular}{ccc}
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_webberkstan_setcover.png}
-			\caption{Runtime, BerkStan}
-			\label{fig:runtime_webberkstan_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_orkut_setcover.png}
-			\caption{Runtime, Orkut}
-			\label{fig:runtime_orkut_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_livejournal_setcover.png}
-			\caption{Runtime, Live Journal}
-			\label{fig:runtime_livejournal_setcover}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/scaleup_webberkstan_setcover.png}
-			\caption{Scale-up, BerkStan}
-			\label{fig:scaleup_webberkstan_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/scaleup_orkut_setcover.png}
-			\caption{Scale-up, Orkut}
-			\label{fig:scaleup_orkut_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/scaleup_livejournal_setcover.png}
-			\caption{Scale-up, Live Journal}
-			\label{fig:scaleup_livejournal_setcover}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_webberkstan_setcover.png}
-			\caption{Hogwild $F(A)$, BerkStan}
-			\label{fig:diffFA_Hogwild_webberkstan_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_orkut_setcover.png}
-			\caption{Hogwild $F(A)$, Orkut}
-			\label{fig:diffFA_Hogwild_orkut_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_livejournal_setcover.png}
-			\caption{Hogwild $F(A)$, Live Journal}
-			\label{fig:diffFA_Hogwild_livejournal_setcover}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_webberkstan_setcover.png}
-			\caption{OCC \# validated, BerkStan}
-			\label{fig:validated_OCC_webberkstan_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_orkut_setcover.png}
-			\caption{OCC \# validated, Orkut}
-			\label{fig:validated_OCC_orkut_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_livejournal_setcover.png}
-			\caption{OCC \# validated, Live Journal}
-			\label{fig:validated_OCC_livejournal_setcover}
-	  \end{subfigure} \\
-  \end{tabular}
-  \caption{Set cover on 3 real graphs.}
-\end{figure}
 
 
 
-\begin{figure}[ht]
-  \centering
-  \begin{tabular}{ccc}
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_webberkstan_maxgraphcut.png}
-			\caption{Runtime, BerkStan}
-			\label{fig:runtime_webberkstan_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_orkut_maxgraphcut.png}
-			\caption{Runtime, Orkut}
-			\label{fig:runtime_orkut_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_livejournal_maxgraphcut.png}
-			\caption{Runtime, Live Journal}
-			\label{fig:runtime_livejournal_maxgraphcut}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/scaleup_webberkstan_maxgraphcut.png}
-			\caption{Scale-up, BerkStan}
-			\label{fig:scaleup_webberkstan_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/scaleup_orkut_maxgraphcut.png}
-			\caption{Scale-up, Orkut}
-			\label{fig:scaleup_orkut_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/scaleup_livejournal_maxgraphcut.png}
-			\caption{Scale-up, Live Journal}
-			\label{fig:scaleup_livejournal_maxgraphcut}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_webberkstan_maxgraphcut.png}
-			\caption{Hogwild $F(A)$, BerkStan}
-			\label{fig:diffFA_Hogwild_webberkstan_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_orkut_maxgraphcut.png}
-			\caption{Hogwild $F(A)$, Orkut}
-			\label{fig:diffFA_Hogwild_orkut_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_livejournal_maxgraphcut.png}
-			\caption{Hogwild $F(A)$, Live Journal}
-			\label{fig:diffFA_Hogwild_livejournal_maxgraphcut}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_webberkstan_maxgraphcut.png}
-			\caption{OCC \# validated, BerkStan}
-			\label{fig:validated_OCC_webberkstan_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_orkut_maxgraphcut.png}
-			\caption{OCC \# validated, Orkut}
-			\label{fig:validated_OCC_orkut_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_livejournal_maxgraphcut.png}
-			\caption{OCC \# validated, Live Journal}
-			\label{fig:validated_OCC_livejournal_maxgraphcut}
-	  \end{subfigure} \\
-  \end{tabular}
-  \caption{Max graph cut on 3 real graphs.}
-\end{figure}
+
+
+
+
 
 
 
 \section{Discussions}
+
+Conclusion: \xinghao{link back to intro, motivation}; we present two approaches to parallelizing unconstrained submodular maximization, which allows one to choose between speed and tight approximation guarantees.
+
+Future work: constrained maximization, minimization; distributed setting, where communication costs and delays are higher, and function evaluations are challenging.
+
 
 {\footnotesize
 %\subsection*{Acknowledgments}
@@ -1016,7 +903,6 @@ Friendster\footnote{We used only a subset consisting of the first 8 million vert
 
 \newpage\input{occproof}
 
-
 \newpage\section{Lemma}
 \begin{lem}\label{lem:sumbinomial} $\sum_{k=t}^{a-b+t} {k-j \choose t-j} {a-k+j \choose b-t+j} = {a+1 \choose b+1}$.
 \end{lem}
@@ -1031,6 +917,9 @@ Friendster\footnote{We used only a subset consisting of the first 8 million vert
 &= {a+1 \choose b+1} & \text{(symmetry of binomial coeff.)}\\
 \end{align*}
 \end{proof}
+
+\newpage\input{exptresults}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

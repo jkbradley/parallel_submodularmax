@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{5}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -16,5 +16,29 @@ Niv Buchbinder, Moran Feldman, Joseph~(Seffi) Naor, and Roy Schwartz.
 \newblock ISBN 978-0-7695-4874-6.
 \newblock \doi{10.1109/FOCS.2012.73}.
 \newblock URL \url{http://dx.doi.org/10.1109/FOCS.2012.73}.
+
+\bibitem[Leskovec(2011)]{snap}
+Jure Leskovec.
+\newblock Stanford network analysis project, 2011.
+\newblock URL \url{http://snap.stanford.edu/index.html}.
+
+\bibitem[Boldi and Vigna(2004)]{BoVWFI}
+Paolo Boldi and Sebastiano Vigna.
+\newblock The {W}eb{G}raph framework {I}: {C}ompression techniques.
+\newblock In \emph{Proc. of the Thirteenth International World Wide Web
+  Conference (WWW 2004)}, pages 595--601, Manhattan, USA, 2004. ACM Press.
+
+\bibitem[Boldi et~al.(2011)Boldi, Rosa, Santini, and Vigna]{BRSLLP}
+Paolo Boldi, Marco Rosa, Massimo Santini, and Sebastiano Vigna.
+\newblock Layered label propagation: A multiresolution coordinate-free ordering
+  for compressing social networks.
+\newblock In \emph{Proceedings of the 20th international conference on World
+  Wide Web}. ACM Press, 2011.
+
+\bibitem[Boldi et~al.(2004)Boldi, Codenotti, Santini, and Vigna]{BCSU3}
+Paolo Boldi, Bruno Codenotti, Massimo Santini, and Sebastiano Vigna.
+\newblock Ubicrawler: A scalable fully distributed web crawler.
+\newblock \emph{Software: Practice \& Experience}, 34\penalty0 (8):\penalty0
+  711--726, 2004.
 
 \end{thebibliography}

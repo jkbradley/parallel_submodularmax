@@ -119,7 +119,7 @@ This is not possible, by Lemma \ref{lem:positivesum}.
 \end{description}
 \end{proof}
 
-(\taunghao{Note} If we weaken the assumption of $\Delta_+(i) \leq \Delta_+^{\max}(i)$ to $\Delta_+(i) \leq \Delta_+^{\max}(i) + \epsilon_i$, then in Case 6 above, we can instead bound
+(\xinghao{Note} If we weaken the assumption of $\Delta_+(i) \leq \Delta_+^{\max}(i)$ to $\Delta_+(i) \leq \Delta_+^{\max}(i) + \epsilon_i$, then in Case 6 above, we can instead bound
 \begin{align*}
 E[F(O^{i-1})-F(O^i)|A^{i-1}, j]
 &\leq \frac{\Delta_+^{\max}(i) \Delta_-^{\max}(i) + \epsilon\max(\Delta_+^{\max}(i), \Delta_-^{\max})}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}\\
@@ -174,7 +174,7 @@ In sparse graphs, the hogwild algorithm is off by a small additional term, which
 
 
 \subsection{Example: set cover}
-\taunghao{For now, consider a toy problem, with (1) disjoint sets, (2) bounded delay, (3) $\lambda \leq 1$.}
+\xinghao{For now, consider a toy problem, with (1) disjoint sets, (2) bounded delay, (3) $\lambda \leq 1$.}
 
 Consider the simple set cover function, for $\lambda < 1$:
 \[ F(A) = \sum_{l=1}^L \min(1,|A\cap S_l|) - \lambda|A| = |\{l: A\cap S_l \neq\emptyset\}| - \lambda|A|.\]
@@ -203,7 +203,7 @@ P(\eta|\pi)
 &= (1-\lambda)\lambda^{\eta-1},
 \end{align*}
 and $P(\eta=n_l | \pi) = \lambda^{\eta-1}$.
-\taunghao{This independence depends on the assumption of disjoint sets, which in turn allows us to decouple the randomness of the algorithm from the randomness of ordering in the below proof.}
+\xinghao{This independence depends on the assumption of disjoint sets, which in turn allows us to decouple the randomness of the algorithm from the randomness of ordering in the below proof.}
 
 Note that, $\Delta_-^{\max}(e)-\Delta_-(e) = 1$ iff $e=e_l^{n_l}$ is the last element of $S_l$ in the ordering, there are no elements accepted up to $\hat{B}_{e_l^{n_l}}\backslash e_l^{n_l}$, and there is some element $e'$ in $\hat{B}_{e_l^{n_l}}\backslash {e_l^{n_l}}$ that is rejected and not in $B^{\iota(e_l^{n_l})-1}$.
 Denote by $m_l \leq \min(\tau,n_l-1)$ the number of elements before $e_l^{n_l}$ that are inconsistent between $\hat{B}_{e_l^{n_l}}$ and $B^{\iota(e_l^{n_l})-1}$.
