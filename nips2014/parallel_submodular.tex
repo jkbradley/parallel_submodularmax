@@ -670,7 +670,7 @@ This is possible, for example, by defining
 \begin{align*}
 \rho_e
 &&:=&&&   \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}\\
-&&\leq&&& \max_{S,T\subseteq V} \{[F(S\cup i) - F(S)] - [F(S \cup T \cup i) - F(S \cup T)]\}
+&&\leq&&& \max_{S,T\subseteq V} \{[F(S\cup e) - F(S)] - [F(S \cup T \cup e) - F(S \cup T)]\}
 %&\leq F(e) - F(\emptyset) - F(V) + F(V\backslash e)\\
 %&\leq F(e)\left(1 - \frac{F(V) - F(V\backslash e)}{F(e)}\right)\\
 &\leq&& F(e)\kappa_F
@@ -873,9 +873,9 @@ Due to space constraints, we only present part of our results in Figure \ref{fig
 
 
 \section{Related Work}
-\textbf{Similar approach, different problem: } OCC DP-means; Hogwild SGD; Hogwild LDA / parameter servers
+\textbf{Similar approach, different problem: } OCC DP-means \cite{pan2013}; Hogwild SGD \cite{Recht11}; Hogwild LDA \cite{Ahmed12} / parameter servers \cite{li2013, ho2013}
 
-\textbf{Similar problem, different approach: } distributed greedy submodular maximization for monotone functions
+\textbf{Similar problem, different approach: } distributed greedy submodular maximization for monotone functions \cite{Mirzasoleiman2013}
 
 
 

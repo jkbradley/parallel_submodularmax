@@ -1,4 +1,4 @@
-\begin{thebibliography}{5}
+\begin{thebibliography}{11}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -40,5 +40,48 @@ Paolo Boldi, Bruno Codenotti, Massimo Santini, and Sebastiano Vigna.
 \newblock Ubicrawler: A scalable fully distributed web crawler.
 \newblock \emph{Software: Practice \& Experience}, 34\penalty0 (8):\penalty0
   711--726, 2004.
+
+\bibitem[Pan et~al.(2013)Pan, Gonzalez, Jegelka, Broderick, and
+  Jordan]{pan2013}
+Xinghao Pan, Joseph~E Gonzalez, Stefanie Jegelka, Tamara Broderick, and Michael
+  Jordan.
+\newblock Optimistic concurrency control for distributed unsupervised learning.
+\newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
+
+\bibitem[Recht et~al.(2011)Recht, Re, Wright, and Niu]{Recht11}
+Benjamin Recht, Christopher Re, Stephen~J. Wright, and Feng Niu.
+\newblock Hogwild: A lock-free approach to parallelizing stochastic gradient
+  descent.
+\newblock In \emph{Advances in Neural Information Processing Systems (NIPS)
+  24}, pages 693--701, Granada, 2011.
+
+\bibitem[Ahmed et~al.(2012)Ahmed, Aly, Gonzalez, Narayanamurthy, and
+  Smola]{Ahmed12}
+Amr Ahmed, Mohamed Aly, Joseph Gonzalez, Shravan Narayanamurthy, and
+  Alexander~J. Smola.
+\newblock Scalable inference in latent variable models.
+\newblock In \emph{Proceedings of the 5th ACM International Conference on Web
+  Search and Data Mining (WSDM)}, 2012.
+
+\bibitem[Li et~al.(2013)Li, Zhou, Yang, Li, Xia, Andersen, and Smola]{li2013}
+Mu~Li, Li~Zhou, Zichao Yang, Aaron Li, Fei Xia, David~G Andersen, and Alexander
+  Smola.
+\newblock Parameter server for distributed machine learning.
+\newblock In \emph{Big Learn workshop, at NIPS}, Lake Tahoe, 2013.
+
+\bibitem[Ho et~al.(2013)Ho, Cipar, Cui, Lee, Kim, Gibbons, Gibson, Ganger, and
+  Xing]{ho2013}
+Qirong Ho, James Cipar, Henggang Cui, Seunghak Lee, Jin~Kyu Kim, Phillip~B.
+  Gibbons, Garth~A Gibson, Greg Ganger, and Eric Xing.
+\newblock More effective distributed ml via a stale synchronous parallel
+  parameter server.
+\newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
+
+\bibitem[Mirzasoleiman et~al.(2013)Mirzasoleiman, Karbasi, Sarkar, and
+  Krause]{Mirzasoleiman2013}
+Baharan Mirzasoleiman, Amin Karbasi, Rik Sarkar, and Andreas Krause.
+\newblock Distributed submodular maximization: Identifying representative
+  elements in massive data.
+\newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
 
 \end{thebibliography}
