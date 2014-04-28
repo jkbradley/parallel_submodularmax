@@ -349,10 +349,10 @@ Work is only required to demonstrate that coordination is limited.
           $\Delta_{-}(i) = F(B^{i-1}\backslash i) - F(B^{i-1})$\;
           Draw $u_i\sim Unif(0,1)$\;
           \If {$u_i<\frac{[\Delta_{+}(i)]_+}{[\Delta_{+}(i)]_+ + [\Delta_{-}(i)]_+}$}{
-            $A^i := A^{i-1} \cup i$;\\
+            $A^i := A^{i-1} \cup i$;
             $B^i := B^{i-1}$\;
           }\Else{
-            $A^i := A^{i-1}$;\\
+            $A^i := A^{i-1}$;
             $B^i := B^{i-1}\backslash i$\;
           }
         }
@@ -479,7 +479,7 @@ $\iota = 0$\;
 
 
 \section{Hogwild for arbitrary submodular $F$}
-Algorithm \ref{alg:hogwild} is the hogwild parallel bidirectional greedy unconstrained submodular maximization algorithm.
+Algorithm \ref{alg:hogwild}\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; the hogwild algorithm can also be extended to the multilinear version of \cite{buchbinder2012}.} is the hogwild parallel bidirectional greedy unconstrained submodular maximization algorithm.
 We associate with each element $e$ a time $T_e$ at which Algorithm \ref{alg:hogwild} line \ref{alg:hogwild:time} is executed, and order the elements according to the times $T_e$.
 Let $\iota(e)$ be the position of $e$ in this ordering.
 This total ordering on elements also allows us to define sets $A^i$, $B^i$ corresponding to that obtained by the serial algorithm;
@@ -488,21 +488,7 @@ specifically, $A^i = \{e' : e' \in A, \iota(e') < i\}$ and $B^i = A^i \cup \{e':
 Note that in Algorithm \ref{alg:hogwild}, lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem} may be executed in parallel with lines \ref{alg:hogwild:add} and \ref{alg:hogwild:rem}.
 Hence, $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ (lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem}) may be computed with different values of $\hat{A}(e')$.
 We denote by $\hat{A}_e$ and $\hat{B}_e$ respectively the vectors of $\hat{A}$ and $\hat{B}$ that are used in the computation of $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$.
-
-\begin{lem}\label{lem:set_bound} For any $e\in V$, $\hat{A}_e \subseteq A^{\iota(e)-1}$, $\hat{B}_e \supseteq B^{\iota(e)-1}$.
-\end{lem}
-\begin{proof}
-Consider any element $e'\in V$.
-If $e'\in \hat{A}_e$, it must be the case that the algorithm set $\hat{A}(e')$ to 1 (line \ref{alg:hogwild:add}) before $T_e$, which implies $\iota(e') < \iota(e)$, and hence $e' \in A^{\iota(e)-1}$.
-So $\hat{A}_e \subseteq A^{\iota(e)-1}$.
-
-Similarly, if $e'\not\in \hat{B}_e$, then the algorithm set $\hat{B}(e')$ to 0 (line \ref{alg:hogwild:rem}) before $T_e$, so $\iota(e') < \iota(e)$.
-Also, $e'\not\in A$ because the execution of line \ref{alg:hogwild:rem} excludes the execution of line \ref{alg:hogwild:add}.
-Therefore, $e'\not\in A^{\iota(e)-1}$, and $e'\not\in B^{\iota(e)-1}$.
-So $\hat{B}_e \subseteq B^{\iota(e)-1}$.
-\end{proof}
-
-It's easy to see that
+It immediately follows that
 \begin{align*}
   \Delta_{+}       (e) &= F(A^{\iota(e)-1}\cup i) - F(A^{\iota(e)-1}),
 & \Delta_{-}       (e) &= F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1})\\
@@ -510,26 +496,44 @@ It's easy to see that
 & \Delta_{-}^{\max}(e) &= F(\hat{B}_e\backslash e) - F(\hat{B}_e).
 \end{align*}
 
+
+
+\begin{lem}\label{lem:set_bound} For any $e\in V$, $\hat{A}_e \subseteq A^{\iota(e)-1}$, $\hat{B}_e \supseteq B^{\iota(e)-1}$.
+\end{lem}
+\begin{proof}
+Consider any element $e'\in V$.
+If $e'\in \hat{A}_e$, it must be the case that the algorithm set $\hat{A}(e')$ to 1 (line \ref{alg:hogwild:add}) before $T_e$, which implies $\iota(e') < \iota(e)$, and hence $e' \in A^{\iota(e)-1}$.
+So $\hat{A}_e \subseteq A^{\iota(e)-1}$.
+Similarly, if $e'\not\in \hat{B}_e$, then the algorithm set $\hat{B}(e')$ to 0 (line \ref{alg:hogwild:rem}) before $T_e$, so $\iota(e') < \iota(e)$.
+Also, $e'\not\in A$ because the execution of line \ref{alg:hogwild:rem} excludes the execution of line \ref{alg:hogwild:add}.
+Therefore, $e'\not\in A^{\iota(e)-1}$, and $e'\not\in B^{\iota(e)-1}$.
+So $\hat{B}_e \subseteq B^{\iota(e)-1}$.
+\end{proof}
+
 \begin{cor}\label{cor:delta_bound}
-Submodularity of $F$ implies that
-\begin{align*}
-  \Delta_{+}(e) &\quad\leq\quad \Delta_{+}^{\max}(e),
-& \Delta_{-}(e) &\quad\leq\quad \Delta_{-}^{\max}(e).
-\end{align*}
+Submodularity of $F$ implies
+$\Delta_{+}(e) \leq \Delta_{+}^{\max}(e)$, and
+$\Delta_{-}(e) \leq \Delta_{-}^{\max}(e)$.
 \end{cor}
 
 \subsection{Hogwild for separable sums $F$}
 For some functions $F$, we can maintain sketches / statistics to aid the computation of $\Delta_+^{\max}$, $\Delta_-^{\max}$, and obtain the bounds given in Corollary \ref{cor:delta_bound}.
 In particular, we consider functions of the form
-\begin{align*}
-F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i),
-\end{align*}
+$
+F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$,
 where $S_l \subseteq V$ are (possibly overlapping) groups of elements in the ground set, $g$ is a non-decreasing concave scalar function, and $w_l(i)$ and $v(i)$ are non-negative scalar weights.
 It is easy to see that
-\begin{align*}
-F(X \cup e) - F(X) = \sum_{l: e\in S_l} \left[g\left(w_l(e) + \sum_{i\in X\cup S_l} w_l(i)\right) - g\left(\sum_{i\in X\cup S_l} w_l(i)\right)\right] - \lambda v(e).
-\end{align*}
+$
+F(X \cup e) - F(X) = \sum_{l: e\in S_l} \left[g\left(w_l(e) + \sum_{i\in X\cup S_l} w_l(i)\right) - g\left(\sum_{i\in X\cup S_l} w_l(i)\right)\right] - \lambda v(e)$.
 Define
+%  $\hat\alpha_l              = \sum_{j\in \hat{A}\cup S_l} w_l(j)$,
+% $\hat\alpha_{l,e}          = \sum_{j\in \hat{A}_e\cup S_l} w_l(j)$,
+% $\alpha_l^{\iota(e)-1} = \sum_{j\in A^{\iota(e)-1}\cup S_l} w_l(j)$.
+% 
+%  $\hat\beta_l              = \sum_{j\in \hat{B}\cup S_l} w_l(j)$,
+% $\hat\beta_{l,e}          = \sum_{j\in \hat{B}_e\cup S_l} w_l(j)$,
+% $\beta_l^{\iota(e)-1} = \sum_{j\in B^{\iota(e)-1}\cup S_l} w_l(j)$.
+%
 \begin{align*}
   \hat\alpha_l              &= \sum_{j\in \hat{A}\cup S_l} w_l(j),
 & \hat\alpha_{l,e}          &= \sum_{j\in \hat{A}_e\cup S_l} w_l(j),
@@ -538,22 +542,20 @@ Define
 & \hat\beta_{l,e}          &= \sum_{j\in \hat{B}_e\cup S_l} w_l(j),
 & \beta_l^{\iota(e)-1} &= \sum_{j\in B^{\iota(e)-1}\cup S_l} w_l(j).
 \end{align*}
-We can update $\hat\alpha_l$ and $\hat\beta_l$ according to Algorithm \ref{alg:hogwildsepsum}.
-Following arguments analogous to that of Lemma \ref{lem:set_bound}, we can show the following:
+Algorithm \ref{alg:hogwildsepsum} updates $\hat\alpha_l$ and $\hat\beta_l$, and computes $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ using $\hat\alpha_{l,e}$ and $\hat\beta_{l,e}$.
+Following arguments analogous to that of Lemma \ref{lem:set_bound}, we can show:
 
 \begin{lem} For each $l$ and $e\in V$, $\hat\alpha_{l,e} \leq \alpha_l^{\iota(e)-1}$ and $\hat\beta_{l,e} \geq \beta_l^{\iota(e)-1}$.
 \end{lem}
 
-\begin{cor} Concavity of $g$ implies
+\begin{cor} Concavity of $g$ implies that Algorithm \ref{alg:hogwildsepsum} computes
 \begin{align*}
 \Delta_+^{\max}(e)
-&= \sum_{l:e\in S_l} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)\\
-&\geq \sum_{l:e\in S_l} \left[g(\hat\alpha_l^{\iota(e)-1} + w_l(e)) - g(\hat\alpha_l^{\iota(e)-1})\right] - \lambda v(e)
-&= \Delta_+(e),\\
+&&\geq&& \sum_{S_l\ni e} \left[g(\alpha_l^{\iota(e)-1} + w_l(e)) - g(\alpha_l^{\iota(e)-1})\right] - \lambda v(e)
+&&=&& \Delta_+(e),\\
 \Delta_-^{\max}(e)
-&= \sum_{l:e\in S_l} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right] + \lambda v(e)\\
-&\geq \sum_{l:e\in S_l} \left[g(\hat\beta_l^{\iota(e)-1} - w_l(e)) - g(\hat\beta_l^{\iota(e)-1})\right] + \lambda v(e)
-&= \Delta_-(e),
+&&\geq&& \sum_{S_l\ni e} \left[g(\beta_l^{\iota(e)-1} - w_l(e)) - g(\beta_l^{\iota(e)-1})\right] + \lambda v(e)
+&&=&& \Delta_-(e),
 \end{align*}
 \end{cor}
 
@@ -586,7 +588,7 @@ There are 4 parts to this proof.
 \end{enumerate}
 \end{proof}
 
-We can compute
+Algorithm \ref{alg:occ} computes
 \begin{align*}
   \Delta_+^{\min}(e) &= F(\tilde{A}_e) - F(\tilde{A}_e \backslash e),
 & \Delta_+^{\max}(e) &= F(\hat{A}_e \cup e) - F(\hat{A})\\
@@ -594,12 +596,36 @@ We can compute
 & \Delta_-^{\max}(e) &= F(\hat{B}_e \backslash e) - F(\hat{B}).
 \end{align*}
 
-\begin{cor} By submodularity of $F$, $\Delta_+^{\min}(e) \leq \Delta_+(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) \leq \Delta_-^{\max}(e)$.
+\begin{cor} By submodularity, $\Delta_+^{\min}(e) \leq \Delta_+(e) \leq \Delta_+^{\max}(e)$, $\Delta_-^{\min}(e) \leq \Delta_-(e) \leq \Delta_-^{\max}(e)$.
 \end{cor}
 
 \subsection{Separable sums $F$}
-We maintain $\tilde\alpha_l$, $\hat\alpha_l$, $\tilde\beta_l$, $\hat\beta_l$.
-It can be shown that $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\alpha_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$, which then allows us to compute our bounds for $\Delta$'s.
+Analogous to the hogwild algorithm, we maintain $\hat\alpha_l$, $\hat\beta_l$ and additionally $\tilde\alpha_l = \sum_{j\in \tilde{A}\cup S_l} w_l(j)$ and $\tilde\beta_l = \sum_{j \in \tilde{B}\cup S_l} w_l(j)$.
+It can be shown that $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$, which then allows us to compute our bounds for $\Delta$'s as
+$\Delta_+^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)$, 
+$\Delta_+^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right] - \lambda v(e)$,
+$\Delta_-^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right] + \lambda v(e)$,
+$\Delta_-^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\tilde\beta_l^{\iota(e)-1} + w_l(e))\right] + \lambda v(e)$.
+
+%\begin{lem} $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$
+%\end{lem}
+%
+%\begin{cor}
+%\begin{align*}
+%\Delta_+^{\max}(e)
+%&= \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)\\
+%&\geq \sum_{S_l \ni e} \left[g(\hat\alpha_l^{\iota(e)-1} + w_l(e)) - g(\hat\alpha_l^{\iota(e)-1})\right] - \lambda v(e)
+%&&= \Delta_+(e)\\
+%&\geq \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right] - \lambda v(e)
+%&&= \Delta_+^{\min}(e)\\
+%\Delta_-^{\max}(e)
+%&= \sum_{S_l \ni e} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right] + \lambda v(e)\\
+%&\geq \sum_{S_l \ni e} \left[g(\hat\beta_l^{\iota(e)-1} - w_l(e)) - g(\hat\beta_l^{\iota(e)-1})\right] + \lambda v(e)
+%&&= \Delta_-(e)\\
+%&\geq \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\tilde\beta_l^{\iota(e)-1} + w_l(e))\right] + \lambda v(e)
+%&&= \Delta_-^{\min}(e)
+%\end{align*}
+%\end{cor}
 
 ~
 
@@ -638,11 +664,11 @@ We assume that we can bound
 This is possible, for example, by defining
 \begin{align*}
 \rho_i
-&:= \max\{\Delta_+^{\max}(i) - \Delta_+(i), \Delta_-^{\max}(i) - \Delta_-(i)\}\\
-&\leq \max_{S,T\subseteq V} \{[F(S\cup i) - F(S)] - [F(S \cup T \cup i) - F(S \cup T)]\}\\
-&\leq F(i) - F(\emptyset) - F(V) + F(V\backslash i)\\
-&\leq F(i)\left(1 - \frac{F(V) - F(V\backslash i)}{F(i)}\right)\\
-&= F(i)\kappa_F
+&&:=&&&   \max\{\Delta_+^{\max}(i) - \Delta_+(i), \Delta_-^{\max}(i) - \Delta_-(i)\}\\
+&&\leq&&& \max_{S,T\subseteq V} \{[F(S\cup i) - F(S)] - [F(S \cup T \cup i) - F(S \cup T)]\}
+%&\leq F(i) - F(\emptyset) - F(V) + F(V\backslash i)\\
+%&\leq F(i)\left(1 - \frac{F(V) - F(V\backslash i)}{F(i)}\right)\\
+&\leq&& F(i)\kappa_F
 \end{align*}
 where $S$ plays the role of $A^j$ and $T$ plays the role of $\{j+1,\dots, i-1\}$, and $\kappa_F$ is the total curvature of $F$.
 Summing over $i$ then gives us $\sum_i \rho_i \leq \kappa_F\sum_i F(i)$.
@@ -650,18 +676,14 @@ Summing over $i$ then gives us $\sum_i \rho_i \leq \kappa_F\sum_i F(i)$.
 \xinghao{Is there theory along these lines? Can we tighten this for non-monotone functions?}
 
 
-\textbf{Example: max graph cut}
-
+\textbf{Example: max graph cut.}
 Assuming bounded delay of $\tau$ and edges with unit weight, we can bound $\sum_i E[\rho_i] \leq 2\tau\frac{\text{\#edges}}{2N}$
 The approximation of the hogwild algorithm is then $E[F(A^n)] \geq = \frac{1}{2} F(OPT) - \tau\frac{\#\text{edges}}{2N}$.
 In sparse graphs, the hogwild algorithm is off by a small additional term, which albeit grows linearly in $\tau$.
 
 
 
-\textbf{Example: set cover}
-
-\xinghao{For now, consider a toy problem, with (1) disjoint sets, (2) bounded delay, (3) $\lambda \leq 1$.}
-
+\textbf{Example: set cover.}
 Consider the simple set cover function,
 $F(A) = \sum_{l=1}^L \min(1,|A\cap S_l|) - \lambda|A| = |\{l: A\cap S_l \neq\emptyset\}| - \lambda|A|$,
 with $0 < \lambda \leq 1$.
@@ -674,9 +696,8 @@ Then, $\sum_e E[\rho_e] \geq \tau + L(1-\lambda^\tau)$, which is linear in $\tau
 \begin{thm} OCC bidirectional greedy is serially equivalent to bidirectional greedy.
 \end{thm}
 \begin{proof}
-Outline of proof: We need to show 2 things.
-Firstly, that the sampling using $\Delta_+^{min}$, $\Delta_+^{max}$, $\Delta_-^{min}$, $\Delta_-^{max}$ is `safe', i.e. is equivalently to sampling using $\Delta_+$ and $\Delta_-$.
-Secondly, that the validation process is correct -- specifically that when the validation is executed, it is in fact the case that $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
+Outline: We first show that the sampling using $\Delta_+^{\min}$, $\Delta_+^{\max}$, $\Delta_-^{\min}$, $\Delta_-^{\max}$ is `safe', i.e. is equivalently to sampling using $\Delta_+$ and $\Delta_-$.
+Secondly, we show the validation process is correct -- specifically when the validation is executed, it is the case that $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{proof}
 
 
@@ -685,12 +706,10 @@ Secondly, that the validation process is correct -- specifically that when the v
 
 We discuss the bound on the number of elements sent for validation in Appendix \ref{app:proofocc}
 
-\textbf{Example: max graph cut}
-
+\textbf{Example: max graph cut.}
 The expected number of validated elements is upper bounded by $\tau \frac{2\#edges}{N}$.
 
-\textbf{Example: set cover}
-
+\textbf{Example: set cover.}
 Under the same settings as for the hogwild analysis, the expected number of validated elements is upper bounded by $2\tau$.
 
 
@@ -711,103 +730,12 @@ Under the same settings as for the hogwild analysis, the expected number of vali
 
 \section{Evaluation}
 
-\begin{figure}[ht]
-  \centering
-  \begin{tabular}{cccc}
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/runtime_bigsynthetic_maxgraphcut.png}
-			\caption{}
-			\label{fig:runtime_bigsynthetic_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/runtime_zigzag_setcover.png}
-			\caption{}
-			\label{fig:runtime_zigzag_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/runtime_uk2005_maxgraphcut.png}
-			\caption{}
-			\label{fig:runtime_uk2005_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/runtime_arabic2005_setcover.png}
-			\caption{}
-			\label{fig:runtime_arabic2005_setcover}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/speedup_bigsynthetic_maxgraphcut.png}
-			\caption{}
-			\label{fig:speedup_bigsynthetic_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/speedup_zigzag_setcover.png}
-			\caption{}
-			\label{fig:speedup_zigzag_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/speedup_uk2005_maxgraphcut.png}
-			\caption{}
-			\label{fig:speedup_uk2005_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/speedup_arabic2005_setcover.png}
-			\caption{}
-			\label{fig:speedup_arabic2005_setcover}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png}
-			\caption{}
-			\label{fig:diffFA_Hogwild_bigsynthetic_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_zigzag_setcover.png}
-			\caption{}
-			\label{fig:diffFA_Hogwild_zigzag_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_uk2005_maxgraphcut.png}
-			\caption{}
-			\label{fig:diffFA_Hogwild_uk2005_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_arabic2005_setcover.png}
-			\caption{}
-			\label{fig:diffFA_Hogwild_arabic2005_setcover}
-	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/validated_OCC_bigsynthetic_maxgraphcut.png}
-			\caption{}
-			\label{fig:validated_OCC_bigsynthetic_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/validated_OCC_zigzag_setcover.png}
-			\caption{}
-			\label{fig:validated_OCC_zigzag_setcover}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/validated_OCC_uk2005_maxgraphcut.png}
-			\caption{}
-			\label{fig:validated_OCC_uk2005_maxgraphcut}
-	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/validated_OCC_arabic2005_setcover.png}
-			\caption{}
-			\label{fig:validated_OCC_arabic2005_setcover}
-	  \end{subfigure} \\
-  \end{tabular}
-  \caption{\footnotesize Experimental results.
-  Average runtimes are shown on the first row (\ref{fig:runtime_bigsynthetic_maxgraphcut}, \ref{fig:runtime_zigzag_setcover}, \ref{fig:runtime_uk2005_maxgraphcut}, \ref{fig:runtime_arabic2005_setcover}).
-  Average speedups are shown on the second row (\ref{fig:speedup_bigsynthetic_maxgraphcut}, \ref{fig:speedup_zigzag_setcover}, \ref{fig:speedup_uk2005_maxgraphcut}, \ref{fig:speedup_arabic2005_setcover}).
-  The median difference between $F(A)$ given by hogwild and the sequential algorithm is shown on the third row (\ref{fig:diffFA_Hogwild_bigsynthetic_maxgraphcut}, \ref{fig:diffFA_Hogwild_zigzag_setcover}, \ref{fig:diffFA_Hogwild_uk2005_maxgraphcut}, \ref{fig:diffFA_Hogwild_arabic2005_setcover}).
-  The median fraction of elements validated by OCC is shown on the fourth row (\ref{fig:validated_OCC_bigsynthetic_maxgraphcut}, \ref{fig:validated_OCC_zigzag_setcover}, \ref{fig:validated_OCC_uk2005_maxgraphcut}, \ref{fig:validated_OCC_arabic2005_setcover}).
-  The columns show the results for the
-  random Erdos-Renyi (\ref{fig:runtime_bigsynthetic_maxgraphcut}, \ref{fig:speedup_bigsynthetic_maxgraphcut}, \ref{fig:diffFA_Hogwild_bigsynthetic_maxgraphcut}, \ref{fig:validated_OCC_bigsynthetic_maxgraphcut}),
-  ZigZag (\ref{fig:runtime_zigzag_setcover}, \ref{fig:speedup_zigzag_setcover}, \ref{fig:diffFA_Hogwild_zigzag_setcover}, \ref{fig:validated_OCC_zigzag_setcover}),
-  UK-2005 (\ref{fig:runtime_uk2005_maxgraphcut}, \ref{fig:speedup_uk2005_maxgraphcut}, \ref{fig:diffFA_Hogwild_uk2005_maxgraphcut}, \ref{fig:validated_OCC_uk2005_maxgraphcut}), and
-  Arabic-2005 (\ref{fig:runtime_arabic2005_setcover}, \ref{fig:speedup_arabic2005_setcover}, \ref{fig:diffFA_Hogwild_arabic2005_setcover}, \ref{fig:validated_OCC_arabic2005_setcover}) graphs.
-  }
-\label{fig:results}
-\end{figure}
+We implemented the parallel and sequential double greedy algorithms in Java / Scala.
+Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16 threads, for 10 iterations.
+
+We measured the runtime and speedup (ratio of runtime on 1 thread to runtime on $p$ threads).
+For the hogwild algorithm, we measured $F(A_{hog})-F(A_{seq})$, the difference between the objective value on the sets returned by hogwild and the sequential algorithms.
+We verified the correctness of the OCC algorithm by comparing the sets returned by the OCC and sequential algorithms, and also measured the fraction of elements that are validated by OCC.
 
 %\begin{table}[h]
 %\centering
@@ -842,14 +770,8 @@ UK-20005    & 39,459,925 &    921,345,078 & 2005 crawl of the .uk domain \cite{B
 \end{table}
 
 
-We implemented the parallel and sequential double greedy algorithms in Java / Scala.
-Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16 threads, for 10 iterations.
 
-We measured the runtime and speedup (ratio of runtime on 1 thread to runtime on $p$ threads).
-For the hogwild algorithm, we measured $F(A_{hog})-F(A_{seq})$, the difference between the objective value on the sets returned by hogwild and the sequential algorithms.
-We verified the correctness of the OCC algorithm by comparing the sets returned by the OCC and sequential algorithms, and also measured the fraction of elements that are validated by OCC.
-
-We tested the max graph cut and set cover problems on two synthetic graphs and three real datasets (Table \ref{tab:graphstats}).
+We tested our parallel algorithms on the max graph cut and set cover problems with two synthetic graphs and three real datasets (Table \ref{tab:graphstats}).
 Graphs were pre-processed to remove self-loops.
 We found that vertices were typically indexed such that vertices close to each another in the graph were also close in their indices.
 To reduce this dependency, we randomly permuted the ordering of vertices.
@@ -857,10 +779,54 @@ For the max graph cut problem, we removed directions on edges to obtain undirect
 The set cover problem is reduced to a vertex cover on the directed graph.
 
 
-Due to space constraints, we only present part of our results in Figure \ref{fig:results}, deferring full results to Appendix \ref{app:exptresults}.
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cccc}
+	  \begin{subfigure}[h]{0.32\textwidth}
+	  	\includegraphics[width=125pt]{images/summary_relruntime.png}
+			\caption{}
+			\label{fig:relruntime}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.32\textwidth}
+	  	\includegraphics[width=125pt]{images/summary_speedup_maxgraphcut.png}
+			\caption{}
+			\label{fig:speedup_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.32\textwidth}
+	  	\includegraphics[width=125pt]{images/summary_speedup_setcover.png}
+			\caption{}
+			\label{fig:speedup_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[h]{0.32\textwidth}
+	  	\includegraphics[width=125pt]{images/summary_diffFA_maxgraphcut.png}
+			\caption{}
+			\label{fig:difffa_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.32\textwidth}
+	  	\includegraphics[width=125pt]{images/summary_diffFA_setcover.png}
+			\caption{}
+			\label{fig:difffa_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.32\textwidth}
+	  	\includegraphics[width=125pt]{images/summary_validated_maxgraphcut.png}
+			\caption{}
+			\label{fig:validated_maxgraphcut}
+	  \end{subfigure} \\
+  \end{tabular}
+  \caption{\footnotesize Experimental results.
+  \ref{fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$.
+  \ref{fig:speedup_maxgraphcut}, \ref{fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads).
+  \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and hogwild algorithms, i.e. $[F(A_{hogwild}) / F(A_{sequential}) - 1] \times 100\%$.
+  \ref{fig:validated_maxgraphcut} -- \% of elements validated by the OCC algorithm on the max graph cut problem.
+  }
+\label{fig:results_quality}
+\end{figure}
+
+
+Due to space constraints, we only present part of our results in Figure \ref{fig:results_quality}, deferring full results to Appendix \ref{app:exptresults}.
 \textbf{Runtime, Speedup:} Both parallel algorithms are faster than the sequential algorithm with three or more threads, and show good speedup properties as more threads are added ($\sim$ 10x or more for all graphs and both functions).
 \textbf{Objective value:} The objective value of the hogwild algorithm decreases with the number of threads, but differs from the sequential objective value by less than $0.01\%$.
-\textbf{Validations:} The OCC algorithm validates more elements as threads are added, but less than 0.0125\% are validated with 16 threads, which has negligible effect on the runtime / speedup.
+\textbf{Validations:} The OCC algorithm validates more elements as threads are added, but less than 0.015\% are validated with 16 threads, which has negligible effect on the runtime / speedup.
 
 
 

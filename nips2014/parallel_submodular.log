@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  27 APR 2014 08:39
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  28 APR 2014 10:05
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**hogwild_submodular.tex
-(./hogwild_submodular.tex
+**parallel_submodular.tex
+(./parallel_submodular.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, ge
 rman-x-2012-05-30, ngerman-x-2012-05-30, afrikaans, ancientgreek, ibycus, arabi
@@ -534,8 +534,8 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 \@float@every@program=\toks33
 \c@program=\count151
 
-(./hogwild_submodular.aux)
-\openout1 = `hogwild_submodular.aux'.
+(./parallel_submodular.aux)
+\openout1 = `parallel_submodular.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 276.
 LaTeX Font Info:    ... okay on input line 276.
@@ -622,9 +622,9 @@ LaTeX Info: Redefining \ref on input line 276.
 LaTeX Info: Redefining \pageref on input line 276.
 LaTeX Info: Redefining \nameref on input line 276.
 
-(./hogwild_submodular.out) (./hogwild_submodular.out)
+(./parallel_submodular.out) (./parallel_submodular.out)
 \@outlinefile=\write4
-\openout4 = `hogwild_submodular.out'.
+\openout4 = `parallel_submodular.out'.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 280.
@@ -674,63 +674,11 @@ Overfull \hbox (1.02733pt too wide) in paragraph at lines 412--468
  []
 
 
-Overfull \vbox (34.657pt too high) detected at line 471
+Overfull \vbox (21.05998pt too high) detected at line 471
  []
 
 
-Overfull \vbox (33.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (32.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (31.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (30.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (29.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (28.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (27.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (26.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (25.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (24.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (23.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (22.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (21.657pt too high) detected at line 471
- []
-
-
-Overfull \vbox (20.657pt too high) detected at line 471
+Overfull \vbox (20.05998pt too high) detected at line 471
  []
 
 
@@ -747,245 +695,110 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 [1{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 2073) has occurred while \output is active []
 
  [2]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 521.
+(hyperref)                removing `math shift' on input line 519.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 521.
+(hyperref)                removing `math shift' on input line 519.
 
 [3]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 600.
+(hyperref)                removing `math shift' on input line 602.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 600.
+(hyperref)                removing `math shift' on input line 602.
 
-[4]
-<images/runtime_bigsynthetic_maxgraphcut.png, id=252, 578.6418pt x 433.62pt>
-File: images/runtime_bigsynthetic_maxgraphcut.png Graphic file (type png)
 
-<use images/runtime_bigsynthetic_maxgraphcut.png>
-Package pdftex.def Info: images/runtime_bigsynthetic_maxgraphcut.png used on in
-put line 718.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 718--719
-[][] 
- []
-
-<images/runtime_zigzag_setcover.png, id=253, 578.6418pt x 433.62pt>
-File: images/runtime_zigzag_setcover.png Graphic file (type png)
-
-<use images/runtime_zigzag_setcover.png>
-Package pdftex.def Info: images/runtime_zigzag_setcover.png used on input line 
-723.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 723--724
-[][] 
- []
-
-<images/runtime_uk2005_maxgraphcut.png, id=254, 578.6418pt x 433.62pt>
-File: images/runtime_uk2005_maxgraphcut.png Graphic file (type png)
-
-<use images/runtime_uk2005_maxgraphcut.png>
-Package pdftex.def Info: images/runtime_uk2005_maxgraphcut.png used on input li
-ne 728.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 728--729
-[][] 
- []
-
-<images/runtime_arabic2005_setcover.png, id=255, 578.6418pt x 433.62pt>
-File: images/runtime_arabic2005_setcover.png Graphic file (type png)
-
-<use images/runtime_arabic2005_setcover.png>
-Package pdftex.def Info: images/runtime_arabic2005_setcover.png used on input l
-ine 733.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 733--734
-[][] 
- []
-
-<images/speedup_bigsynthetic_maxgraphcut.png, id=256, 578.6418pt x 433.62pt>
-File: images/speedup_bigsynthetic_maxgraphcut.png Graphic file (type png)
-
-<use images/speedup_bigsynthetic_maxgraphcut.png>
-Package pdftex.def Info: images/speedup_bigsynthetic_maxgraphcut.png used on in
-put line 738.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 738--739
-[][] 
- []
-
-<images/speedup_zigzag_setcover.png, id=257, 578.6418pt x 433.62pt>
-File: images/speedup_zigzag_setcover.png Graphic file (type png)
-
-<use images/speedup_zigzag_setcover.png>
-Package pdftex.def Info: images/speedup_zigzag_setcover.png used on input line 
-743.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 743--744
-[][] 
- []
-
-<images/speedup_uk2005_maxgraphcut.png, id=258, 578.6418pt x 433.62pt>
-File: images/speedup_uk2005_maxgraphcut.png Graphic file (type png)
-
-<use images/speedup_uk2005_maxgraphcut.png>
-Package pdftex.def Info: images/speedup_uk2005_maxgraphcut.png used on input li
-ne 748.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 748--749
-[][] 
- []
-
-<images/speedup_arabic2005_setcover.png, id=259, 578.6418pt x 433.62pt>
-File: images/speedup_arabic2005_setcover.png Graphic file (type png)
-
-<use images/speedup_arabic2005_setcover.png>
-Package pdftex.def Info: images/speedup_arabic2005_setcover.png used on input l
-ine 753.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 753--754
-[][] 
+Underfull \hbox (badness 3895) in paragraph at lines 603--609
+\OT1/ptm/m/n/10 (+20) and $[] \OT1/cmr/m/n/10 = [][] \OML/cmm/m/it/10 w[]\OT1/c
+mr/m/n/10 (\OML/cmm/m/it/10 j\OT1/cmr/m/n/10 )$\OT1/ptm/m/n/10 (+20) . It can b
+e shown that $[] \OMS/cmsy/m/n/10 ^^T \OML/cmm/m/it/10 [] \OMS/cmsy/m/n/10 ^^T
+ [] ^^@
  []
 
 
-<images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png, id=260, 578.6418pt x 433.6
-2pt>
-File: images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png Graphic file (type png
-)
- <use images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png>
-Package pdftex.def Info: images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png use
-d on input line 758.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 758--759
-[][] 
- []
-
-<images/diffFA_Hogwild_zigzag_setcover.png, id=261, 578.6418pt x 433.62pt>
-File: images/diffFA_Hogwild_zigzag_setcover.png Graphic file (type png)
-
-<use images/diffFA_Hogwild_zigzag_setcover.png>
-Package pdftex.def Info: images/diffFA_Hogwild_zigzag_setcover.png used on inpu
-t line 763.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 763--764
-[][] 
- []
-
-<images/diffFA_Hogwild_uk2005_maxgraphcut.png, id=262, 578.6418pt x 433.62pt>
-File: images/diffFA_Hogwild_uk2005_maxgraphcut.png Graphic file (type png)
-
-<use images/diffFA_Hogwild_uk2005_maxgraphcut.png>
-Package pdftex.def Info: images/diffFA_Hogwild_uk2005_maxgraphcut.png used on i
-nput line 768.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 768--769
-[][] 
+Underfull \hbox (badness 2478) in paragraph at lines 603--609
+\OML/cmm/m/it/10 w[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 e\OT1/cmr/m/n/10 )$ \OT1/
+ptm/m/n/10 (+20) and $[] \OMS/cmsy/m/n/10 ^^U \OML/cmm/m/it/10 ^^L[] \OMS/cmsy/
+m/n/10 ^^U [] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 w[]\OT1/cmr/m/n/10 (\OML/cmm/m
+/it/10 e\OT1/cmr/m/n/10 )$\OT1/ptm/m/n/10 (+20) , which then al-lows us to com-
+pute our
  []
 
 
-<images/diffFA_Hogwild_arabic2005_setcover.png, id=263, 578.6418pt x 433.62pt>
-File: images/diffFA_Hogwild_arabic2005_setcover.png Graphic file (type png)
-
-<use images/diffFA_Hogwild_arabic2005_setcover.png>
-Package pdftex.def Info: images/diffFA_Hogwild_arabic2005_setcover.png used on 
-input line 773.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 773--774
-[][] 
+Underfull \hbox (badness 1742) in paragraph at lines 603--609
+\OT1/ptm/m/n/10 (+20) bounds for $\OT1/cmr/m/n/10 ^^A$\OT1/ptm/m/n/10 (+20) 's 
+as $\OT1/cmr/m/n/10 ^^A[](\OML/cmm/m/it/10 e\OT1/cmr/m/n/10 ) = [][] [] \OMS/cm
+sy/m/n/10 ^^@ \OML/cmm/m/it/10 ^^Uv\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 e\OT1/cmr/
+m/n/10 )$\OT1/ptm/m/n/10 (+20) , $\OT1/cmr/m/n/10 ^^A[](\OML/cmm/m/it/10 e\OT1/
+cmr/m/n/10 ) =
  []
 
+[4] <images/summary_relruntime.png, id=265, 578.6418pt x 433.62pt>
+File: images/summary_relruntime.png Graphic file (type png)
 
-<images/validated_OCC_bigsynthetic_maxgraphcut.png, id=264, 578.6418pt x 433.62
-pt>
-File: images/validated_OCC_bigsynthetic_maxgraphcut.png Graphic file (type png)
+<use images/summary_relruntime.png>
+Package pdftex.def Info: images/summary_relruntime.png used on input line 786.
+(pdftex.def)             Requested size: 125.0pt x 93.66978pt.
 
- <use images/validated_OCC_bigsynthetic_maxgraphcut.png>
-Package pdftex.def Info: images/validated_OCC_bigsynthetic_maxgraphcut.png used
- on input line 778.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
+<images/summary_speedup_maxgraphcut.png, id=266, 578.6418pt x 433.62pt>
+File: images/summary_speedup_maxgraphcut.png Graphic file (type png)
 
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 778--779
-[][] 
+<use images/summary_speedup_maxgraphcut.png>
+Package pdftex.def Info: images/summary_speedup_maxgraphcut.png used on input l
+ine 791.
+(pdftex.def)             Requested size: 125.0pt x 93.66978pt.
+
+<images/summary_speedup_setcover.png, id=267, 578.6418pt x 433.62pt>
+File: images/summary_speedup_setcover.png Graphic file (type png)
+
+<use images/summary_speedup_setcover.png>
+Package pdftex.def Info: images/summary_speedup_setcover.png used on input line
+ 796.
+(pdftex.def)             Requested size: 125.0pt x 93.66978pt.
+
+<images/summary_diffFA_maxgraphcut.png, id=268, 578.6418pt x 433.62pt>
+File: images/summary_diffFA_maxgraphcut.png Graphic file (type png)
+
+<use images/summary_diffFA_maxgraphcut.png>
+Package pdftex.def Info: images/summary_diffFA_maxgraphcut.png used on input li
+ne 801.
+(pdftex.def)             Requested size: 125.0pt x 93.66978pt.
+
+<images/summary_diffFA_setcover.png, id=269, 578.6418pt x 433.62pt>
+File: images/summary_diffFA_setcover.png Graphic file (type png)
+
+<use images/summary_diffFA_setcover.png>
+Package pdftex.def Info: images/summary_diffFA_setcover.png used on input line 
+806.
+(pdftex.def)             Requested size: 125.0pt x 93.66978pt.
+
+<images/summary_validated_maxgraphcut.png, id=270, 578.6418pt x 433.62pt>
+File: images/summary_validated_maxgraphcut.png Graphic file (type png)
+
+<use images/summary_validated_maxgraphcut.png>
+Package pdftex.def Info: images/summary_validated_maxgraphcut.png used on input
+ line 811.
+(pdftex.def)             Requested size: 125.0pt x 93.66978pt.
+
+Overfull \hbox (20.10933pt too wide) in paragraph at lines 784--821
+ [][] 
  []
 
-<images/validated_OCC_zigzag_setcover.png, id=265, 578.6418pt x 433.62pt>
-File: images/validated_OCC_zigzag_setcover.png Graphic file (type png)
-
-<use images/validated_OCC_zigzag_setcover.png>
-Package pdftex.def Info: images/validated_OCC_zigzag_setcover.png used on input
- line 783.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 783--784
-[][] 
- []
-
-<images/validated_OCC_uk2005_maxgraphcut.png, id=266, 578.6418pt x 433.62pt>
-File: images/validated_OCC_uk2005_maxgraphcut.png Graphic file (type png)
-
-<use images/validated_OCC_uk2005_maxgraphcut.png>
-Package pdftex.def Info: images/validated_OCC_uk2005_maxgraphcut.png used on in
-put line 788.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 788--789
-[][] 
- []
-
-<images/validated_OCC_arabic2005_setcover.png, id=267, 578.6418pt x 433.62pt>
-File: images/validated_OCC_arabic2005_setcover.png Graphic file (type png)
-
-<use images/validated_OCC_arabic2005_setcover.png>
-Package pdftex.def Info: images/validated_OCC_arabic2005_setcover.png used on i
-nput line 793.
-(pdftex.def)             Requested size: 110.0pt x 82.42834pt.
-
-Overfull \hbox (22.55283pt too wide) in paragraph at lines 793--794
-[][] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[5]
-Underfull \vbox (badness 2846) has occurred while \output is active []
-
- [6 <./images/runtime_bigsynthetic_maxgraphcut.png (PNG copy)> <./images/runtim
-e_zigzag_setcover.png (PNG copy)> <./images/runtime_uk2005_maxgraphcut.png (PNG
- copy)> <./images/runtime_arabic2005_setcover.png (PNG copy)> <./images/speedup
-_bigsynthetic_maxgraphcut.png (PNG copy)> <./images/speedup_zigzag_setcover.png
- (PNG copy)> <./images/speedup_uk2005_maxgraphcut.png (PNG copy)> <./images/spe
-edup_arabic2005_setcover.png (PNG copy)> <./images/diffFA_Hogwild_bigsynthetic_
-maxgraphcut.png (PNG copy)> <./images/diffFA_Hogwild_zigzag_setcover.png (PNG c
-opy)> <./images/diffFA_Hogwild_uk2005_maxgraphcut.png (PNG copy)> <./images/dif
-fFA_Hogwild_arabic2005_setcover.png (PNG copy)> <./images/validated_OCC_bigsynt
-hetic_maxgraphcut.png (PNG copy)> <./images/validated_OCC_zigzag_setcover.png (
-PNG copy)> <./images/validated_OCC_uk2005_maxgraphcut.png (PNG copy)> <./images
-/validated_OCC_arabic2005_setcover.png (PNG copy)>] (./hogwild_submodular.bbl) 
-[7]
-(./hogwildproof.texpdfTeX warning (ext4): destination with the same identifier 
-(name{section.1}) has been already used, duplicate ignored
+[5] (./parallel_submodular.bbl [6 <./images/summary_relruntime.png (PNG copy)> 
+<./images/summary_speedup_maxgraphcut.png (PNG copy)> <./images/summary_speedup
+_setcover.png (PNG copy)> <./images/summary_diffFA_maxgraphcut.png (PNG copy)> 
+<./images/summary_diffFA_setcover.png (PNG copy)> <./images/summary_validated_m
+axgraphcut.png (PNG copy)>]) [7] (./hogwildproof.texpdfTeX warning (ext4): dest
+ination with the same identifier (name{section.1}) has been already used, dupli
+cate ignored
 <to be read again> 
                    \relax 
 l.1 \section{Proof of bound for hogwild}
@@ -1047,7 +860,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 }) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.906 \newpage\section{Lemma}
+l.872 \newpage\section{Lemma}
                               [17] (./exptresults.texpdfTeX warning (ext4): des
 tination with the same identifier (name{section.4}) has been already used, dupl
 icate ignored
@@ -1055,6 +868,7 @@ icate ignored
                    \relax 
 l.1 \section{Full experiment results}
                                      
+<images/runtime_bigsynthetic_maxgraphcut.png, id=381, 578.6418pt x 433.62pt>
 File: images/runtime_bigsynthetic_maxgraphcut.png Graphic file (type png)
 
 <use images/runtime_bigsynthetic_maxgraphcut.png>
@@ -1066,7 +880,7 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 7--8
 [][] 
  []
 
-<images/runtime_bigsynthetic_setcover.png, id=439, 578.6418pt x 433.62pt>
+<images/runtime_bigsynthetic_setcover.png, id=382, 578.6418pt x 433.62pt>
 File: images/runtime_bigsynthetic_setcover.png Graphic file (type png)
 
 <use images/runtime_bigsynthetic_setcover.png>
@@ -1078,7 +892,7 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 12--13
 [][] 
  []
 
-<images/runtime_zigzag_maxgraphcut.png, id=440, 578.6418pt x 433.62pt>
+<images/runtime_zigzag_maxgraphcut.png, id=383, 578.6418pt x 433.62pt>
 File: images/runtime_zigzag_maxgraphcut.png Graphic file (type png)
 
 <use images/runtime_zigzag_maxgraphcut.png>
@@ -1090,7 +904,9 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 17--18
 [][] 
  []
 
+<images/runtime_zigzag_setcover.png, id=384, 578.6418pt x 433.62pt>
 File: images/runtime_zigzag_setcover.png Graphic file (type png)
+
 <use images/runtime_zigzag_setcover.png>
 Package pdftex.def Info: images/runtime_zigzag_setcover.png used on input line 
 22.
@@ -1100,7 +916,9 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 22--23
 [][] 
  []
 
+<images/speedup_bigsynthetic_maxgraphcut.png, id=385, 578.6418pt x 433.62pt>
 File: images/speedup_bigsynthetic_maxgraphcut.png Graphic file (type png)
+
 <use images/speedup_bigsynthetic_maxgraphcut.png>
 Package pdftex.def Info: images/speedup_bigsynthetic_maxgraphcut.png used on in
 put line 27.
@@ -1110,7 +928,7 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 27--28
 [][] 
  []
 
-<images/speedup_bigsynthetic_setcover.png, id=441, 578.6418pt x 433.62pt>
+<images/speedup_bigsynthetic_setcover.png, id=386, 578.6418pt x 433.62pt>
 File: images/speedup_bigsynthetic_setcover.png Graphic file (type png)
 
 <use images/speedup_bigsynthetic_setcover.png>
@@ -1122,7 +940,7 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 32--33
 [][] 
  []
 
-<images/speedup_zigzag_maxgraphcut.png, id=442, 578.6418pt x 433.62pt>
+<images/speedup_zigzag_maxgraphcut.png, id=387, 578.6418pt x 433.62pt>
 File: images/speedup_zigzag_maxgraphcut.png Graphic file (type png)
 
 <use images/speedup_zigzag_maxgraphcut.png>
@@ -1134,7 +952,9 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 37--38
 [][] 
  []
 
+<images/speedup_zigzag_setcover.png, id=388, 578.6418pt x 433.62pt>
 File: images/speedup_zigzag_setcover.png Graphic file (type png)
+
 <use images/speedup_zigzag_setcover.png>
 Package pdftex.def Info: images/speedup_zigzag_setcover.png used on input line 
 42.
@@ -1144,9 +964,12 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 42--43
 [][] 
  []
 
+
+<images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png, id=389, 578.6418pt x 433.6
+2pt>
 File: images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png Graphic file (type png
 )
-<use images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png>
+ <use images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png>
 Package pdftex.def Info: images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png use
 d on input line 47.
 (pdftex.def)             Requested size: 110.0pt x 82.42834pt.
@@ -1156,7 +979,7 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 47--48
  []
 
 
-<images/diffFA_Hogwild_bigsynthetic_setcover.png, id=443, 578.6418pt x 433.62pt
+<images/diffFA_Hogwild_bigsynthetic_setcover.png, id=390, 578.6418pt x 433.62pt
 >
 File: images/diffFA_Hogwild_bigsynthetic_setcover.png Graphic file (type png)
  <use images/diffFA_Hogwild_bigsynthetic_setcover.png>
@@ -1168,7 +991,7 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 52--53
 [][] 
  []
 
-<images/diffFA_Hogwild_zigzag_maxgraphcut.png, id=444, 578.6418pt x 433.62pt>
+<images/diffFA_Hogwild_zigzag_maxgraphcut.png, id=391, 578.6418pt x 433.62pt>
 File: images/diffFA_Hogwild_zigzag_maxgraphcut.png Graphic file (type png)
 
 <use images/diffFA_Hogwild_zigzag_maxgraphcut.png>
@@ -1180,7 +1003,9 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 57--58
 [][] 
  []
 
+<images/diffFA_Hogwild_zigzag_setcover.png, id=392, 578.6418pt x 433.62pt>
 File: images/diffFA_Hogwild_zigzag_setcover.png Graphic file (type png)
+
 <use images/diffFA_Hogwild_zigzag_setcover.png>
 Package pdftex.def Info: images/diffFA_Hogwild_zigzag_setcover.png used on inpu
 t line 62.
@@ -1190,9 +1015,12 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 62--63
 [][] 
  []
 
+
+<images/validated_OCC_bigsynthetic_maxgraphcut.png, id=393, 578.6418pt x 433.62
+pt>
 File: images/validated_OCC_bigsynthetic_maxgraphcut.png Graphic file (type png)
 
-<use images/validated_OCC_bigsynthetic_maxgraphcut.png>
+ <use images/validated_OCC_bigsynthetic_maxgraphcut.png>
 Package pdftex.def Info: images/validated_OCC_bigsynthetic_maxgraphcut.png used
  on input line 67.
 (pdftex.def)             Requested size: 110.0pt x 82.42834pt.
@@ -1202,7 +1030,7 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 67--68
  []
 
 
-<images/validated_OCC_bigsynthetic_setcover.png, id=445, 578.6418pt x 433.62pt>
+<images/validated_OCC_bigsynthetic_setcover.png, id=394, 578.6418pt x 433.62pt>
 File: images/validated_OCC_bigsynthetic_setcover.png Graphic file (type png)
 <use images/validated_OCC_bigsynthetic_setcover.png>
 Package pdftex.def Info: images/validated_OCC_bigsynthetic_setcover.png used on
@@ -1213,7 +1041,7 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 72--73
 [][] 
  []
 
-<images/validated_OCC_zigzag_maxgraphcut.png, id=446, 578.6418pt x 433.62pt>
+<images/validated_OCC_zigzag_maxgraphcut.png, id=395, 578.6418pt x 433.62pt>
 File: images/validated_OCC_zigzag_maxgraphcut.png Graphic file (type png)
 
 <use images/validated_OCC_zigzag_maxgraphcut.png>
@@ -1225,7 +1053,9 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 77--78
 [][] 
  []
 
+<images/validated_OCC_zigzag_setcover.png, id=396, 578.6418pt x 433.62pt>
 File: images/validated_OCC_zigzag_setcover.png Graphic file (type png)
+
 <use images/validated_OCC_zigzag_setcover.png>
 Package pdftex.def Info: images/validated_OCC_zigzag_setcover.png used on input
  line 82.
@@ -1235,7 +1065,7 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 82--83
 [][] 
  []
 
-<images/runtime_friendster10M_setcover.png, id=447, 578.6418pt x 433.62pt>
+<images/runtime_friendster10M_setcover.png, id=397, 578.6418pt x 433.62pt>
 File: images/runtime_friendster10M_setcover.png Graphic file (type png)
 
 <use images/runtime_friendster10M_setcover.png>
@@ -1247,7 +1077,9 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 95--96
 [][] 
  []
 
+<images/runtime_arabic2005_setcover.png, id=398, 578.6418pt x 433.62pt>
 File: images/runtime_arabic2005_setcover.png Graphic file (type png)
+
 <use images/runtime_arabic2005_setcover.png>
 Package pdftex.def Info: images/runtime_arabic2005_setcover.png used on input l
 ine 100.
@@ -1257,7 +1089,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 100--101
 [][] 
  []
 
-<images/runtime_uk2005_setcover.png, id=448, 578.6418pt x 433.62pt>
+<images/runtime_uk2005_setcover.png, id=399, 578.6418pt x 433.62pt>
 File: images/runtime_uk2005_setcover.png Graphic file (type png)
 
 <use images/runtime_uk2005_setcover.png>
@@ -1269,7 +1101,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 105--106
 [][] 
  []
 
-<images/speedup_friendster10M_setcover.png, id=449, 578.6418pt x 433.62pt>
+<images/speedup_friendster10M_setcover.png, id=400, 578.6418pt x 433.62pt>
 File: images/speedup_friendster10M_setcover.png Graphic file (type png)
 
 <use images/speedup_friendster10M_setcover.png>
@@ -1281,7 +1113,9 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 110--111
 [][] 
  []
 
+<images/speedup_arabic2005_setcover.png, id=401, 578.6418pt x 433.62pt>
 File: images/speedup_arabic2005_setcover.png Graphic file (type png)
+
 <use images/speedup_arabic2005_setcover.png>
 Package pdftex.def Info: images/speedup_arabic2005_setcover.png used on input l
 ine 115.
@@ -1291,7 +1125,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 115--116
 [][] 
  []
 
-<images/speedup_uk2005_setcover.png, id=450, 578.6418pt x 433.62pt>
+<images/speedup_uk2005_setcover.png, id=402, 578.6418pt x 433.62pt>
 File: images/speedup_uk2005_setcover.png Graphic file (type png)
 
 <use images/speedup_uk2005_setcover.png>
@@ -1304,7 +1138,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 120--121
  []
 
 
-<images/diffFA_Hogwild_friendster10M_setcover.png, id=451, 578.6418pt x 433.62p
+<images/diffFA_Hogwild_friendster10M_setcover.png, id=403, 578.6418pt x 433.62p
 t>
 File: images/diffFA_Hogwild_friendster10M_setcover.png Graphic file (type png)
  <use images/diffFA_Hogwild_friendster10M_setcover.png>
@@ -1316,7 +1150,10 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 125--126
 [][] 
  []
 
+
+<images/diffFA_Hogwild_arabic2005_setcover.png, id=404, 578.6418pt x 433.62pt>
 File: images/diffFA_Hogwild_arabic2005_setcover.png Graphic file (type png)
+
 <use images/diffFA_Hogwild_arabic2005_setcover.png>
 Package pdftex.def Info: images/diffFA_Hogwild_arabic2005_setcover.png used on 
 input line 130.
@@ -1326,7 +1163,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 130--131
 [][] 
  []
 
-<images/diffFA_Hogwild_uk2005_setcover.png, id=452, 578.6418pt x 433.62pt>
+<images/diffFA_Hogwild_uk2005_setcover.png, id=405, 578.6418pt x 433.62pt>
 File: images/diffFA_Hogwild_uk2005_setcover.png Graphic file (type png)
 
 <use images/diffFA_Hogwild_uk2005_setcover.png>
@@ -1339,7 +1176,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 135--136
  []
 
 
-<images/validated_OCC_friendster10M_setcover.png, id=453, 578.6418pt x 433.62pt
+<images/validated_OCC_friendster10M_setcover.png, id=406, 578.6418pt x 433.62pt
 >
 File: images/validated_OCC_friendster10M_setcover.png Graphic file (type png)
  <use images/validated_OCC_friendster10M_setcover.png>
@@ -1351,7 +1188,9 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 140--141
 [][] 
  []
 
+<images/validated_OCC_arabic2005_setcover.png, id=407, 578.6418pt x 433.62pt>
 File: images/validated_OCC_arabic2005_setcover.png Graphic file (type png)
+
 <use images/validated_OCC_arabic2005_setcover.png>
 Package pdftex.def Info: images/validated_OCC_arabic2005_setcover.png used on i
 nput line 145.
@@ -1361,7 +1200,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 145--146
 [][] 
  []
 
-<images/validated_OCC_uk2005_setcover.png, id=454, 578.6418pt x 433.62pt>
+<images/validated_OCC_uk2005_setcover.png, id=408, 578.6418pt x 433.62pt>
 File: images/validated_OCC_uk2005_setcover.png Graphic file (type png)
 
 <use images/validated_OCC_uk2005_setcover.png>
@@ -1378,7 +1217,7 @@ Overfull \hbox (8.1731pt too wide) in paragraph at lines 93--155
  [][] 
  []
 
-<images/runtime_friendster10M_maxgraphcut.png, id=455, 578.6418pt x 433.62pt>
+<images/runtime_friendster10M_maxgraphcut.png, id=409, 578.6418pt x 433.62pt>
 File: images/runtime_friendster10M_maxgraphcut.png Graphic file (type png)
 
 <use images/runtime_friendster10M_maxgraphcut.png>
@@ -1390,7 +1229,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 164--165
 [][] 
  []
 
-<images/runtime_arabic2005_maxgraphcut.png, id=456, 578.6418pt x 433.62pt>
+<images/runtime_arabic2005_maxgraphcut.png, id=410, 578.6418pt x 433.62pt>
 File: images/runtime_arabic2005_maxgraphcut.png Graphic file (type png)
 
 <use images/runtime_arabic2005_maxgraphcut.png>
@@ -1402,7 +1241,9 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 169--170
 [][] 
  []
 
+<images/runtime_uk2005_maxgraphcut.png, id=411, 578.6418pt x 433.62pt>
 File: images/runtime_uk2005_maxgraphcut.png Graphic file (type png)
+
 <use images/runtime_uk2005_maxgraphcut.png>
 Package pdftex.def Info: images/runtime_uk2005_maxgraphcut.png used on input li
 ne 174.
@@ -1412,7 +1253,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 174--175
 [][] 
  []
 
-<images/speedup_friendster10M_maxgraphcut.png, id=457, 578.6418pt x 433.62pt>
+<images/speedup_friendster10M_maxgraphcut.png, id=412, 578.6418pt x 433.62pt>
 File: images/speedup_friendster10M_maxgraphcut.png Graphic file (type png)
 
 <use images/speedup_friendster10M_maxgraphcut.png>
@@ -1424,7 +1265,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 179--180
 [][] 
  []
 
-<images/speedup_arabic2005_maxgraphcut.png, id=458, 578.6418pt x 433.62pt>
+<images/speedup_arabic2005_maxgraphcut.png, id=413, 578.6418pt x 433.62pt>
 File: images/speedup_arabic2005_maxgraphcut.png Graphic file (type png)
 
 <use images/speedup_arabic2005_maxgraphcut.png>
@@ -1436,7 +1277,9 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 184--185
 [][] 
  []
 
+<images/speedup_uk2005_maxgraphcut.png, id=414, 578.6418pt x 433.62pt>
 File: images/speedup_uk2005_maxgraphcut.png Graphic file (type png)
+
 <use images/speedup_uk2005_maxgraphcut.png>
 Package pdftex.def Info: images/speedup_uk2005_maxgraphcut.png used on input li
 ne 189.
@@ -1447,7 +1290,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 189--190
  []
 
 
-<images/diffFA_Hogwild_friendster10M_maxgraphcut.png, id=459, 578.6418pt x 433.
+<images/diffFA_Hogwild_friendster10M_maxgraphcut.png, id=415, 578.6418pt x 433.
 62pt>
 File: images/diffFA_Hogwild_friendster10M_maxgraphcut.png Graphic file (type pn
 g)
@@ -1461,7 +1304,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 194--195
  []
 
 
-<images/diffFA_Hogwild_arabic2005_maxgraphcut.png, id=460, 578.6418pt x 433.62p
+<images/diffFA_Hogwild_arabic2005_maxgraphcut.png, id=416, 578.6418pt x 433.62p
 t>
 File: images/diffFA_Hogwild_arabic2005_maxgraphcut.png Graphic file (type png)
  <use images/diffFA_Hogwild_arabic2005_maxgraphcut.png>
@@ -1473,7 +1316,9 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 199--200
 [][] 
  []
 
+<images/diffFA_Hogwild_uk2005_maxgraphcut.png, id=417, 578.6418pt x 433.62pt>
 File: images/diffFA_Hogwild_uk2005_maxgraphcut.png Graphic file (type png)
+
 <use images/diffFA_Hogwild_uk2005_maxgraphcut.png>
 Package pdftex.def Info: images/diffFA_Hogwild_uk2005_maxgraphcut.png used on i
 nput line 204.
@@ -1484,7 +1329,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 204--205
  []
 
 
-<images/validated_OCC_friendster10M_maxgraphcut.png, id=461, 578.6418pt x 433.6
+<images/validated_OCC_friendster10M_maxgraphcut.png, id=418, 578.6418pt x 433.6
 2pt>
 File: images/validated_OCC_friendster10M_maxgraphcut.png Graphic file (type png
 )
@@ -1498,7 +1343,7 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 209--210
  []
 
 
-<images/validated_OCC_arabic2005_maxgraphcut.png, id=462, 578.6418pt x 433.62pt
+<images/validated_OCC_arabic2005_maxgraphcut.png, id=419, 578.6418pt x 433.62pt
 >
 File: images/validated_OCC_arabic2005_maxgraphcut.png Graphic file (type png)
  <use images/validated_OCC_arabic2005_maxgraphcut.png>
@@ -1510,7 +1355,9 @@ Overfull \hbox (26.78064pt too wide) in paragraph at lines 214--215
 [][] 
  []
 
+<images/validated_OCC_uk2005_maxgraphcut.png, id=420, 578.6418pt x 433.62pt>
 File: images/validated_OCC_uk2005_maxgraphcut.png Graphic file (type png)
+
 <use images/validated_OCC_uk2005_maxgraphcut.png>
 Package pdftex.def Info: images/validated_OCC_uk2005_maxgraphcut.png used on in
 put line 219.
@@ -1526,42 +1373,53 @@ Overfull \hbox (8.1731pt too wide) in paragraph at lines 162--224
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 973.
- [18 <./images/runtime_bigsynthetic_setcover.png (PNG copy)> <./images/runtime_
-zigzag_maxgraphcut.png (PNG copy)> <./images/speedup_bigsynthetic_setcover.png 
-(PNG copy)> <./images/speedup_zigzag_maxgraphcut.png (PNG copy)> <./images/diff
-FA_Hogwild_bigsynthetic_setcover.png (PNG copy)> <./images/diffFA_Hogwild_zigza
-g_maxgraphcut.png (PNG copy)> <./images/validated_OCC_bigsynthetic_setcover.png
- (PNG copy)> <./images/validated_OCC_zigzag_maxgraphcut.png (PNG copy)>]
-[19 <./images/runtime_friendster10M_setcover.png (PNG copy)> <./images/runtime_
-uk2005_setcover.png (PNG copy)> <./images/speedup_friendster10M_setcover.png (P
-NG copy)> <./images/speedup_uk2005_setcover.png (PNG copy)> <./images/diffFA_Ho
-gwild_friendster10M_setcover.png (PNG copy)> <./images/diffFA_Hogwild_uk2005_se
-tcover.png (PNG copy)> <./images/validated_OCC_friendster10M_setcover.png (PNG 
-copy)> <./images/validated_OCC_uk2005_setcover.png (PNG copy)>] [20 <./images/r
-untime_friendster10M_maxgraphcut.png (PNG copy)> <./images/runtime_arabic2005_m
-axgraphcut.png (PNG copy)> <./images/speedup_friendster10M_maxgraphcut.png (PNG
- copy)> <./images/speedup_arabic2005_maxgraphcut.png (PNG copy)> <./images/diff
-FA_Hogwild_friendster10M_maxgraphcut.png (PNG copy)> <./images/diffFA_Hogwild_a
-rabic2005_maxgraphcut.png (PNG copy)> <./images/validated_OCC_friendster10M_max
-graphcut.png (PNG copy)> <./images/validated_OCC_arabic2005_maxgraphcut.png (PN
-G copy)>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 973.
- (./hogwild_submodular.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 973.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 973.
-Package rerunfilecheck Info: File `hogwild_submodular.out' has not changed.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 939.
+ [18 <./images/runtime_bigsynthetic_maxgraphcut.png (PNG copy)> <./images/runti
+me_bigsynthetic_setcover.png (PNG copy)> <./images/runtime_zigzag_maxgraphcut.p
+ng (PNG copy)> <./images/runtime_zigzag_setcover.png (PNG copy)> <./images/spee
+dup_bigsynthetic_maxgraphcut.png (PNG copy)> <./images/speedup_bigsynthetic_set
+cover.png (PNG copy)> <./images/speedup_zigzag_maxgraphcut.png (PNG copy)> <./i
+mages/speedup_zigzag_setcover.png (PNG copy)> <./images/diffFA_Hogwild_bigsynth
+etic_maxgraphcut.png (PNG copy)> <./images/diffFA_Hogwild_bigsynthetic_setcover
+.png (PNG copy)> <./images/diffFA_Hogwild_zigzag_maxgraphcut.png (PNG copy)> <.
+/images/diffFA_Hogwild_zigzag_setcover.png (PNG copy)> <./images/validated_OCC_
+bigsynthetic_maxgraphcut.png (PNG copy)> <./images/validated_OCC_bigsynthetic_s
+etcover.png (PNG copy)> <./images/validated_OCC_zigzag_maxgraphcut.png (PNG cop
+y)> <./images/validated_OCC_zigzag_setcover.png (PNG copy)>] [19 <./images/runt
+ime_friendster10M_setcover.png (PNG copy)> <./images/runtime_arabic2005_setcove
+r.png (PNG copy)> <./images/runtime_uk2005_setcover.png (PNG copy)> <./images/s
+peedup_friendster10M_setcover.png (PNG copy)> <./images/speedup_arabic2005_setc
+over.png (PNG copy)> <./images/speedup_uk2005_setcover.png (PNG copy)> <./image
+s/diffFA_Hogwild_friendster10M_setcover.png (PNG copy)> <./images/diffFA_Hogwil
+d_arabic2005_setcover.png (PNG copy)> <./images/diffFA_Hogwild_uk2005_setcover.
+png (PNG copy)> <./images/validated_OCC_friendster10M_setcover.png (PNG copy)> 
+<./images/validated_OCC_arabic2005_setcover.png (PNG copy)> <./images/validated
+_OCC_uk2005_setcover.png (PNG copy)>] [20 <./images/runtime_friendster10M_maxgr
+aphcut.png (PNG copy)> <./images/runtime_arabic2005_maxgraphcut.png (PNG copy)>
+ <./images/runtime_uk2005_maxgraphcut.png (PNG copy)> <./images/speedup_friends
+ter10M_maxgraphcut.png (PNG copy)> <./images/speedup_arabic2005_maxgraphcut.png
+ (PNG copy)> <./images/speedup_uk2005_maxgraphcut.png (PNG copy)> <./images/dif
+fFA_Hogwild_friendster10M_maxgraphcut.png (PNG copy)> <./images/diffFA_Hogwild_
+arabic2005_maxgraphcut.png (PNG copy)> <./images/diffFA_Hogwild_uk2005_maxgraph
+cut.png (PNG copy)> <./images/validated_OCC_friendster10M_maxgraphcut.png (PNG 
+copy)> <./images/validated_OCC_arabic2005_maxgraphcut.png (PNG copy)> <./images
+/validated_OCC_uk2005_maxgraphcut.png (PNG copy)>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 939.
+ (./parallel_submodular.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 939.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 939.
+Package rerunfilecheck Info: File `parallel_submodular.out' has not changed.
 (rerunfilecheck)             Checksum: DE01E2518AE925D758444E6834D71429;1579.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 973.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 939.
  ) 
 Here is how much of TeX's memory you used:
  13003 strings out of 493488
- 199786 string characters out of 3141326
- 408263 words of memory out of 3000000
- 15762 multiletter control sequences out of 15000+200000
- 38784 words of font info for 178 fonts, out of 3000000 for 9000
+ 199937 string characters out of 3141326
+ 390817 words of memory out of 3000000
+ 15768 multiletter control sequences out of 15000+200000
+ 39893 words of font info for 172 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 37i,23n,39p,2010b,770s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 37i,23n,39p,875b,770s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2012/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/local
@@ -1586,10 +1444,10 @@ s/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/
 urw/helvetic/uhvb8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/tim
 es/utmb8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utmr8a.
 pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on hogwild_submodular.pdf (20 pages, 1544938 bytes).
+Output written on parallel_submodular.pdf (20 pages, 1738153 bytes).
 PDF statistics:
- 587 PDF objects out of 1000 (max. 8388607)
- 450 compressed objects within 5 object streams
- 144 named destinations out of 1000 (max. 500000)
- 27529 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 546 PDF objects out of 1000 (max. 8388607)
+ 429 compressed objects within 5 object streams
+ 143 named destinations out of 1000 (max. 500000)
+ 28071 words of extra memory for PDF output out of 29859 (max. 10000000)
 
