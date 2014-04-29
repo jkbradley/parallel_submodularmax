@@ -3,11 +3,11 @@
 \BOOKMARK [1][-]{section.3}{Approaches for parallel learning}{}% 3
 \BOOKMARK [2][-]{subsection.3.1}{Coordination free}{section.3}% 4
 \BOOKMARK [2][-]{subsection.3.2}{Concurrency control}{section.3}% 5
-\BOOKMARK [1][-]{section.4}{Hogwild for arbitrary submodular F}{}% 6
+\BOOKMARK [1][-]{section.4}{Hogwild Bidirectional Greedy Algorithm}{}% 6
 \BOOKMARK [2][-]{subsection.4.1}{Hogwild for separable sums F}{section.4}% 7
-\BOOKMARK [1][-]{section.5}{Concurrency control}{}% 8
+\BOOKMARK [1][-]{section.5}{Optimistic Concurrency Control for Bidirectional Greedy Algorithm}{}% 8
 \BOOKMARK [2][-]{subsection.5.1}{Separable sums F}{section.5}% 9
-\BOOKMARK [1][-]{section.6}{Analysis of algorithms}{}% 10
+\BOOKMARK [1][-]{section.6}{Analysis of Algorithms}{}% 10
 \BOOKMARK [2][-]{subsection.6.1}{Approximation of hogwild bidirectional greedy}{section.6}% 11
 \BOOKMARK [2][-]{subsection.6.2}{Correctness of OCC}{section.6}% 12
 \BOOKMARK [2][-]{subsection.6.3}{Scalability of OCC}{section.6}% 13

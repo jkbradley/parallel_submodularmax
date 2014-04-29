@@ -15,19 +15,18 @@
 \gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand\HyField@AuxAddToFields[1]{}
 \citation{buchbinder2012}
-\citation{buchbinder2012}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Submodular maximization}{1}{section.2}}
 \citation{buchbinder2012}
 \citation{buchbinder2012}
 \citation{buchbinder2012}
+\citation{buchbinder2012}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Submodular maximization}{2}{section.2}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Approaches for parallel learning}{2}{section.3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Coordination free}{2}{subsection.3.1}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Concurrency control}{2}{subsection.3.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Hogwild for arbitrary submodular $F$}{2}{section.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Hogwild Bidirectional Greedy Algorithm}{2}{section.4}}
 \newlabel{lem:set_bound}{{4.1}{2}{\relax }{thm.4.1}{}}
 \newlabel{cor:delta_bound}{{4.2}{2}{\relax }{thm.4.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Hogwild for separable sums $F$}{2}{subsection.4.1}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Serial submodular maximization\relax }}{3}{algocf.1}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{alg:submax}{{1}{3}{Concurrency control\relax }{algocf.1}{}}
@@ -57,35 +56,29 @@
 \newlabel{alg:occvalidate:deltaminus}{{3}{3}{Concurrency control\relax }{AlgoLine.5.3}{}}
 \newlabel{alg:occvalidate:decisioninclude}{{4}{3}{Concurrency control\relax }{AlgoLine.5.4}{}}
 \newlabel{fig:submax}{{5}{3}{Concurrency control\relax }{AlgoLine.5.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Concurrency control}{4}{section.5}}
-\newlabel{lem:occdeltas}{{5.3}{4}{\relax }{thm.5.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Hogwild for separable sums $F$}{3}{subsection.4.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Optimistic Concurrency Control for Bidirectional Greedy Algorithm}{4}{section.5}}
+\newlabel{lem:occdeltas}{{5.3}{5}{\relax }{thm.5.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Separable sums $F$}{5}{subsection.5.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Analysis of algorithms}{5}{section.6}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Analysis of Algorithms}{5}{section.6}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Approximation of hogwild bidirectional greedy}{5}{subsection.6.1}}
 \newlabel{thm:randomapprox}{{6.1}{5}{\relax }{thm.6.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Correctness of OCC}{5}{subsection.6.2}}
 \citation{snap}
 \citation{BoVWFI,BRSLLP,BCSU3}
 \citation{BoVWFI,BRSLLP,BCSU3}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Scalability of OCC}{6}{subsection.6.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Evaluation}{6}{section.7}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  Synthetic and real graphs used in the evaluation of our parallel algorithms.\relax }}{6}{table.caption.2}}
+\newlabel{tab:graphstats}{{1}{6}{\footnotesize Synthetic and real graphs used in the evaluation of our parallel algorithms.\relax \relax }{table.caption.2}{}}
 \citation{pan2013}
 \citation{Recht11}
 \citation{Ahmed12}
 \citation{li2013,ho2013}
 \citation{Mirzasoleiman2013}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Scalability of OCC}{6}{subsection.6.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Evaluation}{6}{section.7}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  Synthetic and real graphs used in the evaluation of our parallel algorithms.\relax }}{6}{table.caption.2}}
-\newlabel{tab:graphstats}{{1}{6}{\footnotesize Synthetic and real graphs used in the evaluation of our parallel algorithms.\relax \relax }{table.caption.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Related Work}{6}{section.8}}
 \bibstyle{unsrtnat}
 \bibdata{references_arxiv}
 \bibcite{buchbinder2012}{{1}{2012}{{Buchbinder et~al.}}{{Buchbinder, Feldman, Naor, and Schwartz}}}
-\bibcite{snap}{{2}{2011}{{Leskovec}}{{}}}
-\bibcite{BoVWFI}{{3}{2004}{{Boldi and Vigna}}{{}}}
-\bibcite{BRSLLP}{{4}{2011}{{Boldi et~al.}}{{Boldi, Rosa, Santini, and Vigna}}}
-\bibcite{BCSU3}{{5}{2004}{{Boldi et~al.}}{{Boldi, Codenotti, Santini, and Vigna}}}
-\bibcite{pan2013}{{6}{2013}{{Pan et~al.}}{{Pan, Gonzalez, Jegelka, Broderick, and Jordan}}}
-\bibcite{Recht11}{{7}{2011}{{Recht et~al.}}{{Recht, Re, Wright, and Niu}}}
 \newlabel{fig:relruntime}{{1a}{7}{\relax \relax }{figure.caption.3}{}}
 \newlabel{sub@fig:relruntime}{{a}{7}{\relax \relax }{figure.caption.3}{}}
 \newlabel{fig:speedup_maxgraphcut}{{1b}{7}{\relax \relax }{figure.caption.3}{}}
@@ -100,7 +93,14 @@
 \newlabel{sub@fig:validated_maxgraphcut}{{f}{7}{\relax \relax }{figure.caption.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  Experimental results. \ref  {fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$. \ref  {fig:speedup_maxgraphcut}, \ref  {fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads). \ref  {fig:difffa_maxgraphcut}, \ref  {fig:difffa_setcover} -- \% difference between objective values of the sequential and hogwild algorithms, i.e. $[F(A_{hogwild}) / F(A_{sequential}) - 1] \times 100\%$. \ref  {fig:validated_maxgraphcut} -- \% of elements validated by the OCC algorithm on the max graph cut problem. \relax }}{7}{figure.caption.3}}
 \newlabel{fig:results_quality}{{1}{7}{\footnotesize Experimental results. \ref {fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$. \ref {fig:speedup_maxgraphcut}, \ref {fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads). \ref {fig:difffa_maxgraphcut}, \ref {fig:difffa_setcover} -- \% difference between objective values of the sequential and hogwild algorithms, i.e. $[F(A_{hogwild}) / F(A_{sequential}) - 1] \times 100\%$. \ref {fig:validated_maxgraphcut} -- \% of elements validated by the OCC algorithm on the max graph cut problem. \relax \relax }{figure.caption.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Related Work}{7}{section.8}}
 \@writefile{toc}{\contentsline {section}{\numberline {9}Discussions}{7}{section.9}}
+\bibcite{snap}{{2}{2011}{{Leskovec}}{{}}}
+\bibcite{BoVWFI}{{3}{2004}{{Boldi and Vigna}}{{}}}
+\bibcite{BRSLLP}{{4}{2011}{{Boldi et~al.}}{{Boldi, Rosa, Santini, and Vigna}}}
+\bibcite{BCSU3}{{5}{2004}{{Boldi et~al.}}{{Boldi, Codenotti, Santini, and Vigna}}}
+\bibcite{pan2013}{{6}{2013}{{Pan et~al.}}{{Pan, Gonzalez, Jegelka, Broderick, and Jordan}}}
+\bibcite{Recht11}{{7}{2011}{{Recht et~al.}}{{Recht, Re, Wright, and Niu}}}
 \bibcite{Ahmed12}{{8}{2012}{{Ahmed et~al.}}{{Ahmed, Aly, Gonzalez, Narayanamurthy, and Smola}}}
 \bibcite{li2013}{{9}{2013}{{Li et~al.}}{{Li, Zhou, Yang, Li, Xia, Andersen, and Smola}}}
 \bibcite{ho2013}{{10}{2013}{{Ho et~al.}}{{Ho, Cipar, Cui, Lee, Kim, Gibbons, Gibson, Ganger, and Xing}}}

@@ -282,24 +282,28 @@ Berkeley, CA USA 94720\\
 \begin{abstract}
 Bidirectional greedy is a sequential algorithm that does not speed well to problems of large speed.
 We present 2 approaches to extend the bidirectional greedy algorithm to a parallel setting.
-The first, `hogwild' approach emphasizes speed at the cost of worsening the approximation by an additive factor;
-the second approach guarantees the same approximation bound by sacrificing concurrency.
+The first, `hogwild' approach emphasizes speed at the cost of a weaker approximation guarantee;
+the second 'OCC' approach provides strong approximation guarantees at the cost of greater coordination.
+We show that our parallel algorithms scale well on synthetic and real datasets, and suffer little or no loss of objective value compared to the sequential algorithm.
 \end{abstract}
 
 \section{Introduction}
 
-\begin{itemize}
-\item Motivate parallel machine learning from big data setting
-\item Briefly mention two approaches (coordination-free, concurrency control)
-\item In this paper, we focus on unconstrained non-monotone submodular maximization.. and say briefly why this problem is important
-\item Contributions of the paper
+
+Motivate parallel machine learning from big data setting
+
+Briefly mention two approaches (coordination-free, concurrency control)
+
+In this paper, we focus on unconstrained non-monotone submodular maximization.. and say briefly why this problem is important
+
+Contributions of the paper
 \begin{enumerate}
 \item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which allows one to choose between speed and stronger approximation guarantees.
 \item We prove the serial equivalence of OCC to the sequential algorithm; we analytically bound the amount of coordination of the OCC algorithm for two example problems.
 \item We provide approximation guarantees for hogwild; we analytically bound the expected loss in objective value for two example problems.
 \item We demonstrate empirically using two synthetic and three real datasets that our parallel algorithms perform well in terms of both speed and objective values.
 \end{enumerate}
-\end{itemize}
+
 
 
 The bidirectional greedy algorithm \cite{buchbinder2012} gives an approximation of $E[F(A)] = 1/2 f(OPT)$, where $A$ is the algorithm output, and $OPT$ is an optimal solution.
@@ -322,6 +326,11 @@ In contrast to the hogwild approach, OCC introduces more coordination and thus p
 
 \section{Submodular maximization}
 
+What is submodular functions?
+
+Why is maximization an important problem?
+
+Describe the bidirectional greedy algorithm:
 The sequential bidirectional greedy \cite{buchbinder2012} algorithm monotonically grows $A^i$ and shrinks $B^i$.
 
 
@@ -493,7 +502,9 @@ $\iota = 0$\;
 
 
 
-\section{Hogwild for arbitrary submodular $F$}
+\section{Hogwild Bidirectional Greedy Algorithm}
+\xinghao{Provide more intuition for what the OCC algorithm is doing.}
+
 Algorithm \ref{alg:hogwild}\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; the hogwild algorithm can also be extended to the multilinear version of \cite{buchbinder2012}.} is the hogwild parallel bidirectional greedy unconstrained submodular maximization algorithm.
 We associate with each element $e$ a time $T_e$ at which Algorithm \ref{alg:hogwild} line \ref{alg:hogwild:time} is executed, and order the elements according to the times $T_e$.
 Let $\iota(e)$ be the position of $e$ in this ordering.
@@ -580,9 +591,10 @@ Following arguments analogous to that of Lemma \ref{lem:set_bound}, we can show:
 
 
 
-\section{Concurrency control}
+\section{Optimistic Concurrency Control for Bidirectional Greedy Algorithm}
+\xinghao{Provide more intuition for what the OCC algorithm is doing.}
 
-Algorithm \ref{alg:occ} is the OCC bidirectional greedy algorithm.
+Algorithm \ref{alg:occ}\footnote{The synchronization required by the OCC algorithm can be further reduced, for example, by replacing the operations from Line \ref{alg:occ:resultwait} onwards by a non-blocking function call.} is the OCC bidirectional greedy algorithm.
 Unlike the hogwild algorithm, the OCC algorithm ensures serial equivalence by maintaining four sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$.
 Each thread can determine locally if a decision to include / exclude an element can be taken safely.
 Otherwise, the validation process (Algorithm \ref{alg:occvalidate}) waits until it is certain about $A$, $B$ before proceeding.
@@ -672,7 +684,12 @@ It can be shown that $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alph
 
 
 
-\section{Analysis of algorithms}
+\section{Analysis of Algorithms}
+
+\xinghao{What is the purpose of this section?
+We want to say that we have a choice between a slower but serially equivalent algorithm and a faster algorithm which is not serially equivalent.
+Nevertheless, the slower algorithm is not too slow, and the approximation guarantee of the algorithm that is not serially equivalent is not too weak.}
+
 
 \subsection{Approximation of hogwild bidirectional greedy}
 Let $F$ be submodular and non-negative.
