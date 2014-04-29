@@ -287,12 +287,27 @@ the second approach guarantees the same approximation bound by sacrificing concu
 \end{abstract}
 
 \section{Introduction}
+
+\begin{itemize}
+\item Motivate parallel machine learning from big data setting
+\item Briefly mention two approaches (coordination-free, concurrency control)
+\item In this paper, we focus on unconstrained non-monotone submodular maximization.. and say briefly why this problem is important
+\item Contributions of the paper
+\begin{enumerate}
+\item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which allows one to choose between speed and stronger approximation guarantees.
+\item We prove the serial equivalence of OCC to the sequential algorithm; we analytically bound the amount of coordination of the OCC algorithm for two example problems.
+\item We provide approximation guarantees for hogwild; we analytically bound the expected loss in objective value for two example problems.
+\item We demonstrate empirically using two synthetic and three real datasets that our parallel algorithms perform well in terms of both speed and objective values.
+\end{enumerate}
+\end{itemize}
+
+
 The bidirectional greedy algorithm \cite{buchbinder2012} gives an approximation of $E[F(A)] = 1/2 f(OPT)$, where $A$ is the algorithm output, and $OPT$ is an optimal solution.
 
 The hogwild algorithm can give an approximation of $E[F(A)] = \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$, where $\rho_i$ is the maximum difference in the marginal gain that may result from not knowing the full information when deciding whether to include or exclude element $i$.
 
 The OCC algorithm \xinghao{for the lack of a better name} guarantees an outcome that is equivalent to a sequential run of the bidirectional greedy algorithm.
-Theoretical properties of the bidirectional greedy algorithm immediately translates to the OCC algorithm -- in particular, the OCC algorithm gives the same approximation factor of $1/$.
+Theoretical properties of the bidirectional greedy algorithm immediately translates to the OCC algorithm -- in particular, the OCC algorithm gives the same approximation factor of $1/2$.
 In contrast to the hogwild approach, OCC introduces more coordination and thus provides less concurrency.
 
 
@@ -547,7 +562,7 @@ Following arguments analogous to that of Lemma \ref{lem:set_bound}, we can show:
 \begin{lem} For each $l$ and $e\in V$, $\hat\alpha_{l,e} \leq \alpha_l^{\iota(e)-1}$ and $\hat\beta_{l,e} \geq \beta_l^{\iota(e)-1}$.
 \end{lem}
 
-\begin{cor} Concavity of $g$ implies that Algorithm \ref{alg:hogwildsepsum} computes
+\begin{cor} Concavity of $g$ implies that $\Delta$'s computed by Algorithm \ref{alg:hogwildsepsum} satisfy
 \begin{align*}
 \Delta_+^{\max}(e)
 &&\geq&& \sum_{S_l\ni e} \left[g(\alpha_l^{\iota(e)-1} + w_l(e)) - g(\alpha_l^{\iota(e)-1})\right] - \lambda v(e)
@@ -600,7 +615,7 @@ An analogous argument shows $e' \not\in \hat{B}_e \implies e' \not\in B^{\iota(e
 During the validation process for element $e$, on Lines \ref{alg:occvalidate:deltaplus}, \ref{alg:occvalidate:deltaminus} of Algorithm \ref{alg:occvalidate}, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{lem}
 \begin{proof}
-At Lines \ref{alg:occvalidate:deltaplus}, we have guaranteed that $\forall j < \iota(e)$, processed$(j) = true$.
+At Line \ref{alg:occvalidate:deltaplus}, we have guaranteed that $\forall j < \iota(e)$, processed$(j) = true$.
 Thus, $\forall e': \iota(e') < \iota(e)$, $e' \in \hat{A} \iff e' \in A^{\iota(e)-1}$ and $e' \in \hat{B} \iff e' \in B^{\iota(e)-1}$.
 On the other hand, result$(\iota(e)) = 0$, so all $e'$ such that $\iota(e') > \iota(e)$ are blocked on Algorithm \ref{alg:occ} Line \ref{alg:occ:resultwait}, hence $\hat{A}(e') = 0$ and $\hat{B}(e') = 1$.
 Thus, $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
@@ -614,16 +629,16 @@ Algorithm \ref{alg:occ} computes
 & \Delta_-^{\max}(e) &= F(\hat{B}_e \backslash e) - F(\hat{B}).
 \end{align*}
 
-\begin{cor}\label{lem:occdeltas} By submodularity, $\Delta_+^{\min}(e) \leq \Delta_+(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_-^{\max}(e)$.
+\begin{cor}\label{lem:occdeltas} Submodularity of $F$ implies that the $\Delta$'s computed by Algorithm \ref{alg:occ} satisfy: $\Delta_+^{\min}(e) \leq \Delta_+(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_-^{\max}(e)$.
 \end{cor}
 
 \subsection{Separable sums $F$}
 Analogous to the hogwild algorithm, we maintain $\hat\alpha_l$, $\hat\beta_l$ and additionally $\tilde\alpha_l = \sum_{j\in \tilde{A}\cup S_l} w_l(j)$ and $\tilde\beta_l = \sum_{j \in \tilde{B}\cup S_l} w_l(j)$.
-It can be shown that $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$, which then allows us to compute our bounds for $\Delta$'s as
-$\Delta_+^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)$, 
-$\Delta_+^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right] - \lambda v(e)$,
-$\Delta_-^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right] + \lambda v(e)$,
-$\Delta_-^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\tilde\beta_l^{\iota(e)-1} + w_l(e))\right] + \lambda v(e)$.
+It can be shown that $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$, which then allows us to compute our bounds for $\Delta$'s.% as
+%$\Delta_+^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)$, 
+%$\Delta_+^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right] - \lambda v(e)$,
+%$\Delta_-^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right] + \lambda v(e)$,
+%$\Delta_-^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\tilde\beta_l^{\iota(e)-1} + w_l(e))\right] + \lambda v(e)$.
 
 %\begin{lem} $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$
 %\end{lem}
@@ -662,10 +677,8 @@ $\Delta_-^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\
 \subsection{Approximation of hogwild bidirectional greedy}
 Let $F$ be submodular and non-negative.
 We assume for each $e$, there exists $\rho_e \geq 0$ such that
-\begin{align*}
-&\Delta_+^{\max}(e) - \rho_e \leq \Delta_+(e),&
-&\Delta_-^{\max}(e) - \rho_e \leq \Delta_-(e)
-\end{align*}
+$\Delta_+^{\max}(e) - \rho_e \leq \Delta_+(e)$, and
+$\Delta_-^{\max}(e) - \rho_e \leq \Delta_-(e)$.
 This is possible, for example, by defining
 \begin{align*}
 \rho_e
