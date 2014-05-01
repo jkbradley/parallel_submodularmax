@@ -280,11 +280,12 @@ Berkeley, CA USA 94720\\
 
 
 \begin{abstract}
-Bidirectional greedy is a sequential algorithm that does not speed well to problems of large speed.
-We present 2 approaches to extend the bidirectional greedy algorithm to a parallel setting.
-The first, `hogwild' approach emphasizes speed at the cost of a weaker approximation guarantee;
-the second 'OCC' approach provides strong approximation guarantees at the cost of greater coordination.
-We show that our parallel algorithms scale well on synthetic and real datasets, and suffer little or no loss of objective value compared to the sequential algorithm.
+Many machine learning problems can be formulated as maximization of submodular functions. \cite{buchbinder2012} recently proposed a double greedy algorithm for unconstrained submodular maximization that achieves a tight 1/2-approximation. However, double greedy is an inherently sequential, linear time algorithm that does not scale to big data. 
+
+We present two approaches to extend the bidirectional greedy algorithm to a parallel setting. The first, 'coordination-free' approach emphasizes speed at the cost of a weaker approximation guarantee -- it achieves a $(1/2 - O(1/N))$ approximation for max cut on a complete graph.
+The second, 'concurrency control' approach guarantees the same tight 1/2-approximation, at the cost of greater coordination.
+
+Our parallel algorithms scale well on synthetic and real datasets, and suffer little or no loss of objective value compared to the sequential algorithm.
 \end{abstract}
 
 \section{Introduction}
