@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  5 MAY 2014 11:44
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  5 MAY 2014 14:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -894,7 +894,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 }) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.983 \newpage\section{Lemma}
+l.985 \newpage\section{Lemma}
                               [19] (./exptresults.texpdfTeX warning (ext4): des
 tination with the same identifier (name{section.4}) has been already used, dupl
 icate ignored
@@ -2401,7 +2401,7 @@ Overfull \hbox (22.55283pt too wide) in paragraph at lines 638--639
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1050.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1052.
  [28 <./images_partition/runtime_ring_setcover.png (PNG copy)> <./images_partit
 ion/speedup_ring_setcover.png (PNG copy)> <./images_partition/diffFA_CF2G_ring_
 setcover.png (PNG copy)> <./images_partition/validated_CC2G_ring_setcover.png (
@@ -2409,18 +2409,14 @@ PNG copy)> <./images_partition/runtime_ring_maxgraphcut.png (PNG copy)> <./imag
 es_partition/speedup_ring_maxgraphcut.png (PNG copy)> <./images_partition/diffF
 A_CF2G_ring_maxgraphcut.png (PNG copy)> <./images_partition/validated_CC2G_ring
 _maxgraphcut.png (PNG copy)>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1050.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1052.
  (./parallel_submodular.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1050.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1050.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1052.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1052.
 
 Package rerunfilecheck Info: File `parallel_submodular.out' has not changed.
 (rerunfilecheck)             Checksum: 2F7AC0226BC33196050CEF68168960BF;1839.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1050.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1052.
  ) 
 Here is how much of TeX's memory you used:
  13546 strings out of 493488
@@ -2453,7 +2449,7 @@ ts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1
 /urw/helvetic/uhvb8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/ti
 mes/utmb8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utmr8a
 .pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on parallel_submodular.pdf (28 pages, 3788389 bytes).
+Output written on parallel_submodular.pdf (28 pages, 3788479 bytes).
 PDF statistics:
  718 PDF objects out of 1000 (max. 8388607)
  520 compressed objects within 6 object streams
