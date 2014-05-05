@@ -24,4 +24,4 @@
 \BOOKMARK [2][-]{subsection.2.3}{Upper bound for set cover}{section.2}% 24
 \BOOKMARK [1][-]{section.3}{Lemma}{}% 25
 \BOOKMARK [1][-]{section.4}{Full experiment results}{}% 26
-\BOOKMARK [1][-]{section.5}{Full experiment results, using partitioning with work stealing}{}% 27
+\BOOKMARK [1][-]{section.5}{Full experiment results, partitioning with work stealing}{}% 27
