@@ -282,8 +282,9 @@ Berkeley, CA USA 94720\\
 \begin{abstract}
 Many machine learning problems can be formulated as maximization of submodular functions. \cite{buchbinder2012} recently proposed a double greedy algorithm for unconstrained submodular maximization that achieves a tight 1/2-approximation. However, double greedy is an inherently sequential, linear time algorithm that does not scale to big data. 
 
-We present two approaches to extend the bidirectional greedy algorithm to a parallel setting. The first, 'coordination-free' approach emphasizes speed at the cost of a weaker approximation guarantee -- it achieves a $(1/2 - O(1/N))$ approximation for max cut on a complete graph.
-The second, 'concurrency control' approach guarantees the same tight 1/2-approximation, at the cost of greater coordination.
+We present two approaches to extend the bidirectional greedy algorithm to a parallel setting.
+The first, `coordination-free' approach emphasizes speed at the cost of a weaker approximation guarantee -- it achieves a $(1/2 - O(1/N))$ approximation for max cut on a complete graph.
+The second, `concurrency control' approach guarantees the same tight 1/2-approximation, at the cost of greater coordination.
 
 Our parallel algorithms scale well on synthetic and real datasets, and suffer little or no loss of objective value compared to the sequential algorithm.
 \end{abstract}
@@ -829,7 +830,8 @@ Erdos-Renyi & 20,000,000 & $\approx 2 \times 10^6$ & Each edge is included with 
 & & & set $\{\pm 1,\dots,\pm 5\}$, and the complete graph $K_{10}$.\\\hline
 Friendster  & 10,000,000 &    625,279,786 & Subgraph of social network. \cite{snap}\\\hline
 Arabic-2005 & 22,744,080 &    631,153,669 & 2005 crawl of Arabic web sites \cite{BoVWFI, BRSLLP, BCSU3}. \\\hline
-UK-20005    & 39,459,925 &    921,345,078 & 2005 crawl of the .uk domain \cite{BoVWFI, BRSLLP, BCSU3}. \\\hline
+UK-2005     & 39,459,925 &    921,345,078 & 2005 crawl of the .uk domain \cite{BoVWFI, BRSLLP, BCSU3}. \\\hline
+IT-2004     & 41,291,594 &  1,135,718,909 & 2004 crawl of the .it domain \cite{BoVWFI, BRSLLP, BCSU3}. \\\hline
 \end{tabular}
 \caption{\footnotesize Synthetic and real graphs used in the evaluation of our parallel algorithms.}
 \label{tab:graphstats}
@@ -848,42 +850,42 @@ The set cover problem is reduced to a vertex cover on the directed graph.
 \begin{figure}[ht]
   \centering
   \begin{tabular}{cccc}
-	  \begin{subfigure}[h]{0.32\textwidth}
-	  	\includegraphics[width=125pt]{images/summary_relruntime.png}
+	  \begin{subfigure}[h]{0.30\textwidth}
+	  	\includegraphics[width=150pt]{images/summary_relruntime.png}
 			\caption{}
 			\label{fig:relruntime}
 	  \end{subfigure} &
-	  \begin{subfigure}[h]{0.32\textwidth}
-	  	\includegraphics[width=125pt]{images/summary_speedup_maxgraphcut.png}
+	  \begin{subfigure}[h]{0.30\textwidth}
+	  	\includegraphics[width=150pt]{images/summary_speedup_maxgraphcut.png}
 			\caption{}
 			\label{fig:speedup_maxgraphcut}
 	  \end{subfigure} &
-	  \begin{subfigure}[h]{0.32\textwidth}
-	  	\includegraphics[width=125pt]{images/summary_speedup_setcover.png}
+	  \begin{subfigure}[h]{0.30\textwidth}
+	  	\includegraphics[width=150pt]{images/summary_speedup_setcover.png}
 			\caption{}
 			\label{fig:speedup_setcover}
 	  \end{subfigure} \\
-	  \begin{subfigure}[h]{0.32\textwidth}
-	  	\includegraphics[width=125pt]{images/summary_diffFA_maxgraphcut.png}
+	  \begin{subfigure}[h]{0.30\textwidth}
+	  	\includegraphics[width=150pt]{images/summary_diffFA_maxgraphcut.png}
 			\caption{}
 			\label{fig:difffa_maxgraphcut}
 	  \end{subfigure} &
-	  \begin{subfigure}[h]{0.32\textwidth}
-	  	\includegraphics[width=125pt]{images/summary_diffFA_setcover.png}
+	  \begin{subfigure}[h]{0.30\textwidth}
+	  	\includegraphics[width=150pt]{images/summary_diffFA_setcover.png}
 			\caption{}
 			\label{fig:difffa_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[h]{0.32\textwidth}
-	  	\includegraphics[width=125pt]{images/summary_validated_maxgraphcut.png}
+	  \begin{subfigure}[h]{0.30\textwidth}
+	  	\includegraphics[width=150pt]{images/summary_validated_maxgraphcut.png}
 			\caption{}
 			\label{fig:validated_maxgraphcut}
 	  \end{subfigure} \\
   \end{tabular}
   \caption{\footnotesize Experimental results.
-  \ref{fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$.
-  \ref{fig:speedup_maxgraphcut}, \ref{fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads).
-  \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and hogwild algorithms, i.e. $[F(A_{hogwild}) / F(A_{sequential}) - 1] \times 100\%$.
-  \ref{fig:validated_maxgraphcut} -- \% of elements validated by the OCC algorithm on the max graph cut problem.
+  Fig \ref{fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$.
+  Fig \ref{fig:speedup_maxgraphcut}, \ref{fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads).
+  Fig \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and hogwild algorithms, i.e. $[F(A_{hogwild}) / F(A_{sequential}) - 1] \times 100\%$.
+  Fig \ref{fig:validated_maxgraphcut} -- percentage of elements validated by the OCC algorithm on the max graph cut problem.
   }
 \label{fig:results_quality}
 \end{figure}
@@ -894,7 +896,43 @@ Due to space constraints, we only present part of our results in Figure \ref{fig
 \textbf{Objective value:} The objective value of the hogwild algorithm decreases with the number of threads, but differs from the sequential objective value by less than $0.01\%$.
 \textbf{Validations:} The OCC algorithm validates more elements as threads are added, but less than 0.015\% are validated with 16 threads, which has negligible effect on the runtime / speedup.
 
+\subsection{Adversarial ordering}
 
+To highlight the philosophical differences between the two parallel algorithms, we conducted experiments on a ring Cayley graph on $\mathbb{Z}_{10^6}$ with generating set $\{\pm 1,\dots, \pm 1000\}$.
+The algorithms are presented with an adversarial ordering, with permutation, so vertices close in the ordering are adjacent to one another, and tend to be processed concurrently.
+This causes CF2G to make more mistakes, and CC2G to face more uncertainty.
+
+As Figure \ref{fig:results_adversarial} shows, CC2G sacrifices speed to ensure serial equivalence, eventually validating $>90\%$ of elements.
+On the other hand, CF2G focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{CF2G})$ that is only $20\%$ of $F(A_{Seq2G})$.
+\footnote{For the set cover problem, both algorithms have to perform atomic updates to the statistics $\alpha_l$ and $\beta_l$.
+Under the adversarial ordering, there are more concurrent atomic updates, and hence, CF2G does not achieve good speedup.
+It is possible to compute $F$ directly, which would provide better speedup but slower runtimes.}
+
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cccc}
+	  \begin{subfigure}[h]{0.32\textwidth}
+	  	\includegraphics[width=150pt]{images/runtime_ring_setcover.png}
+			\caption{}
+			\label{fig:runtime_ring_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.32\textwidth}
+	  	\includegraphics[width=150pt]{images/speedup_ring_setcover.png}
+			\caption{}
+			\label{fig:speedup_ring_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.32\textwidth}
+	  	\includegraphics[width=150pt]{images/validateddiffFA_ring_setcover.png}
+			\caption{}
+			\label{fig:validateddiffFA_ring_setcover}
+	  \end{subfigure} \\
+  \end{tabular}
+  \caption{\footnotesize Experimental results for ring graph on set cover problem.}
+\label{fig:results_adversarial}
+\end{figure}
+
+\xinghao{These experiments were conducted by using an atomic integer to select elements to process. We could instead use a partitioning scheme, which has 2 advantages. Firstly, there is less coordination -- for CF2G, we essentially have no coordination.
+Secondly, when faced with an adversarial ordering, the partitioning scheme allows big jumps / re-orderings, which reduces the number of validations and \textit{increases} the objective value of both parallel algorithms.}
 
 
 

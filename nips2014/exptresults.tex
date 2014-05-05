@@ -44,44 +44,44 @@
 			\label{appfig:speedup_zigzag_setcover}
 	  \end{subfigure} \\
 	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_bigsynthetic_maxgraphcut.png}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_bigsynthetic_maxgraphcut.png}
 			\caption{}
-			\label{appfig:diffFA_Hogwild_bigsynthetic_maxgraphcut}
+			\label{appfig:diffFA_CF2G_bigsynthetic_maxgraphcut}
 	  \end{subfigure} &
 	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_bigsynthetic_setcover.png}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_bigsynthetic_setcover.png}
 			\caption{}
-			\label{appfig:diffFA_Hogwild_bigsynthetic_setcover}
+			\label{appfig:diffFA_CF2G_bigsynthetic_setcover}
 	  \end{subfigure} &
 	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_zigzag_maxgraphcut.png}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_zigzag_maxgraphcut.png}
 			\caption{}
-			\label{appfig:diffFA_Hogwild_zigzag_maxgraphcut}
+			\label{appfig:diffFA_CF2G_zigzag_maxgraphcut}
 	  \end{subfigure} &
 	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/diffFA_Hogwild_zigzag_setcover.png}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_zigzag_setcover.png}
 			\caption{}
-			\label{appfig:diffFA_Hogwild_zigzag_setcover}
+			\label{appfig:diffFA_CF2G_zigzag_setcover}
 	  \end{subfigure} \\
 	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/validated_OCC_bigsynthetic_maxgraphcut.png}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_bigsynthetic_maxgraphcut.png}
 			\caption{}
-			\label{appfig:validated_OCC_bigsynthetic_maxgraphcut}
+			\label{appfig:validated_CC2G_bigsynthetic_maxgraphcut}
 	  \end{subfigure} &
 	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/validated_OCC_bigsynthetic_setcover.png}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_bigsynthetic_setcover.png}
 			\caption{}
-			\label{appfig:validated_OCC_bigsynthetic_setcover}
+			\label{appfig:validated_CC2G_bigsynthetic_setcover}
 	  \end{subfigure} &
 	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/validated_OCC_zigzag_maxgraphcut.png}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_zigzag_maxgraphcut.png}
 			\caption{}
-			\label{appfig:validated_OCC_zigzag_maxgraphcut}
+			\label{appfig:validated_CC2G_zigzag_maxgraphcut}
 	  \end{subfigure} &
 	  \begin{subfigure}[b]{0.22\textwidth}
-	  	\includegraphics[width=110pt]{images/validated_OCC_zigzag_setcover.png}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_zigzag_setcover.png}
 			\caption{}
-			\label{appfig:validated_OCC_zigzag_setcover}
+			\label{appfig:validated_CC2G_zigzag_setcover}
 	  \end{subfigure} \\
   \end{tabular}
   \caption{Experimental results on Erdos-Renyi and ZigZag synthetic graphs.}
@@ -90,137 +90,557 @@
 
 \begin{figure}[ht]
   \centering
-  \begin{tabular}{ccc}
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_friendster10M_setcover.png}
-			\caption{Runtime, Friendster}
+  \begin{tabular}{cccc}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_friendster10M_setcover.png}
+			\caption{}
 			\label{appfig:runtime_friendster10M_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_arabic2005_setcover.png}
-			\caption{Runtime, Arabic-2005}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_arabic2005_setcover.png}
+			\caption{}
 			\label{appfig:runtime_arabic2005_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_uk2005_setcover.png}
-			\caption{Runtime, UK-2005}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_uk2005_setcover.png}
+			\caption{}
 			\label{appfig:runtime_uk2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_it2004_setcover.png}
+			\caption{}
+			\label{appfig:runtime_it2004_setcover}
 	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/speedup_friendster10M_setcover.png}
-			\caption{Speed-up, Friendster}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_friendster10M_setcover.png}
+			\caption{}
 			\label{appfig:speedup_friendster10M_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/speedup_arabic2005_setcover.png}
-			\caption{Speed-up, Arabic-2005}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_arabic2005_setcover.png}
+			\caption{}
 			\label{appfig:speedup_arabic2005_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/speedup_uk2005_setcover.png}
-			\caption{Speed-up, UK-2005}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_uk2005_setcover.png}
+			\caption{}
 			\label{appfig:speedup_uk2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_it2004_setcover.png}
+			\caption{}
+			\label{appfig:speedup_it2004_setcover}
 	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_friendster10M_setcover.png}
-			\caption{Hogwild $F(A)$, Friendster}
-			\label{appfig:diffFA_Hogwild_friendster10M_setcover}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_friendster10M_setcover.png}
+			\caption{}
+			\label{appfig:diffFA_CF2G_friendster10M_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_arabic2005_setcover.png}
-			\caption{Hogwild $F(A)$, Arabic-2005}
-			\label{appfig:diffFA_Hogwild_arabic2005_setcover}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_arabic2005_setcover.png}
+			\caption{}
+			\label{appfig:diffFA_CF2G_arabic2005_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_uk2005_setcover.png}
-			\caption{Hogwild $F(A)$, UK-2005}
-			\label{appfig:diffFA_Hogwild_uk2005_setcover}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_uk2005_setcover.png}
+			\caption{}
+			\label{appfig:diffFA_CF2G_uk2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_it2004_setcover.png}
+			\caption{}
+			\label{appfig:diffFA_CF2G_it2004_setcover}
 	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_friendster10M_setcover.png}
-			\caption{OCC \# validated, Friendster}
-			\label{appfig:validated_OCC_friendster10M_setcover}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_friendster10M_setcover.png}
+			\caption{}
+			\label{appfig:validated_CC2G_friendster10M_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_arabic2005_setcover.png}
-			\caption{OCC \# validated, Arabic-2005}
-			\label{appfig:validated_OCC_arabic2005_setcover}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_arabic2005_setcover.png}
+			\caption{}
+			\label{appfig:validated_CC2G_arabic2005_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_uk2005_setcover.png}
-			\caption{OCC \# validated, UK-2005}
-			\label{appfig:validated_OCC_uk2005_setcover}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_uk2005_setcover.png}
+			\caption{}
+			\label{appfig:validated_CC2G_uk2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_it2004_setcover.png}
+			\caption{}
+			\label{appfig:validated_CC2G_it2004_setcover}
 	  \end{subfigure} \\
   \end{tabular}
-  \caption{Set cover on 3 real graphs.}
+  \caption{Set cover on 4 real graphs.}
 \end{figure}
 
 
 
 \begin{figure}[ht]
   \centering
-  \begin{tabular}{ccc}
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_friendster10M_maxgraphcut.png}
-			\caption{Runtime, Friendster}
+  \begin{tabular}{cccc}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_friendster10M_maxgraphcut.png}
+			\caption{}
 			\label{appfig:runtime_friendster10M_maxgraphcut}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_arabic2005_maxgraphcut.png}
-			\caption{Runtime, Arabic-2005}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_arabic2005_maxgraphcut.png}
+			\caption{}
 			\label{appfig:runtime_arabic2005_maxgraphcut}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_uk2005_maxgraphcut.png}
-			\caption{Runtime, UK-2005}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_uk2005_maxgraphcut.png}
+			\caption{}
 			\label{appfig:runtime_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_it2004_maxgraphcut.png}
+			\caption{}
+			\label{appfig:runtime_it2004_maxgraphcut}
 	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/speedup_friendster10M_maxgraphcut.png}
-			\caption{Speed-up, Friendster}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_friendster10M_maxgraphcut.png}
+			\caption{}
 			\label{appfig:speedup_friendster10M_maxgraphcut}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/speedup_arabic2005_maxgraphcut.png}
-			\caption{Speed-up, Arabic-2005}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_arabic2005_maxgraphcut.png}
+			\caption{}
 			\label{appfig:speedup_arabic2005_maxgraphcut}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/speedup_uk2005_maxgraphcut.png}
-			\caption{Speed-up, UK-2005}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_uk2005_maxgraphcut.png}
+			\caption{}
 			\label{appfig:speedup_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_it2004_maxgraphcut.png}
+			\caption{}
+			\label{appfig:speedup_it2004_maxgraphcut}
 	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_friendster10M_maxgraphcut.png}
-			\caption{Hogwild $F(A)$, Friendster}
-			\label{appfig:diffFA_Hogwild_friendster10M_maxgraphcut}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_friendster10M_maxgraphcut.png}
+			\caption{}
+			\label{appfig:diffFA_CF2G_friendster10M_maxgraphcut}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_arabic2005_maxgraphcut.png}
-			\caption{Hogwild $F(A)$, Arabic-2005}
-			\label{appfig:diffFA_Hogwild_arabic2005_maxgraphcut}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_arabic2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:diffFA_CF2G_arabic2005_maxgraphcut}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/diffFA_Hogwild_uk2005_maxgraphcut.png}
-			\caption{Hogwild $F(A)$, UK-2005}
-			\label{appfig:diffFA_Hogwild_uk2005_maxgraphcut}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_uk2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:diffFA_CF2G_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_it2004_maxgraphcut.png}
+			\caption{}
+			\label{appfig:diffFA_CF2G_it2004_maxgraphcut}
 	  \end{subfigure} \\
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_friendster10M_maxgraphcut.png}
-			\caption{OCC \# validated, Friendster}
-			\label{appfig:validated_OCC_friendster10M_maxgraphcut}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_friendster10M_maxgraphcut.png}
+			\caption{}
+			\label{appfig:validated_CC2G_friendster10M_maxgraphcut}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_arabic2005_maxgraphcut.png}
-			\caption{OCC \# validated, Arabic-2005}
-			\label{appfig:validated_OCC_arabic2005_maxgraphcut}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_arabic2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:validated_CC2G_arabic2005_maxgraphcut}
 	  \end{subfigure} &
-	  \begin{subfigure}[b]{0.31\textwidth}
-	  	\includegraphics[width=150pt]{images/validated_OCC_uk2005_maxgraphcut.png}
-			\caption{OCC \# validated, UK-2005}
-			\label{appfig:validated_OCC_uk2005_maxgraphcut}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_uk2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:validated_CC2G_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_it2004_maxgraphcut.png}
+			\caption{}
+			\label{appfig:validated_CC2G_it2004_maxgraphcut}
 	  \end{subfigure} \\
   \end{tabular}
-  \caption{Max graph cut on 3 real graphs.}
+  \caption{Max graph cut on 4 real graphs.}
 \end{figure}
 
+
+
+
+
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cccc}
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_ring_setcover.png}
+			\caption{}
+			\label{appfig:runtime_ring_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_ring_setcover.png}
+			\caption{}
+			\label{appfig:speedup_ring_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_ring_setcover.png}
+			\caption{}
+			\label{appfig:diffFA_CF2G_ring_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_ring_setcover.png}
+			\caption{}
+			\label{appfig:validated_CC2G_ring_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/runtime_ring_maxgraphcut.png}
+			\caption{}
+			\label{appfig:runtime_ring_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/speedup_ring_maxgraphcut.png}
+			\caption{}
+			\label{appfig:speedup_ring_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/diffFA_CF2G_ring_maxgraphcut.png}
+			\caption{}
+			\label{appfig:diffFA_CF2G_ring_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images/validated_CC2G_ring_maxgraphcut.png}
+			\caption{}
+			\label{appfig:validated_CC2G_ring_maxgraphcut.png}
+	  \end{subfigure} \\
+  \end{tabular}
+  \caption{\footnotesize Experimental results for ring graph on set cover problem.}
+\label{appfig:results_adversarial}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Full experiment results, using partitioning with work stealing}
+\label{app:exptresults_partition}
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cccc}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_erdosrenyi_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:runtime_erdosrenyi_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_erdosrenyi_setcover.png}
+			\caption{}
+			\label{appfig:partition:runtime_erdosrenyi_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_zigzag_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:runtime_zigzag_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_zigzag_setcover.png}
+			\caption{}
+			\label{appfig:partition:runtime_zigzag_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_erdosrenyi_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:speedup_erdosrenyi_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_erdosrenyi_setcover.png}
+			\caption{}
+			\label{appfig:partition:speedup_erdosrenyi_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_zigzag_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:speedup_zigzag_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_zigzag_setcover.png}
+			\caption{}
+			\label{appfig:partition:speedup_zigzag_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_erdosrenyi_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_erdosrenyi_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_erdosrenyi_setcover.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_erdosrenyi_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_zigzag_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_zigzag_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_zigzag_setcover.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_zigzag_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_erdosrenyi_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_erdosrenyi_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_erdosrenyi_setcover.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_erdosrenyi_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_zigzag_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_zigzag_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_zigzag_setcover.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_zigzag_setcover}
+	  \end{subfigure} \\
+  \end{tabular}
+  \caption{Experimental results (with partitioning) on Erdos-Renyi and ZigZag synthetic graphs.}
+\end{figure}
+
+
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cccc}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_friendster_setcover.png}
+			\caption{}
+			\label{appfig:partition:runtime_friendster_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_arabic2005_setcover.png}
+			\caption{}
+			\label{appfig:partition:runtime_arabic2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_uk2005_setcover.png}
+			\caption{}
+			\label{appfig:partition:runtime_uk2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_it2004_setcover.png}
+			\caption{}
+			\label{appfig:partition:runtime_it2004_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_friendster_setcover.png}
+			\caption{}
+			\label{appfig:partition:speedup_friendster_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_arabic2005_setcover.png}
+			\caption{}
+			\label{appfig:partition:speedup_arabic2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_uk2005_setcover.png}
+			\caption{}
+			\label{appfig:partition:speedup_uk2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_it2004_setcover.png}
+			\caption{}
+			\label{appfig:partition:speedup_it2004_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_friendster_setcover.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_friendster_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_arabic2005_setcover.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_arabic2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_uk2005_setcover.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_uk2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_it2004_setcover.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_it2004_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_friendster_setcover.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_friendster_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_arabic2005_setcover.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_arabic2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_uk2005_setcover.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_uk2005_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_it2004_setcover.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_it2004_setcover}
+	  \end{subfigure} \\
+  \end{tabular}
+  \caption{Set cover (with partitioning) on 4 real graphs.}
+\end{figure}
+
+
+
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cccc}
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_friendster_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:runtime_friendster_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_arabic2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:runtime_arabic2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_uk2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:runtime_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_it2004_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:runtime_it2004_maxgraphcut}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_friendster_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:speedup_friendster_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_arabic2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:speedup_arabic2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_uk2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:speedup_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_it2004_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:speedup_it2004_maxgraphcut}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_friendster_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_friendster_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_arabic2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_arabic2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_uk2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_it2004_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_it2004_maxgraphcut}
+	  \end{subfigure} \\
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_friendster_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_friendster_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_arabic2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_arabic2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_uk2005_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_uk2005_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[b]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_it2004_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_it2004_maxgraphcut}
+	  \end{subfigure} \\
+  \end{tabular}
+  \caption{Max graph cut (with partitioning) on 4 real graphs.}
+\end{figure}
+
+
+
+
+
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cccc}
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_ring_setcover.png}
+			\caption{}
+			\label{appfig:partition:runtime_ring_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_ring_setcover.png}
+			\caption{}
+			\label{appfig:partition:speedup_ring_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_ring_setcover.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_ring_setcover}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_ring_setcover.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_ring_setcover}
+	  \end{subfigure} \\
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/runtime_ring_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:runtime_ring_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/speedup_ring_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:speedup_ring_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/diffFA_CF2G_ring_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:diffFA_CF2G_ring_maxgraphcut}
+	  \end{subfigure} &
+	  \begin{subfigure}[h]{0.22\textwidth}
+	  	\includegraphics[width=110pt]{images_partition/validated_CC2G_ring_maxgraphcut.png}
+			\caption{}
+			\label{appfig:partition:validated_CC2G_ring_maxgraphcut.png}
+	  \end{subfigure} \\
+  \end{tabular}
+  \caption{\footnotesize Experimental results (with partitioning) for ring graph on set cover problem.}
+\label{appfig:partition:results_adversarial}
+\end{figure}
