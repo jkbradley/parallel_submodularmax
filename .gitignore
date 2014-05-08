@@ -13,3 +13,5 @@ nips2014/*.log
 nips2014/*.out
 nips2014/*.synctex.gz
 nips2014/*.fdb_latexmk
+nips2014/*.fdb_latexmk
+nips2014/parallel_submodular.pdf
