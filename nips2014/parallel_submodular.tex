@@ -47,6 +47,8 @@
 \newcommand{\eg}{{\em e.g.,}~}
 
 \newcommand{\hogwild}{CF2G}
+\newcommand{\occ}{CC2G}
+\newcommand{\seqalg}{Seq2G}
 
 \begingroup
     \makeatletter
@@ -311,8 +313,8 @@ In this paper, we focus on unconstrained non-monotone submodular maximization.. 
 Contributions of the paper
 \begin{enumerate}
 \item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which allows one to choose between speed and stronger approximation guarantees.
-\item We prove the serial equivalence of OCC to the sequential algorithm; we analytically bound the amount of coordination of the OCC algorithm for two example problems.
-\item We provide approximation guarantees for hogwild; we analytically bound the expected loss in objective value for two example problems.
+\item We prove the serial equivalence of \occ{} to the sequential algorithm; we analytically bound the amount of coordination of the \occ{} algorithm for two example problems.
+\item We provide approximation guarantees for \hogwild{}; we analytically bound the expected loss in objective value for two example problems.
 \item We demonstrate empirically using two synthetic and three real datasets that our parallel algorithms perform well in terms of both speed and objective values.
 \end{enumerate}
 
@@ -320,11 +322,11 @@ Contributions of the paper
 
 The bidirectional greedy algorithm \cite{buchbinder2012} gives an approximation of $E[F(A)] = 1/2 f(OPT)$, where $A$ is the algorithm output, and $OPT$ is an optimal solution.
 
-The hogwild algorithm can give an approximation of $E[F(A)] = \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$, where $\rho_i$ is the maximum difference in the marginal gain that may result from not knowing the full information when deciding whether to include or exclude element $i$.
+The \hogwild{} algorithm can give an approximation of $E[F(A)] = \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$, where $\rho_i$ is the maximum difference in the marginal gain that may result from not knowing the full information when deciding whether to include or exclude element $i$.
 
-The OCC algorithm \xinghao{for the lack of a better name} guarantees an outcome that is equivalent to a sequential run of the bidirectional greedy algorithm.
-Theoretical properties of the bidirectional greedy algorithm immediately translates to the OCC algorithm -- in particular, the OCC algorithm gives the same approximation factor of $1/2$.
-In contrast to the hogwild approach, OCC introduces more coordination and thus provides less concurrency.
+The \occ{} algorithm \xinghao{for the lack of a better name} guarantees an outcome that is equivalent to a sequential run of the bidirectional greedy algorithm.
+Theoretical properties of the bidirectional greedy algorithm immediately translates to the \occ{} algorithm -- in particular, the \occ{} algorithm gives the same approximation factor of $1/2$.
+In contrast to the \hogwild{} approach, \occ{} introduces more coordination and thus provides less concurrency.
 
 
 
@@ -398,7 +400,7 @@ Work is only required to demonstrate that coordination is limited.
 
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{Hogwild bidirectional greedy}
+        \caption{\hogwild{} bidirectional greedy}
         \label{alg:hogwild}
         \lFor{$e\in V$}{$\hat{A}(e) = 0$, $\hat{B}(e) = 1$}\;
         \ParForAll{$p \in \set{1, \ldots, P}$}{
@@ -419,7 +421,7 @@ Work is only required to demonstrate that coordination is limited.
 
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{Hogwild for separable sums}
+        \caption{\hogwild{} for separable sums}
         \label{alg:hogwildsepsum}
         \lFor{$e\in V$}{$\hat{A}(e) = 0$}\;
         \lFor{$l = 1,\dots,L$}{$\hat\alpha_l = 0$, $\hat\beta_l = \sum_{e\in S_l}w_l(e)$}\;
@@ -448,8 +450,8 @@ Work is only required to demonstrate that coordination is limited.
     \begin{minipage}{0.49\textwidth}
 \begin{algorithm}[H]
 \DontPrintSemicolon
-\caption{OCC bidirectional greedy}
-\label{alg:occ}
+\caption{\occ{} bidirectional greedy}
+\label{alg:occ{}}
 \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}\;
 \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}\;
 \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}\;
@@ -459,25 +461,25 @@ $\iota = 0$\;
     $e = $ next element to process\;
     $\tilde{A}(e) \leftarrow 1$\;
     $\tilde{B}(e) \leftarrow 0$\;
-    $i = \iota$; $\iota \leftarrow \iota + 1$\;\label{alg:occ:time}
-    $\Delta_+^{\min}(e) = F(\tilde{A} \cup e) - F(\tilde{A})$\;\label{alg:occ:deltaplusmin}
-    $\Delta_+^{\max}(e) = F(\hat{A}   \cup e) - F(\hat{A})$\;\label{alg:occ:deltaplusmax}
-    $\Delta_-^{\min}(e) = F(\tilde{B} \backslash e) - F(\tilde{B})$\;\label{alg:occ:deltaminusmin}
-    $\Delta_-^{\max}(e) = F(\hat{B}   \backslash e) - F(\hat{B})$\;\label{alg:occ:deltaminusmax}
+    $i = \iota$; $\iota \leftarrow \iota + 1$\;\label{alg:occ{}:time}
+    $\Delta_+^{\min}(e) = F(\tilde{A} \cup e) - F(\tilde{A})$\;\label{alg:occ{}:deltaplusmin}
+    $\Delta_+^{\max}(e) = F(\hat{A}   \cup e) - F(\hat{A})$\;\label{alg:occ{}:deltaplusmax}
+    $\Delta_-^{\min}(e) = F(\tilde{B} \backslash e) - F(\tilde{B})$\;\label{alg:occ{}:deltaminusmin}
+    $\Delta_-^{\max}(e) = F(\hat{B}   \backslash e) - F(\hat{B})$\;\label{alg:occ{}:deltaminusmax}
     Draw $u_e \sim Unif(0,1)$\;
-    \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{\label{alg:occ:decisioninclude}
+    \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{\label{alg:occ{}:decisioninclude}
       result$(i) \leftarrow 1$\;
     }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
       result$(i) \leftarrow -1$\;
     }
-    \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
+    \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ{}:resultwait}
     \lIf {result$(i) = 0$}{validate($p$, $e$, $i$)}\;
     \If {result$(i) = 1$}{
-      $\hat{A}(e)   \leftarrow 1$\;\label{alg:occ:ahat}
+      $\hat{A}(e)   \leftarrow 1$\;\label{alg:occ{}:ahat}
       $\tilde{B}(e) \leftarrow 1$\;
     }\Else{
       $\tilde{A}(e) \leftarrow 0$\;
-      $\hat{B}(e)   \leftarrow 0$\;\label{alg:occ:bhat}
+      $\hat{B}(e)   \leftarrow 0$\;\label{alg:occ{}:bhat}
     }
     processed$(i) = true$\;
   }
@@ -487,11 +489,11 @@ $\iota = 0$\;
 \begin{algorithm}[H]
 \DontPrintSemicolon
 \caption{validate($p$, $e$, $i$)}
-\label{alg:occvalidate}
+\label{alg:occ{}validate}
   \WaitUntil $\forall j < i$, processed$(j) = true$\;
-  $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
-  $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
-  \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
+  $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occ{}validate:deltaplus}
+  $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occ{}validate:deltaminus}
+  \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occ{}validate:decisioninclude}
     result$(i) \leftarrow 1$\;
   }\lElse{
     result$(i) \leftarrow -1$\;
@@ -514,10 +516,10 @@ $\iota = 0$\;
 
 
 
-\section{Hogwild Bidirectional Greedy Algorithm}
-\xinghao{Provide more intuition for what the OCC algorithm is doing.}
+\section{\hogwild{} Bidirectional Greedy Algorithm}
+\xinghao{Provide more intuition for what the \occ{} algorithm is doing.}
 
-Algorithm \ref{alg:hogwild}\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; the hogwild algorithm can also be extended to the multilinear version of \cite{buchbinder2012}.} is the hogwild parallel bidirectional greedy unconstrained submodular maximization algorithm.
+Algorithm \ref{alg:hogwild}\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; the \hogwild{} algorithm can also be extended to the multilinear version of \cite{buchbinder2012}.} is the \hogwild{} parallel bidirectional greedy unconstrained submodular maximization algorithm.
 We associate with each element $e$ a time $T_e$ at which Algorithm \ref{alg:hogwild} line \ref{alg:hogwild:time} is executed, and order the elements according to the times $T_e$.
 Let $\iota(e)$ be the position of $e$ in this ordering.
 This total ordering on elements also allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
@@ -553,7 +555,7 @@ $\Delta_{+}(e) \leq \Delta_{+}^{\max}(e)$, and
 $\Delta_{-}(e) \leq \Delta_{-}^{\max}(e)$.
 \end{cor}
 
-\subsection{Hogwild for separable sums $F$}
+\subsection{\hogwild{} for separable sums $F$}
 For some functions $F$, we can maintain sketches / statistics to aid the computation of $\Delta_+^{\max}$, $\Delta_-^{\max}$, and obtain the bounds given in Corollary \ref{cor:delta_bound}.
 In particular, we consider functions of the form
 $
@@ -604,48 +606,48 @@ Following arguments analogous to that of Lemma \ref{lem:set_bound}, we can show:
 
 
 \section{Optimistic Concurrency Control for Bidirectional Greedy Algorithm}
-\xinghao{Provide more intuition for what the OCC algorithm is doing.}
+\xinghao{Provide more intuition for what the \occ{} algorithm is doing.}
 
-Algorithm \ref{alg:occ}\footnote{The synchronization required by the OCC algorithm can be further reduced, for example, by replacing the operations from Line \ref{alg:occ:resultwait} onwards by a non-blocking function call.} is the OCC bidirectional greedy algorithm.
-Unlike the hogwild algorithm, the OCC algorithm ensures serial equivalence by maintaining four sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$.
+Algorithm \ref{alg:occ{}}\footnote{The synchronization required by the \occ{} algorithm can be further reduced, for example, by replacing the operations from Line \ref{alg:occ{}:resultwait} onwards by a non-blocking function call.} is the \occ{} bidirectional greedy algorithm.
+Unlike the \hogwild{} algorithm, the \occ{} algorithm ensures serial equivalence by maintaining four sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$.
 Each thread can determine locally if a decision to include / exclude an element can be taken safely.
-Otherwise, the validation process (Algorithm \ref{alg:occvalidate}) waits until it is certain about $A$, $B$ before proceeding.
+Otherwise, the validation process (Algorithm \ref{alg:occ{}validate}) waits until it is certain about $A$, $B$ before proceeding.
 
-The serialization order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ:time} of Algorithm \ref{alg:occ}.
-We define $\hat{A}_e$, $\hat{B}_e$, $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with the hogwild algorithm, and additionally let $\tilde{A}_e$ and $\tilde{B}_e$ be the vectors of $\tilde{A}$ and $\tilde{B}$ that are used in the computation of $\Delta_+^{\min}(e)$ and $\Delta_-^{\min}(e)$.
-We will show that the outcome of Algorithm \ref{alg:occ} is equivalent to the sequential algorithm executed with ordering $\iota$.
+The serialization order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ{}:time} of Algorithm \ref{alg:occ{}}.
+We define $\hat{A}_e$, $\hat{B}_e$, $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with the \hogwild{} algorithm, and additionally let $\tilde{A}_e$ and $\tilde{B}_e$ be the vectors of $\tilde{A}$ and $\tilde{B}$ that are used in the computation of $\Delta_+^{\min}(e)$ and $\Delta_-^{\min}(e)$.
+We will show that the outcome of Algorithm \ref{alg:occ{}} is equivalent to the sequential algorithm executed with ordering $\iota$.
 
 \begin{lem} $\hat{A}_e \subseteq A^{\iota(e)-1} \subseteq \tilde{A}_e \backslash e$, and $\hat{B}_e \supseteq B^{\iota(e)-1} \supseteq \tilde{B}_e \cup e$.
 \end{lem}
 \begin{proof}
 Clearly, $e \in \tilde{B}_e\cup e$ but $e\not\in \tilde{A}_e\backslash e$.
 By definition, $e \in B^{\iota(e)-1}$ but $e\not\in A^{\iota(e)-1}$.
-The OCC algorithm (Algorithm \ref{alg:occ}) only modifies $\hat{A}(e)$ and $\hat{B}(e)$ on Lines \ref{alg:occ:ahat}, \ref{alg:occ:bhat} when processing $e$, which occurs after the computation of the $\Delta$'s on Lines \ref{alg:occ:deltaplusmin} - \ref{alg:occ:deltaminusmax}, so $e \in \hat{B}_e$ but $e\not\in \hat{A}_e$.
+The \occ{} algorithm (Algorithm \ref{alg:occ{}}) only modifies $\hat{A}(e)$ and $\hat{B}(e)$ on Lines \ref{alg:occ{}:ahat}, \ref{alg:occ{}:bhat} when processing $e$, which \occ{}urs after the computation of the $\Delta$'s on Lines \ref{alg:occ{}:deltaplusmin} - \ref{alg:occ{}:deltaminusmax}, so $e \in \hat{B}_e$ but $e\not\in \hat{A}_e$.
 
 Consider any $e'\neq e$.
 Suppose $e' \in \hat{A}_e$.
-This is only possible if we have processed Line \ref{alg:occ:ahat}, which implies (by Line \ref{alg:occ:resultwait}) that $\forall j < \iota(e'), \text{result}(j) \neq 0$.
-But at the time when $\hat{A}_e$ is read (Lines \ref{alg:occ:deltaplusmin} - \ref{alg:occ:deltaminusmax}), we have result$(e)=0$, so it must be the case that $\iota(e') < \iota(e)$.
+This is only possible if we have processed Line \ref{alg:occ{}:ahat}, which implies (by Line \ref{alg:occ{}:resultwait}) that $\forall j < \iota(e'), \text{result}(j) \neq 0$.
+But at the time when $\hat{A}_e$ is read (Lines \ref{alg:occ{}:deltaplusmin} - \ref{alg:occ{}:deltaminusmax}), we have result$(e)=0$, so it must be the case that $\iota(e') < \iota(e)$.
 Thus, $e' \in A^{\iota(e)-1}$.
 
 Now suppose $e' \in A^{\iota(e)-1}$.
 By definition, this implies $\iota(e') < \iota(e)$ and $e \in A$, which in turn implies result$(\iota(e'))=1$.
-Hence, it must be the case that we have already set $\tilde{A}(e') \leftarrow 1$ (by the ordering imposed by $\iota$ on Line \ref{alg:occ:time}), but never execute $\tilde{A}(e') \leftarrow 0$, so $e' \in \tilde{A}_e$.
+Hence, it must be the case that we have already set $\tilde{A}(e') \leftarrow 1$ (by the ordering imposed by $\iota$ on Line \ref{alg:occ{}:time}), but never execute $\tilde{A}(e') \leftarrow 0$, so $e' \in \tilde{A}_e$.
 
 An analogous argument shows $e' \not\in \hat{B}_e \implies e' \not\in B^{\iota(e)-1} \implies e' \not\in\tilde{B}_e \cup e$.
 \end{proof}
 
 \begin{lem}
-During the validation process for element $e$, on Lines \ref{alg:occvalidate:deltaplus}, \ref{alg:occvalidate:deltaminus} of Algorithm \ref{alg:occvalidate}, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
+During the validation process for element $e$, on Lines \ref{alg:occ{}validate:deltaplus}, \ref{alg:occ{}validate:deltaminus} of Algorithm \ref{alg:occ{}validate}, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{lem}
 \begin{proof}
-At Line \ref{alg:occvalidate:deltaplus}, we have guaranteed that $\forall j < \iota(e)$, processed$(j) = true$.
+At Line \ref{alg:occ{}validate:deltaplus}, we have guaranteed that $\forall j < \iota(e)$, processed$(j) = true$.
 Thus, $\forall e': \iota(e') < \iota(e)$, $e' \in \hat{A} \iff e' \in A^{\iota(e)-1}$ and $e' \in \hat{B} \iff e' \in B^{\iota(e)-1}$.
-On the other hand, result$(\iota(e)) = 0$, so all $e'$ such that $\iota(e') > \iota(e)$ are blocked on Algorithm \ref{alg:occ} Line \ref{alg:occ:resultwait}, hence $\hat{A}(e') = 0$ and $\hat{B}(e') = 1$.
+On the other hand, result$(\iota(e)) = 0$, so all $e'$ such that $\iota(e') > \iota(e)$ are blocked on Algorithm \ref{alg:occ{}} Line \ref{alg:occ{}:resultwait}, hence $\hat{A}(e') = 0$ and $\hat{B}(e') = 1$.
 Thus, $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{proof}
 
-Algorithm \ref{alg:occ} computes
+Algorithm \ref{alg:occ{}} computes
 \begin{align*}
   \Delta_+^{\min}(e) &= F(\tilde{A}_e) - F(\tilde{A}_e \backslash e),
 & \Delta_+^{\max}(e) &= F(\hat{A}_e \cup e) - F(\hat{A})\\
@@ -653,11 +655,11 @@ Algorithm \ref{alg:occ} computes
 & \Delta_-^{\max}(e) &= F(\hat{B}_e \backslash e) - F(\hat{B}).
 \end{align*}
 
-\begin{cor}\label{lem:occdeltas} Submodularity of $F$ implies that the $\Delta$'s computed by Algorithm \ref{alg:occ} satisfy: $\Delta_+^{\min}(e) \leq \Delta_+(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_-^{\max}(e)$.
+\begin{cor}\label{lem:\occ{}deltas} Submodularity of $F$ implies that the $\Delta$'s computed by Algorithm \ref{alg:occ{}} satisfy: $\Delta_+^{\min}(e) \leq \Delta_+(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_-^{\max}(e)$.
 \end{cor}
 
 \subsection{Separable sums $F$}
-Analogous to the hogwild algorithm, we maintain $\hat\alpha_l$, $\hat\beta_l$ and additionally $\tilde\alpha_l = \sum_{j\in \tilde{A}\cup S_l} w_l(j)$ and $\tilde\beta_l = \sum_{j \in \tilde{B}\cup S_l} w_l(j)$.
+Analogous to the \hogwild{} algorithm, we maintain $\hat\alpha_l$, $\hat\beta_l$ and additionally $\tilde\alpha_l = \sum_{j\in \tilde{A}\cup S_l} w_l(j)$ and $\tilde\beta_l = \sum_{j \in \tilde{B}\cup S_l} w_l(j)$.
 It can be shown that $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$, which then allows us to compute our bounds for $\Delta$'s.% as
 %$\Delta_+^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)$,
 %$\Delta_+^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right] - \lambda v(e)$,
@@ -703,7 +705,7 @@ We want to say that we have a choice between a slower but serially equivalent al
 Nevertheless, the slower algorithm is not too slow, and the approximation guarantee of the algorithm that is not serially equivalent is not too weak.}
 
 
-\subsection{Approximation of hogwild bidirectional greedy}
+\subsection{Approximation of \hogwild{} bidirectional greedy}
 Let $F$ be submodular and non-negative.
 We assume for each $e$, there exists $\rho_e \geq 0$ such that
 $\Delta_+^{\max}(e) - \rho_e \leq \Delta_+(e)$, and
@@ -721,7 +723,7 @@ where $\kappa_F$ is the total curvature of $F$.
 Summing over $e$ then gives us $\sum_e \rho_e \leq \kappa_F\sum_e F(e)$.
 
 \begin{thm}\label{thm:randomapprox} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
-The hogwild bidirectional greedy algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
+The \hogwild{} bidirectional greedy algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
 $
 E[F(A_{hog})] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^n E[\rho_i]$,
 where $A_{hog}$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i$ is a random variable such that $\rho_i \geq \Delta_+^{\max}(i) - \Delta_+(i)$ and $\rho_i \geq \Delta_-^{\max}(i) - \Delta_-(i)$.
@@ -733,8 +735,8 @@ We prove the theorem in Appendix \ref{app:proofhogwild}.
 
 \textbf{Example: max graph cut.}
 Assuming bounded delay of $\tau$ and edges with unit weight, we can bound $\sum_i E[\rho_i] \leq 2\tau\frac{\text{\#edges}}{2N}$
-The approximation of the hogwild algorithm is then $E[F(A^n)] \geq = \frac{1}{2} F(OPT) - \tau\frac{\#\text{edges}}{2N}$.
-In sparse graphs, the hogwild algorithm is off by a small additional term, which albeit grows linearly in $\tau$.
+The approximation of the \hogwild{} algorithm is then $E[F(A^n)] \geq = \frac{1}{2} F(OPT) - \tau\frac{\#\text{edges}}{2N}$.
+In sparse graphs, the \hogwild{} algorithm is off by a small additional term, which albeit grows linearly in $\tau$.
 
 
 
@@ -748,37 +750,37 @@ Then, $\sum_e E[\rho_e] \geq \tau + L(1-\lambda^\tau)$, which is linear in $\tau
 
 
 
-\subsection{Correctness of OCC}
-\begin{thm} OCC bidirectional greedy is serially equivalent to bidirectional greedy.
+\subsection{Correctness of \occ{}}
+\begin{thm} \occ{} bidirectional greedy is serially equivalent to bidirectional greedy.
 \end{thm}
 \begin{proof}
-We will denote by $A_{seq}^i$, $B_{seq}^i$ the sets generated by the sequential algorithm, reserving $A^i$, $B^i$ for sets generated by the OCC algorithm.
+We will denote by $A_{seq}^i$, $B_{seq}^i$ the sets generated by the sequential algorithm, reserving $A^i$, $B^i$ for sets generated by the \occ{} algorithm.
 It suffices to show by induction that $A_{seq}^i = A^i$ and $B_{seq}^i = B^i$.
 For the base case, $A^0 = \emptyset = A_{seq}^0$, and $B^0 = V = B_{seq}^0$.
 Consider any element $e$.
-The OCC algorithm includes $e \in A$ iff $u_e < [\Delta_+^{\min}(e)]_+ ([\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+)^{-1}$ on Algorithm \ref{alg:occ} Line \ref{alg:occ:decisioninclude} or $u_e < [\Delta_+^{\text{exact}}(e)]_+ ([\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+)^{-1}$ on Algorithm \ref{alg:occvalidate} Line \ref{alg:occvalidate:decisioninclude}.
-In both cases, Corollary \ref{lem:occdeltas} implies $u_e < [\Delta_+(e)]_+ ([\Delta_+(e)]_+ + [\Delta_-(e)]_+)^{-1}$.
+The \occ{} algorithm includes $e \in A$ iff $u_e < [\Delta_+^{\min}(e)]_+ ([\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+)^{-1}$ on Algorithm \ref{alg:occ{}} Line \ref{alg:occ{}:decisioninclude} or $u_e < [\Delta_+^{\text{exact}}(e)]_+ ([\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+)^{-1}$ on Algorithm \ref{alg:occ{}validate} Line \ref{alg:occ{}validate:decisioninclude}.
+In both cases, Corollary \ref{lem:\occ{}deltas} implies $u_e < [\Delta_+(e)]_+ ([\Delta_+(e)]_+ + [\Delta_-(e)]_+)^{-1}$.
 By induction, $A^{\iota(e)-1} = A_{seq}^{\iota(e)-1}$ and $B^{\iota(e)-1} = B_{seq}^{\iota(e)-1}$, so the threshold is exactly that computed by the sequential algorithm.
-Hence, the OCC algorithm includes $e \in A$ iff the sequential algorithm includes $e \in A$.
+Hence, the \occ{} algorithm includes $e \in A$ iff the sequential algorithm includes $e \in A$.
 (An analogous argument works for the case where $e$ is excluded from $B$.)
 
 \end{proof}
 
-As an immediate consequence, theoretical properties of the sequential algorithm are preserved by the OCC algorithm, including the approximation guarantees:
+As an immediate consequence, theoretical properties of the sequential algorithm are preserved by the \occ{} algorithm, including the approximation guarantees:
 
 \begin{thm} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
-The OCC bidirectional greedy algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
-$E[F(A_{OCC})] \geq \frac{1}{2}F^*$,
-where $A_{OCC}$ is the output of the algorithm, and $F^*$ is the optimal value.
+The \occ{} bidirectional greedy algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
+$E[F(A_{\occ{}})] \geq \frac{1}{2}F^*$,
+where $A_{\occ{}}$ is the output of the algorithm, and $F^*$ is the optimal value.
 \end{thm}
 
 
 
 
-\subsection{Scalability of OCC}
+\subsection{Scalability of \occ{}}
 Whenever an element is validated, it needs to wait for all earlier elements to be processed, and it blocks all later elements from being processed.
 Each validation effectively constitutes a barrier to the parallel processing.
-Hence, the scalability of the OCC algorithm is dependent on the number of validated elements.
+Hence, the scalability of the \occ{} algorithm is dependent on the number of validated elements.
 Nevertheless, we show for a couple of example problems that the number of validated elements can be bounded.
 Full details of the bounds are given in Appendix \ref{app:proofocc}.
 
@@ -811,8 +813,8 @@ We implemented the parallel and sequential double greedy algorithms in Java / Sc
 Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16 threads, for 10 iterations.
 
 We measured the runtime and speedup (ratio of runtime on 1 thread to runtime on $p$ threads).
-For the hogwild algorithm, we measured $F(A_{hog})-F(A_{seq})$, the difference between the objective value on the sets returned by hogwild and the sequential algorithms.
-We verified the correctness of the OCC algorithm by comparing the sets returned by the OCC and sequential algorithms, and also measured the fraction of elements that are validated by OCC.
+For the \hogwild{} algorithm, we measured $F(A_{hog})-F(A_{seq})$, the difference between the objective value on the sets returned by \hogwild{} and the sequential algorithms.
+We verified the correctness of the \occ{} algorithm by comparing the sets returned by the \occ{} and sequential algorithms, and also measured the fraction of elements that are validated by \occ{}.
 
 %\begin{table}[h]
 %\centering
@@ -894,8 +896,8 @@ The set cover problem is reduced to a vertex cover on the directed graph.
   \caption{\footnotesize Experimental results.
   Fig \ref{fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$.
   Fig \ref{fig:speedup_maxgraphcut}, \ref{fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads).
-  Fig \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and hogwild algorithms, i.e. $[F(A_{hogwild}) / F(A_{sequential}) - 1] \times 100\%$.
-  Fig \ref{fig:validated_maxgraphcut} -- percentage of elements validated by the OCC algorithm on the max graph cut problem.
+  Fig \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and \hogwild{} algorithms, i.e. $[F(A_{\hogwild{}}) / F(A_{sequential}) - 1] \times 100\%$.
+  Fig \ref{fig:validated_maxgraphcut} -- percentage of elements validated by the \occ{} algorithm on the max graph cut problem.
   }
 \label{fig:results_quality}
 \end{figure}
@@ -903,8 +905,8 @@ The set cover problem is reduced to a vertex cover on the directed graph.
 
 Due to space constraints, we only present part of our results in Figure \ref{fig:results_quality}, deferring full results to Appendix \ref{app:exptresults}.
 \textbf{Runtime, Speedup:} Both parallel algorithms are faster than the sequential algorithm with three or more threads, and show good speedup properties as more threads are added ($\sim$ 10x or more for all graphs and both functions).
-\textbf{Objective value:} The objective value of the hogwild algorithm decreases with the number of threads, but differs from the sequential objective value by less than $0.01\%$.
-\textbf{Validations:} The OCC algorithm validates more elements as threads are added, but less than 0.015\% are validated with 16 threads, which has negligible effect on the runtime / speedup.
+\textbf{Objective value:} The objective value of the \hogwild{} algorithm decreases with the number of threads, but differs from the sequential objective value by less than $0.01\%$.
+\textbf{Validations:} The \occ{} algorithm validates more elements as threads are added, but less than 0.015\% are validated with 16 threads, which has negligible effect on the runtime / speedup.
 
 \subsection{Adversarial ordering}
 
@@ -954,7 +956,7 @@ In general, it is possible to avoid such adversarial ordering by randomly permut
 
 
 \section{Related Work}
-\textbf{Similar approach, different problem: } OCC DP-means \cite{pan2013}; Hogwild SGD \cite{Recht11}; Hogwild LDA \cite{Ahmed12} / parameter servers \cite{li2013, ho2013}
+\textbf{Similar approach, different problem: } \occ{} DP-means \cite{pan2013}; \hogwild{} SGD \cite{Recht11}; \hogwild{} LDA \cite{Ahmed12} / parameter servers \cite{li2013, ho2013}
 
 \textbf{Similar problem, different approach: } distributed greedy submodular maximization for monotone functions \cite{Mirzasoleiman2013}
 
@@ -1015,7 +1017,7 @@ Future work: constrained maximization, minimization; distributed setting, where 
 \begin{comment}
 \section{Discussion on $\rho_i$}
 
-\section{Hogwild approximation for monotone $F$}
+\section{\hogwild{} approximation for monotone $F$}
 \subsection{Proof for monotone functions}
 \begin{lem}\label{lem:singleelement_monotone} If $F$ is monotone submodular, for every $1 \leq i \leq n$,
 \[E[F(O^{i-1})-F(O^i)] \leq \frac{1}{2(1-\kappa_F)} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1})].\]
@@ -1041,7 +1043,7 @@ E(f(O^{i-1}) - f(O^i) | A^{i-1}, j] &\leq \frac{\Delta_+^{\max}(i)\Delta_-^{\max
 \end{proof}
 
 \begin{thm}\label{thm:randomapprox_monotone} Let $F$ be a non-negative monotone submodular function.
-The hogwild bidirectional greedy algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
+The \hogwild{} bidirectional greedy algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
 \[
 E[F(A)] \geq \frac{1-\kappa_F}{2-\kappa_F}F^*,
 \]
