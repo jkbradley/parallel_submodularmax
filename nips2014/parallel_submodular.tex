@@ -280,13 +280,21 @@ Berkeley, CA USA 94720\\
 
 
 \begin{abstract}
-Many machine learning problems can be formulated as maximization of submodular functions. \cite{buchbinder2012} recently proposed a double greedy algorithm for unconstrained submodular maximization that achieves a tight 1/2-approximation. However, double greedy is an inherently sequential, linear time algorithm that does not scale to big data. 
+Many machine learning problems can be formulated as maximization of submodular functions.
+Recently, \cite{buchbinder2012} achieved a tight 1/2-approximation for unconstrained submodular maximization using a double greedy algorithm.
+Unfortunately, the double greedy algorithm was developed and analyzed in the serial setting limiting our ability to leverage parallel hardware.
+In this work we propose and analyze two parallel extensions to the \cite{buchbinder2012} double greedy algorithm.
+The first, \emph{coordination-free} approach emphasizes speed at the cost of a weaker approximation guarantee.
+The second, \emph{concurrency control} approach guarantees the same tight 1/2-approximation, at the cost of additional coordination and reduced parallelism.
+We bound both the weaker approximation factor and the reduction in parallelism.
+We implement and evaluate both algorithms on multi-core hardware and billion edge graphs demonstrating both the scalability and tradeoffs of each approach.
+% Many machine learning problems can be formulated as maximization of submodular functions. \cite{buchbinder2012} recently proposed a double greedy algorithm for unconstrained submodular maximization that achieves a tight 1/2-approximation. However, double greedy is an inherently sequential, linear time algorithm that does not scale to big data.
 
-We present two approaches to extend the bidirectional greedy algorithm to a parallel setting.
-The first, `coordination-free' approach emphasizes speed at the cost of a weaker approximation guarantee -- it achieves a $(1/2 - O(1/N))$ approximation for max cut on a complete graph.
-The second, `concurrency control' approach guarantees the same tight 1/2-approximation, at the cost of greater coordination.
+% We present two approaches to extend the bidirectional greedy algorithm to a parallel setting.
+% The first, `coordination-free' approach emphasizes speed at the cost of a weaker approximation guarantee -- it achieves a $(1/2 - O(1/N))$ approximation for max cut on a complete graph.
+% The second, `concurrency control' approach guarantees the same tight 1/2-approximation, at the cost of greater coordination.
 
-Our parallel algorithms scale well on synthetic and real datasets, and suffer little or no loss of objective value compared to the sequential algorithm.
+% Our parallel algorithms scale well on synthetic and real datasets, and suffer little or no loss of objective value compared to the sequential algorithm.
 \end{abstract}
 
 \section{Introduction}
@@ -384,8 +392,8 @@ Work is only required to demonstrate that coordination is limited.
         }
         %\Output{$A_n$}
       \end{algorithm}
-      
-      
+
+
       \begin{algorithm}[H]
         \DontPrintSemicolon
         \caption{Hogwild bidirectional greedy}
@@ -432,7 +440,7 @@ Work is only required to demonstrate that coordination is limited.
           }
         }
       \end{algorithm}
-      
+
     \end{minipage}
 
     \begin{minipage}{0.49\textwidth}
@@ -491,9 +499,9 @@ $\iota = 0$\;
 
   \label{fig:submax}
     \end{minipage}
-    
-    
-    
+
+
+
   \end{multicols}
 \end{figure}
 
@@ -556,7 +564,7 @@ Define
 %  $\hat\alpha_l              = \sum_{j\in \hat{A}\cup S_l} w_l(j)$,
 % $\hat\alpha_{l,e}          = \sum_{j\in \hat{A}_e\cup S_l} w_l(j)$,
 % $\alpha_l^{\iota(e)-1} = \sum_{j\in A^{\iota(e)-1}\cup S_l} w_l(j)$.
-% 
+%
 %  $\hat\beta_l              = \sum_{j\in \hat{B}\cup S_l} w_l(j)$,
 % $\hat\beta_{l,e}          = \sum_{j\in \hat{B}_e\cup S_l} w_l(j)$,
 % $\beta_l^{\iota(e)-1} = \sum_{j\in B^{\iota(e)-1}\cup S_l} w_l(j)$.
@@ -649,7 +657,7 @@ Algorithm \ref{alg:occ} computes
 \subsection{Separable sums $F$}
 Analogous to the hogwild algorithm, we maintain $\hat\alpha_l$, $\hat\beta_l$ and additionally $\tilde\alpha_l = \sum_{j\in \tilde{A}\cup S_l} w_l(j)$ and $\tilde\beta_l = \sum_{j \in \tilde{B}\cup S_l} w_l(j)$.
 It can be shown that $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$, which then allows us to compute our bounds for $\Delta$'s.% as
-%$\Delta_+^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)$, 
+%$\Delta_+^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)$,
 %$\Delta_+^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right] - \lambda v(e)$,
 %$\Delta_-^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right] + \lambda v(e)$,
 %$\Delta_-^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\tilde\beta_l^{\iota(e)-1} + w_l(e))\right] + \lambda v(e)$.
@@ -964,7 +972,7 @@ Future work: constrained maximization, minimization; distributed setting, where 
 %\subsection*{Acknowledgments}
 %This research is supported in part by NSF CISE Expeditions award CCF-1139158 and DARPA XData Award FA8750-12-2-0331, and  gifts from Amazon Web Services, Google, SAP,  Blue Goji, Cisco, Clearstory Data, Cloudera, Ericsson, Facebook, General Electric, Hortonworks, Intel, Microsoft, NetApp, Oracle, Samsung, Splunk, VMware and Yahoo!.
 %This material is also based upon work supported in part by the Office of
-%Naval Research under contract/grant number N00014-11-1-0688. 
+%Naval Research under contract/grant number N00014-11-1-0688.
 %X. Pan's work is also supported in part by a DSO National Laboratories Postgraduate Scholarship.
 
 % In the unusual situation where you want a paper to appear in the

@@ -6,3 +6,9 @@ data
 backup_concurrentcode
 
 nips2014/exptresults.log
+
+nips2014/*.aux
+nips2014/*.blg
+nips2014/*.log
+nips2014/*.out
+nips2014/*.synctex.gz

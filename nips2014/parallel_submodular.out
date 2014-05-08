@@ -15,13 +15,13 @@
 \BOOKMARK [2][-]{subsection.7.1}{Adversarial ordering}{section.7}% 15
 \BOOKMARK [1][-]{section.8}{Related Work}{}% 16
 \BOOKMARK [1][-]{section.9}{Discussions}{}% 17
-\BOOKMARK [1][-]{section.1}{Proof of bound for hogwild}{}% 18
-\BOOKMARK [2][-]{subsection.1.1}{Example: max graph cut}{section.1}% 19
-\BOOKMARK [2][-]{subsection.1.2}{Example: set cover}{section.1}% 20
-\BOOKMARK [1][-]{section.2}{Upper bound on expected number of elements sent for validation}{}% 21
-\BOOKMARK [2][-]{subsection.2.1}{Tighter general bound?}{section.2}% 22
-\BOOKMARK [2][-]{subsection.2.2}{Upper bound for max graph cut}{section.2}% 23
-\BOOKMARK [2][-]{subsection.2.3}{Upper bound for set cover}{section.2}% 24
-\BOOKMARK [1][-]{section.3}{Lemma}{}% 25
-\BOOKMARK [1][-]{section.4}{Full experiment results}{}% 26
-\BOOKMARK [1][-]{section.5}{Full experiment results, partitioning with work stealing}{}% 27
+\BOOKMARK [1][-]{appendix.A}{Proof of bound for hogwild}{}% 18
+\BOOKMARK [2][-]{subsection.A.1}{Example: max graph cut}{appendix.A}% 19
+\BOOKMARK [2][-]{subsection.A.2}{Example: set cover}{appendix.A}% 20
+\BOOKMARK [1][-]{appendix.B}{Upper bound on expected number of elements sent for validation}{}% 21
+\BOOKMARK [2][-]{subsection.B.1}{Tighter general bound?}{appendix.B}% 22
+\BOOKMARK [2][-]{subsection.B.2}{Upper bound for max graph cut}{appendix.B}% 23
+\BOOKMARK [2][-]{subsection.B.3}{Upper bound for set cover}{appendix.B}% 24
+\BOOKMARK [1][-]{appendix.C}{Lemma}{}% 25
+\BOOKMARK [1][-]{appendix.D}{Full experiment results}{}% 26
+\BOOKMARK [1][-]{appendix.E}{Full experiment results, partitioning with work stealing}{}% 27
