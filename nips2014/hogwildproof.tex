@@ -4,6 +4,9 @@
 
 We follow the proof outline of \cite{buchbinder2012}.
 
+Consider an ordering $\iota$ inducted by running \hogwild{}.
+For convenience, we will use $i$ to flexibly denote the element $e$ and its ordering $\iota(e)$.
+
 Let $OPT$ be an optimal solution to the problem.
 Define $O^i := (OPT \cup A^i) \cap B^i$.
 Note that $O^i$ coincides with $A^i$ and $B^i$ on elements $1,\dots,i$, and $O^i$ coincides with $OPT$ on elements $i+1,\dots, n$.
@@ -19,33 +22,33 @@ O^i \cup i+1 &\subseteq B^i.
 \end{proof}
 
 \begin{lem}\label{lem:singleelement} For every $1 \leq i \leq n$,
-\[E[F(O^{i-1})-F(O^i)] \leq \frac{1}{2} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1}) + \rho_i].\]
+\[E[F(O^{i-1})-F(O^i)] \leq \frac{1}{2} E[F(A^i) - F(A^{i-1}) + F(B^i) - F(B^{i-1}) + \rho_i].\]
 \end{lem}
 \begin{proof}
 We follow the proof outline of \cite{buchbinder2012}.
-First, note that it suffices to prove the inequality conditioned on knowing $A^{i-1}$ and $j$, then applying the law of total expectation.
-Under this conditioning, we also know $B^{i-1}$, $O^{i-1}$, $\Delta_+(i)$, $\Delta_+^{\max}(i)$, $\Delta_-(i)$, $\Delta_-^{\max}(i)$, and $\rho_i$.
+First, note that it suffices to prove the inequality conditioned on knowing $A^{i-1}$, $\hat{A}_i$ and $\hat{B}_i$, then applying the law of total expectation.
+Under this conditioning, we also know $B^{i-1}$, $O^{i-1}$, $\Delta_+(i)$, $\Delta_+^{\max}(i)$, $\Delta_-(i)$, and $\Delta_-^{\max}(i)$.
 
-We consider the following 9 cases.
+
+
+We consider the following 6 cases.
 
 \begin{description}
-
-
 
 \item\textbf{Case 1:} $0 < \Delta_+(i) \leq \Delta_+^{\max}(i)$, $0 \leq \Delta_-^{\max}(i)$.
 Since both $\Delta_+^{\max}(i)>0$ and $\Delta_-^{\max}(i)>0$, the probability of including $i$ is just $\Delta_+^{\max}(i) / (\Delta_+^{\max}(i) + \Delta_-^{\max}(i))$, and the probability of excluding $i$ is $\Delta_-^{\max}(i) / (\Delta_+^{\max}(i) + \Delta_-^{\max}(i))$.
 \begin{align*}
-E[F(A^i) - F(A^{i-1}) | A^{i-1}, j]
+E[F(A^i) - F(A^{i-1}) | A^{i-1}, \hat{A}_i, \hat{B}_i]
 &= \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(A^{i-1}\cup i) - F(A^{i-1}))\\
 &= \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} \Delta_+(i)\\
 &\geq \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (\Delta_+^{\max}(i) - \rho_i)\\
-E[F(B^i) - F(B^{i-1}) | A^{i-1}, j]
+E[F(B^i) - F(B^{i-1}) | A^{i-1}, \hat{A}_i, \hat{B}_i]
 &= \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(B^{i-1}\backslash i) - F(B^{i-1}))\\
 &= \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} \Delta_-(i)\\
 &\geq \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (\Delta_-^{\max}(i) - \rho_i)
 \end{align*}
 \begin{align*}
-&E[F(O^{i-1}) - F(O^i) | A^{i-1}, j]\\
+&E[F(O^{i-1}) - F(O^i) | A^{i-1}, \hat{A}_i, \hat{B}_i]\\
 =&   \frac{\Delta_+^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(O^{i-1}) - F(O^{i-1} \cup i)) \\
  & + \frac{\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)} (F(O^{i-1}) - F(O^{i-1} \backslash i)) \\
 =&\begin{cases}
@@ -70,7 +73,7 @@ where the first inequality is due to submodularity: $O^{i-1}\backslash i \supset
 
 Putting the above inequalities together:
 \begin{align*}
-&E[F(O^{i-1}) - F(O^i) | A^{i-1}, j] - \frac{1}{2} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1}) + \rho_i  | A^{i-1}, j]\\
+&E\left[F(O^{i-1}) - F(O^i) - \frac{1}{2} \bigg(F(A^i) - F(A^{i-1}) + F(B^i) - F(B^{i-1}) + \rho_i\bigg) \bigg| A^{i-1}, \hat{A}_i, \hat{B}_i\right]\\
 &\leq \frac{1/2}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}\bigg[
 2\Delta_+^{\max}(i)\Delta_-^{\max}(i)
 - \Delta_-^{\max}(i)(\Delta_-^{\max}(i) - \rho_i)\\
@@ -84,13 +87,13 @@ Putting the above inequalities together:
 \item\textbf{Case 2:} $0 < \Delta_+(i) \leq \Delta_+^{\max}(i)$, $\Delta_-^{\max}(i) < 0$.
 In this case, the algorithm always choses to include $i$, so $A^i = A^{i-1} \cup i$, $B^i = B^{i-1}$ and $O^i = O^{i-1} \cup i$:
 \begin{align*}
-E[F(A^i) - F(A^{i-1}) | A^{i-1}, j] &= F(A^{i-1} \cup i) - F(A^{i-1}) = \Delta_+(i) > 0\\
-E[F(B^i) - F(B^{i-1}) | A^{i-1}, j] &= F(B^{i-1}) - F(B^{i-1}) = 0\\
-E[F(O^{i-1}) - F(O^i) | A^{i-1}, j] &= F(O^{i-1}) - F(O^{i-1} \cup i) \\
+E[F(A^i) - F(A^{i-1}) | A^{i-1}, \hat{A}_i, \hat{B}_i] &= F(A^{i-1} \cup i) - F(A^{i-1}) = \Delta_+(i) > 0\\
+E[F(B^i) - F(B^{i-1}) | A^{i-1}, \hat{A}_i, \hat{B}_i] &= F(B^{i-1}) - F(B^{i-1}) = 0\\
+E[F(O^{i-1}) - F(O^i) | A^{i-1}, \hat{A}_i, \hat{B}_i] &= F(O^{i-1}) - F(O^{i-1} \cup i) \\
 &\leq \begin{cases}0 & \text{if $i\in OPT$} \\ F(B^{i-1} \backslash i) - F(B^{i-1}) & \text{if $i\not\in OPT$}\end{cases}\\
 &= \begin{cases}0 & \text{if $i\in OPT$} \\ \Delta_-(i) & \text{if $i\not\in OPT$}\end{cases}\\
 &\leq 0\\
-&< \frac{1}{2} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1}) + \rho_i | A^{i-1},j]
+&< \frac{1}{2} E[F(A^i) - F(A^{i-1}) + F(B^i) - F(B^{i-1}) + \rho_i | A^{i-1}, \hat{A}_i, \hat{B}_i]
 \end{align*}
 where the first inequality is due to submodularity: $O^{i-1}\cup i \subseteq B^{i-1}$.
 
@@ -110,14 +113,16 @@ Analogous to Case 2.
 This is not possible, by Lemma \ref{lem:positivesum}.
 
 
-
-
-
-
-
-
 \end{description}
 \end{proof}
+
+
+
+
+
+
+
+\begin{comment}
 
 (\xinghao{Note} If we weaken the assumption of $\Delta_+(i) \leq \Delta_+^{\max}(i)$ to $\Delta_+(i) \leq \Delta_+^{\max}(i) + \epsilon_i$, then in Case 6 above, we can instead bound
 \begin{align*}
@@ -126,11 +131,17 @@ E[F(O^{i-1})-F(O^i)|A^{i-1}, j]
 &\leq \frac{\Delta_+^{\max}(i) \Delta_-^{\max}(i) + \epsilon(\Delta_+^{\max}(i) + \Delta_-^{\max})}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}.
 \end{align*}
 The bound of Lemma \ref{lem:singleelement} becomes
-\[E[F(O^{i-1})-F(O^i)] \leq \frac{1}{2} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1}) + \rho_i + 2\epsilon_i],\]
+\[E[F(O^{i-1})-F(O^i)] \leq \frac{1}{2} E[F(A^i) - F(A^{i-1}) + F(B^i) - F(B^{i-1}) + \rho_i + 2\epsilon_i],\]
 and the bound of Theorem \ref{thm:randomapprox} becomes $E[F(A)] \geq \frac{1}{2} F^* - \frac{1}{4}\sum_iE[\rho_i + 2\epsilon_i]$.
 )
 
-~
+\end{comment}
+
+
+
+
+
+
 
 We will now prove Theorem \ref{thm:randomapprox}.
 
@@ -141,7 +152,7 @@ E[F(O^0)-F(O^n)]
 &\leq \frac{1}{2} E[F(A^n) - F(A^0) + F(B^n) - F(B^0)] + \frac{1}{2}\sum_{i=1}^nE[\rho_i]\\
 &\leq \frac{1}{2} E[F(A^n) + F(B^n)] + \frac{1}{2}\sum_{i=1}^nE[\rho_i].
 \end{align*}
-Note that $O^0 = OPT$ and $O^n = A^n = B^n$, so $E[F(A^n)] \geq \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$.
+Note that $O^0 = OPT$ and $O^n = A^n = B^n$, so $E[F(A^n)] \geq \frac{1}{2} F^* - \frac{1}{4}\sum_iE[\rho_i]$.
 \end{proof}
 
 
@@ -153,28 +164,29 @@ Note that $O^0 = OPT$ and $O^n = A^n = B^n$, so $E[F(A^n)] \geq \frac{1}{2} F(OP
 
 
 \subsection{Example: max graph cut}
-Let $C^{ji} = \{j+1,\dots,i-1\}$, $D^i = \{i+1,\dots,n\}$.
-Denote $\tilde{A}^j = V\backslash A^j\backslash C^{ji}\backslash D^i = \{1,\dots,j\}\backslash A^j$ be the elements up to $j$ that are not included in $A$.
+Let $C_i = (A^{i-1}\backslash \hat{A}_i) \cup (\hat{B}_i\backslash B^{i-1})$ be the set of elements concurrently processed with $i$ but ordered after $i$, and $D_i = B^i\backslash A^i$ be the set of elements ordered after $i$.
+Denote $\bar{A}_j = V\backslash \hat{A}_i\backslash C_i\backslash D_i = \{1,\dots,j\}\backslash \hat{A}_i$ be the elements up to $j$ that are not included in $A$.
 Let $w_i(S) = \sum_{j\in S, (i,j)\in E} w(i,j)$.
 For the max graph cut function, it is easy to see that 
 \begin{align*}
-\Delta_+        &\geq - w_i(A^j) -w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)\\
-\Delta_+^{\max} &=    - w_i(A^j) + w_i(C^{ji}) + w_i(D^i) + w_i(\tilde{A}^j)\\
-\Delta_-        &\geq + w_i(A^j) - w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j)\\
-\Delta_-^{\max} &= + w_i(A^j) + w_i(C^{ji}) + w_i(D^i) - w_i(\tilde{A}^j)
+\Delta_+        &\geq - w_i(\hat{A}_i) -w_i(C_i) + w_i(D_i) + w_i(\bar{A}_j)\\
+\Delta_+^{\max} &=    - w_i(\hat{A}_i) + w_i(C_i) + w_i(D_i) + w_i(\bar{A}_j)\\
+\Delta_-        &\geq + w_i(\hat{A}_i) - w_i(C_i) + w_i(D_i) - w_i(\bar{A}_j)\\
+\Delta_-^{\max} &= + w_i(\hat{A}_i) + w_i(C_i) + w_i(D_i) - w_i(\bar{A}_j)
 \end{align*}
 
-Thus, we can set $\rho_i = 2w_i(C^{ji})$.
+Thus, we can set $\rho_i = 2w_i(C_i)$.
 
-Suppose we have bounded delay $\tau$, so $|C^{ji}| \leq \tau$.
-Then $w_i(C^{ji})$ has a hypergeometric distribution with mean $\frac{\text{deg}(i)}{N}\tau$, and $E[\rho_i] = 2\tau\frac{\text{deg}(i)}{N}$.
-The approximation of the hogwild algorithm is then $E[F(A^n)] \geq \frac{1}{2} F(OPT) - \tau\frac{\#\text{edges}}{2N}$.
+Suppose we have bounded delay $\tau$, so $|C_i| \leq \tau$.
+Then $w_i(C_i)$ has a hypergeometric distribution with mean $\frac{\text{deg}(i)}{N}\tau$, and $E[\rho_i] = 2\tau\frac{\text{deg}(i)}{N}$.
+The approximation of the hogwild algorithm is then $E[F(A^n)] \geq \frac{1}{2} F^* - \tau\frac{\#\text{edges}}{2N}$.
 In sparse graphs, the hogwild algorithm is off by a small additional term, which albeit grows linearly in $\tau$.
+In a complete graph, $F^* = \frac{1}{2}\#\text{edges}$, so $E[F(A^n)] \geq F^*\left(\frac{1}{2} - \frac{\tau}{N}\right)$, which makes it possible to scale $\tau$ linearly with $N$ while retaining the same approximation factor.
 
 
 
 \subsection{Example: set cover}
-\xinghao{For now, consider a toy problem, with (1) disjoint sets, (2) bounded delay, (3) $\lambda \leq 1$.}
+% \xinghao{For now, consider a toy problem, with (1) disjoint sets, (2) bounded delay, (3) $\lambda \leq 1$.}
 
 Consider the simple set cover function, for $\lambda < 1$:
 \[ F(A) = \sum_{l=1}^L \min(1,|A\cap S_l|) - \lambda|A| = |\{l: A\cap S_l \neq\emptyset\}| - \lambda|A|.\]
@@ -203,7 +215,7 @@ P(\eta|\pi)
 &= (1-\lambda)\lambda^{\eta-1},
 \end{align*}
 and $P(\eta=n_l | \pi) = \lambda^{\eta-1}$.
-\xinghao{This independence depends on the assumption of disjoint sets, which in turn allows us to decouple the randomness of the algorithm from the randomness of ordering in the below proof.}
+% \xinghao{This independence depends on the assumption of disjoint sets, which in turn allows us to decouple the randomness of the algorithm from the randomness of ordering in the below proof.}
 
 Note that, $\Delta_-^{\max}(e)-\Delta_-(e) = 1$ iff $e=e_l^{n_l}$ is the last element of $S_l$ in the ordering, there are no elements accepted up to $\hat{B}_{e_l^{n_l}}\backslash e_l^{n_l}$, and there is some element $e'$ in $\hat{B}_{e_l^{n_l}}\backslash {e_l^{n_l}}$ that is rejected and not in $B^{\iota(e_l^{n_l})-1}$.
 Denote by $m_l \leq \min(\tau,n_l-1)$ the number of elements before $e_l^{n_l}$ that are inconsistent between $\hat{B}_{e_l^{n_l}}$ and $B^{\iota(e_l^{n_l})-1}$.

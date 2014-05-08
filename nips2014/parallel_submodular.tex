@@ -737,7 +737,7 @@ We prove the theorem in Appendix \ref{app:proofhogwild}.
 Assuming bounded delay of $\tau$ and edges with unit weight, we can bound $\sum_i E[\rho_i] \leq 2\tau\frac{\text{\#edges}}{2N}$
 The approximation of the \hogwild{} algorithm is then $E[F(A^n)] \geq = \frac{1}{2} F(OPT) - \tau\frac{\#\text{edges}}{2N}$.
 In sparse graphs, the \hogwild{} algorithm is off by a small additional term, which albeit grows linearly in $\tau$.
-
+In a complete graph, $F^* = \frac{1}{2}\#\text{edges}$, so $E[F(A^n)] \geq F^*\left(\frac{1}{2} - \frac{\tau}{N}\right)$, which makes it possible to scale $\tau$ linearly with $N$ while retaining the same approximation factor.
 
 
 \textbf{Example: set cover.}
