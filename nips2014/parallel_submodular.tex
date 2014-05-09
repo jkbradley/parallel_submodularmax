@@ -780,32 +780,32 @@ The set cover problem is reduced to a vertex cover on the directed graph.
   \centering
   \begin{tabular}{cccc}
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=130pt]{images/summary_relruntime.eps}
+	  	\includegraphics[width=130pt]{images/summary_relruntime.pdf}
 			\caption{}
 			\label{fig:relruntime}
 	  \end{subfigure} &
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=130pt]{images/summary_speedup_maxgraphcut.eps}
+	  	\includegraphics[width=130pt]{images/summary_speedup_maxgraphcut.pdf}
 			\caption{}
 			\label{fig:speedup_maxgraphcut}
 	  \end{subfigure} &
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=130pt]{images/summary_speedup_setcover.eps}
+	  	\includegraphics[width=130pt]{images/summary_speedup_setcover.pdf}
 			\caption{}
 			\label{fig:speedup_setcover}
 	  \end{subfigure} \\
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=130pt]{images/summary_diffFA_maxgraphcut.eps}
+	  	\includegraphics[width=130pt]{images/summary_diffFA_maxgraphcut.pdf}
 			\caption{}
 			\label{fig:difffa_maxgraphcut}
 	  \end{subfigure} &
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=130pt]{images/summary_diffFA_setcover.eps}
+	  	\includegraphics[width=130pt]{images/summary_diffFA_setcover.pdf}
 			\caption{}
 			\label{fig:difffa_setcover}
 	  \end{subfigure} &
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=130pt]{images/summary_validated_maxgraphcut.eps}
+	  	\includegraphics[width=130pt]{images/summary_validated_maxgraphcut.pdf}
 			\caption{}
 			\label{fig:validated_maxgraphcut}
 	  \end{subfigure} \\
@@ -829,9 +829,9 @@ Due to space constraints, we only present part of our results in Figure \ref{fig
 
 To highlight the philosophical differences between the two parallel algorithms, we conducted experiments on a ring Cayley graph on $\mathbb{Z}_{10^6}$ with generating set $\{\pm 1,\dots, \pm 1000\}$.
 The algorithms are presented with an adversarial ordering, with permutation, so vertices close in the ordering are adjacent to one another, and tend to be processed concurrently.
-This causes \hogwild{} to make more mistakes, and \occ{}to face more uncertainty.
+This causes \hogwild{} to make more mistakes, and \occ{} to face more uncertainty.
 
-As Figure \ref{fig:results_adversarial} shows, \occ{}sacrifices speed to ensure serial equivalence, eventually validating $>90\%$ of elements.
+As Figure \ref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually validating $>90\%$ of elements.
 On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwild{}})$ that is only $20\%$ of $F(A_{Seq2G})$.
 For the set cover problem, we maintain statistics that are updated atomically by both algorithms.
 The adversarial ordering forces more concurrent atomic updates, and hence, \hogwild{} does not achieve good speedup.
@@ -841,17 +841,17 @@ The adversarial ordering forces more concurrent atomic updates, and hence, \hogw
   \centering
   \begin{tabular}{cccc}
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=130pt]{images/runtime_ring_setcover.eps}
+	  	\includegraphics[width=130pt]{images/runtime_ring_setcover.pdf}
 			\caption{}
 			\label{fig:runtime_ring_setcover}
 	  \end{subfigure} &
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=130pt]{images/speedup_ring_setcover.eps}
+	  	\includegraphics[width=130pt]{images/speedup_ring_setcover.pdf}
 			\caption{}
 			\label{fig:speedup_ring_setcover}
 	  \end{subfigure} &
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=130pt]{images/validateddiffFA_ring_setcover.eps}
+	  	\includegraphics[width=130pt]{images/validateddiffFA_ring_setcover.pdf}
 			\caption{}
 			\label{fig:validateddiffFA_ring_setcover}
 	  \end{subfigure} \\
