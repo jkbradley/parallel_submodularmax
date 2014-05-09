@@ -813,7 +813,7 @@ We implemented the parallel and sequential double greedy algorithms in Java / Sc
 Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16 threads, for 10 iterations.
 
 We measured the runtime and speedup (ratio of runtime on 1 thread to runtime on $p$ threads).
-For the \hogwild{} algorithm, we measured $F(A_{hog})-F(A_{seq})$, the difference between the objective value on the sets returned by \hogwild{} and the sequential algorithms.
+For the \hogwild{} algorithm, we measured $F(A_{\hogwild})-F(A_{\seqalg})$, the difference between the objective value on the sets returned by \hogwild{} and the sequential algorithms.
 We verified the correctness of the \occ{} algorithm by comparing the sets returned by the \occ{} and sequential algorithms, and also measured the fraction of elements that are validated by \occ{}.
 
 %\begin{table}[h]
@@ -863,32 +863,32 @@ The set cover problem is reduced to a vertex cover on the directed graph.
   \centering
   \begin{tabular}{cccc}
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=150pt]{images/summary_relruntime.png}
+	  	\includegraphics[width=140pt]{images/summary_relruntime.png}
 			\caption{}
 			\label{fig:relruntime}
 	  \end{subfigure} &
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=150pt]{images/summary_speedup_maxgraphcut.png}
+	  	\includegraphics[width=140pt]{images/summary_speedup_maxgraphcut.png}
 			\caption{}
 			\label{fig:speedup_maxgraphcut}
 	  \end{subfigure} &
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=150pt]{images/summary_speedup_setcover.png}
+	  	\includegraphics[width=140pt]{images/summary_speedup_setcover.png}
 			\caption{}
 			\label{fig:speedup_setcover}
 	  \end{subfigure} \\
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=150pt]{images/summary_diffFA_maxgraphcut.png}
+	  	\includegraphics[width=140pt]{images/summary_diffFA_maxgraphcut.png}
 			\caption{}
 			\label{fig:difffa_maxgraphcut}
 	  \end{subfigure} &
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=150pt]{images/summary_diffFA_setcover.png}
+	  	\includegraphics[width=140pt]{images/summary_diffFA_setcover.png}
 			\caption{}
 			\label{fig:difffa_setcover}
 	  \end{subfigure} &
 	  \begin{subfigure}[h]{0.30\textwidth}
-	  	\includegraphics[width=150pt]{images/summary_validated_maxgraphcut.png}
+	  	\includegraphics[width=140pt]{images/summary_validated_maxgraphcut.png}
 			\caption{}
 			\label{fig:validated_maxgraphcut}
 	  \end{subfigure} \\
@@ -896,7 +896,7 @@ The set cover problem is reduced to a vertex cover on the directed graph.
   \caption{\footnotesize Experimental results.
   Fig \ref{fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$.
   Fig \ref{fig:speedup_maxgraphcut}, \ref{fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads).
-  Fig \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and \hogwild{} algorithms, i.e. $[F(A_{\hogwild{}}) / F(A_{sequential}) - 1] \times 100\%$.
+  Fig \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and \hogwild{} algorithms, i.e. $[F(A_{\hogwild{}}) / F(A_{\seqalg}) - 1] \times 100\%$.
   Fig \ref{fig:validated_maxgraphcut} -- percentage of elements validated by the \occ{} algorithm on the max graph cut problem.
   }
 \label{fig:results_quality}
@@ -912,29 +912,29 @@ Due to space constraints, we only present part of our results in Figure \ref{fig
 
 To highlight the philosophical differences between the two parallel algorithms, we conducted experiments on a ring Cayley graph on $\mathbb{Z}_{10^6}$ with generating set $\{\pm 1,\dots, \pm 1000\}$.
 The algorithms are presented with an adversarial ordering, with permutation, so vertices close in the ordering are adjacent to one another, and tend to be processed concurrently.
-This causes CF2G to make more mistakes, and CC2G to face more uncertainty.
+This causes \hogwild{} to make more mistakes, and \occ{}to face more uncertainty.
 
-As Figure \ref{fig:results_adversarial} shows, CC2G sacrifices speed to ensure serial equivalence, eventually validating $>90\%$ of elements.
-On the other hand, CF2G focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{CF2G})$ that is only $20\%$ of $F(A_{Seq2G})$.
-\footnote{For the set cover problem, both algorithms have to perform atomic updates to the statistics $\alpha_l$ and $\beta_l$.
-Under the adversarial ordering, there are more concurrent atomic updates, and hence, CF2G does not achieve good speedup.
-It is possible to compute $F$ directly, which would provide better speedup but slower runtimes.}
+As Figure \ref{fig:results_adversarial} shows, \occ{}sacrifices speed to ensure serial equivalence, eventually validating $>90\%$ of elements.
+On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwild{}})$ that is only $20\%$ of $F(A_{Seq2G})$.
+For the set cover problem, we maintain statistics that are updated atomically by both algorithms.
+The adversarial ordering forces more concurrent atomic updates, and hence, \hogwild{} does not achieve good speedup.
+\footnote{We could have reduced coordination by computing $F$ directly, but doing so would result in longer runtimes.}
 
 \begin{figure}[ht]
   \centering
   \begin{tabular}{cccc}
-	  \begin{subfigure}[h]{0.32\textwidth}
-	  	\includegraphics[width=150pt]{images/runtime_ring_setcover.png}
+	  \begin{subfigure}[h]{0.30\textwidth}
+	  	\includegraphics[width=140pt]{images/runtime_ring_setcover.png}
 			\caption{}
 			\label{fig:runtime_ring_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[h]{0.32\textwidth}
-	  	\includegraphics[width=150pt]{images/speedup_ring_setcover.png}
+	  \begin{subfigure}[h]{0.30\textwidth}
+	  	\includegraphics[width=140pt]{images/speedup_ring_setcover.png}
 			\caption{}
 			\label{fig:speedup_ring_setcover}
 	  \end{subfigure} &
-	  \begin{subfigure}[h]{0.32\textwidth}
-	  	\includegraphics[width=150pt]{images/validateddiffFA_ring_setcover.png}
+	  \begin{subfigure}[h]{0.30\textwidth}
+	  	\includegraphics[width=140pt]{images/validateddiffFA_ring_setcover.png}
 			\caption{}
 			\label{fig:validateddiffFA_ring_setcover}
 	  \end{subfigure} \\
@@ -943,10 +943,12 @@ It is possible to compute $F$ directly, which would provide better speedup but s
 \label{fig:results_adversarial}
 \end{figure}
 
-\xinghao{These experiments were conducted by using an atomic integer to select elements to process. We could instead use a partitioning scheme, which has 2 advantages. Firstly, there is less coordination -- for CF2G, we essentially have no coordination.
-Secondly, when faced with an adversarial ordering, the partitioning scheme allows big jumps / re-orderings, which reduces the number of validations and \textit{increases} the objective value of both parallel algorithms.}
+% \xinghao{These experiments were conducted by using an atomic integer to select elements to process. We could instead use a partitioning scheme, which has 2 advantages. Firstly, there is less coordination -- for \hogwild{}, we essentially have no coordination.
+% Secondly, when faced with an adversarial ordering, the partitioning scheme allows big jumps / re-orderings, which reduces the number of validations and \textit{increases} the objective value of both parallel algorithms.}
 
-In general, it is possible to avoid such adversarial ordering by randomly permuting the elements when pre-processing, or by using a different partitioning scheme, which we will discuss in a full paper.
+We point out by using a partitioning scheme, it is possible to avoid the problems caused by the adversarial ordering, and to improve scalability.
+Nevertheless, we present results that do use the partitioning scheme, so as to better highlight the differences between the two parallel algorithms.
+
 
 
 
