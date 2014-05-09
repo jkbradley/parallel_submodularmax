@@ -418,87 +418,61 @@ Work is only required to demonstrate that coordination is limited.
         }
       \end{algorithm}
 
-
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{\hogwild{} for separable sums}
-        \label{alg:hogwildsepsum}
-        \lFor{$e\in V$}{$\hat{A}(e) = 0$}\;
-        \lFor{$l = 1,\dots,L$}{$\hat\alpha_l = 0$, $\hat\beta_l = \sum_{e\in S_l}w_l(e)$}\;
-        \ParForAll{$p \in \set{1, \ldots, P}$}{
-          \While{$\exists$ element to process}{
-            $e = $ next element to process\;
-            $\Delta_+^{\max}(e) = -\lambda v(e) + \sum_{S_l\ni e} g(\hat\alpha_l + w_l(e)) - g(\hat\alpha_l)$\;
-            $\Delta_-^{\max}(e) = +\lambda v(e) + \sum_{S_l\ni e} g(\hat\beta_l   - w_l(e)) - g(\hat\beta_l)$\;
-            Draw $u_e\sim Unif(0,1)$\;
-            \If {$u_e<\frac{[\Delta_{+}^{\max}(e)]_+}{[\Delta_{+}^{\min}(e)]_+ + [\Delta_{-}^{\max}(e)]_+}$}{
-              $\hat{A}(e) \leftarrow 1$\;
-              \lFor{$l: e \in S_l$}{
-                $\hat\alpha_l \leftarrow \hat\alpha_l + w_l(e)$
-              }
-            }\lElse{
-              \lFor{$l: e \in S_l$}{
-                $\hat\beta_l \leftarrow \hat\beta_l - w_l(e)$
-              }
-            }
+        \caption{\occ{}: validate($p$, $e$, $i$)}
+        \label{alg:occvalidate}
+          \WaitUntil $\forall j < i$, processed$(j) = true$\;
+          $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
+          $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
+          \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
+            result$(i) \leftarrow 1$\;
+          }\lElse{
+            result$(i) \leftarrow -1$\;
           }
-        }
       \end{algorithm}
 
     \end{minipage}
 
     \begin{minipage}{0.49\textwidth}
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\caption{\occ{} bidirectional greedy}
-\label{alg:occ{}}
-\lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}\;
-\lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}\;
-\lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}\;
-$\iota = 0$\;
-\ParForAll{$p \in \set{1, \ldots, P}$}{
-  \While{$\exists$ element to process}{
-    $e = $ next element to process\;
-    $\tilde{A}(e) \leftarrow 1$\;
-    $\tilde{B}(e) \leftarrow 0$\;
-    $i = \iota$; $\iota \leftarrow \iota + 1$\;\label{alg:occ{}:time}
-    $\Delta_+^{\min}(e) = F(\tilde{A} \cup e) - F(\tilde{A})$\;\label{alg:occ{}:deltaplusmin}
-    $\Delta_+^{\max}(e) = F(\hat{A}   \cup e) - F(\hat{A})$\;\label{alg:occ{}:deltaplusmax}
-    $\Delta_-^{\min}(e) = F(\tilde{B} \backslash e) - F(\tilde{B})$\;\label{alg:occ{}:deltaminusmin}
-    $\Delta_-^{\max}(e) = F(\hat{B}   \backslash e) - F(\hat{B})$\;\label{alg:occ{}:deltaminusmax}
-    Draw $u_e \sim Unif(0,1)$\;
-    \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{\label{alg:occ{}:decisioninclude}
-      result$(i) \leftarrow 1$\;
-    }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
-      result$(i) \leftarrow -1$\;
-    }
-    \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ{}:resultwait}
-    \lIf {result$(i) = 0$}{validate($p$, $e$, $i$)}\;
-    \If {result$(i) = 1$}{
-      $\hat{A}(e)   \leftarrow 1$\;\label{alg:occ{}:ahat}
-      $\tilde{B}(e) \leftarrow 1$\;
-    }\Else{
-      $\tilde{A}(e) \leftarrow 0$\;
-      $\hat{B}(e)   \leftarrow 0$\;\label{alg:occ{}:bhat}
-    }
-    processed$(i) = true$\;
-  }
-}
-\end{algorithm}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\occ{} bidirectional greedy}
+        \label{alg:occ}
+        \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}\;
+        \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}\;
+        \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}\;
+        $\iota = 0$\;
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $\tilde{A}(e) \leftarrow 1$\;
+            $\tilde{B}(e) \leftarrow 0$\;
+            $i = \iota$; $\iota \leftarrow \iota + 1$\;\label{alg:occ:time}
+            $\Delta_+^{\min}(e) = F(\tilde{A} \cup e) - F(\tilde{A})$\;\label{alg:occ:deltaplusmin}
+            $\Delta_+^{\max}(e) = F(\hat{A}   \cup e) - F(\hat{A})$\;\label{alg:occ:deltaplusmax}
+            $\Delta_-^{\min}(e) = F(\tilde{B} \backslash e) - F(\tilde{B})$\;\label{alg:occ:deltaminusmin}
+            $\Delta_-^{\max}(e) = F(\hat{B}   \backslash e) - F(\hat{B})$\;\label{alg:occ:deltaminusmax}
+            Draw $u_e \sim Unif(0,1)$\;
+            \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{\label{alg:occ:decisioninclude}
+              result$(i) \leftarrow 1$\;
+            }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
+              result$(i) \leftarrow -1$\;
+            }
+            \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
+            \lIf {result$(i) = 0$}{validate($p$, $e$, $i$)}\;
+            \If {result$(i) = 1$}{
+              $\hat{A}(e)   \leftarrow 1$\;\label{alg:occ:ahat}
+              $\tilde{B}(e) \leftarrow 1$\;
+            }\Else{
+              $\tilde{A}(e) \leftarrow 0$\;
+              $\hat{B}(e)   \leftarrow 0$\;\label{alg:occ:bhat}
+            }
+            processed$(i) = true$\;
+          }
+        }
+      \end{algorithm}
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\caption{validate($p$, $e$, $i$)}
-\label{alg:occ{}validate}
-  \WaitUntil $\forall j < i$, processed$(j) = true$\;
-  $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occ{}validate:deltaplus}
-  $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occ{}validate:deltaminus}
-  \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occ{}validate:decisioninclude}
-    result$(i) \leftarrow 1$\;
-  }\lElse{
-    result$(i) \leftarrow -1$\;
-  }
-\end{algorithm}
 
 
   \label{fig:submax}
@@ -555,48 +529,13 @@ $\Delta_{+}(e) \leq \Delta_{+}^{\max}(e)$, and
 $\Delta_{-}(e) \leq \Delta_{-}^{\max}(e)$.
 \end{cor}
 
-\subsection{\hogwild{} for separable sums $F$}
+
 For some functions $F$, we can maintain sketches / statistics to aid the computation of $\Delta_+^{\max}$, $\Delta_-^{\max}$, and obtain the bounds given in Corollary \ref{cor:delta_bound}.
-In particular, we consider functions of the form
-$
-F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$,
+In particular, in Appendix \ref{sec:sepsum} we consider functions of the form
+$F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$,
 where $S_l \subseteq V$ are (possibly overlapping) groups of elements in the ground set, $g$ is a non-decreasing concave scalar function, and $w_l(i)$ and $v(i)$ are non-negative scalar weights.
-It is easy to see that
-$
-F(X \cup e) - F(X) = \sum_{l: e\in S_l} \left[g\left(w_l(e) + \sum_{i\in X\cup S_l} w_l(i)\right) - g\left(\sum_{i\in X\cup S_l} w_l(i)\right)\right] - \lambda v(e)$.
-Define
-%  $\hat\alpha_l              = \sum_{j\in \hat{A}\cup S_l} w_l(j)$,
-% $\hat\alpha_{l,e}          = \sum_{j\in \hat{A}_e\cup S_l} w_l(j)$,
-% $\alpha_l^{\iota(e)-1} = \sum_{j\in A^{\iota(e)-1}\cup S_l} w_l(j)$.
-%
-%  $\hat\beta_l              = \sum_{j\in \hat{B}\cup S_l} w_l(j)$,
-% $\hat\beta_{l,e}          = \sum_{j\in \hat{B}_e\cup S_l} w_l(j)$,
-% $\beta_l^{\iota(e)-1} = \sum_{j\in B^{\iota(e)-1}\cup S_l} w_l(j)$.
-%
-\begin{align*}
-  \hat\alpha_l              &= \sum_{j\in \hat{A}\cup S_l} w_l(j),
-& \hat\alpha_{l,e}          &= \sum_{j\in \hat{A}_e\cup S_l} w_l(j),
-& \alpha_l^{\iota(e)-1} &= \sum_{j\in A^{\iota(e)-1}\cup S_l} w_l(j).\\
-  \hat\beta_l              &= \sum_{j\in \hat{B}\cup S_l} w_l(j),
-& \hat\beta_{l,e}          &= \sum_{j\in \hat{B}_e\cup S_l} w_l(j),
-& \beta_l^{\iota(e)-1} &= \sum_{j\in B^{\iota(e)-1}\cup S_l} w_l(j).
-\end{align*}
-Algorithm \ref{alg:hogwildsepsum} updates $\hat\alpha_l$ and $\hat\beta_l$, and computes $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ using $\hat\alpha_{l,e}$ and $\hat\beta_{l,e}$.
-Following arguments analogous to that of Lemma \ref{lem:set_bound}, we can show:
 
-\begin{lem} For each $l$ and $e\in V$, $\hat\alpha_{l,e} \leq \alpha_l^{\iota(e)-1}$ and $\hat\beta_{l,e} \geq \beta_l^{\iota(e)-1}$.
-\end{lem}
 
-\begin{cor} Concavity of $g$ implies that $\Delta$'s computed by Algorithm \ref{alg:hogwildsepsum} satisfy
-\begin{align*}
-\Delta_+^{\max}(e)
-&&\geq&& \sum_{S_l\ni e} \left[g(\alpha_l^{\iota(e)-1} + w_l(e)) - g(\alpha_l^{\iota(e)-1})\right] - \lambda v(e)
-&&=&& \Delta_+(e),\\
-\Delta_-^{\max}(e)
-&&\geq&& \sum_{S_l\ni e} \left[g(\beta_l^{\iota(e)-1} - w_l(e)) - g(\beta_l^{\iota(e)-1})\right] + \lambda v(e)
-&&=&& \Delta_-(e),
-\end{align*}
-\end{cor}
 
 
 
@@ -608,46 +547,46 @@ Following arguments analogous to that of Lemma \ref{lem:set_bound}, we can show:
 \section{Optimistic Concurrency Control for Bidirectional Greedy Algorithm}
 \xinghao{Provide more intuition for what the \occ{} algorithm is doing.}
 
-Algorithm \ref{alg:occ{}}\footnote{The synchronization required by the \occ{} algorithm can be further reduced, for example, by replacing the operations from Line \ref{alg:occ{}:resultwait} onwards by a non-blocking function call.} is the \occ{} bidirectional greedy algorithm.
+Algorithm \ref{alg:occ}\footnote{The synchronization required by the \occ{} algorithm can be further reduced, for example, by replacing the operations from Line \ref{alg:occ:resultwait} onwards by a non-blocking function call.} is the \occ{} bidirectional greedy algorithm.
 Unlike the \hogwild{} algorithm, the \occ{} algorithm ensures serial equivalence by maintaining four sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$.
 Each thread can determine locally if a decision to include / exclude an element can be taken safely.
-Otherwise, the validation process (Algorithm \ref{alg:occ{}validate}) waits until it is certain about $A$, $B$ before proceeding.
+Otherwise, the validation process (Algorithm \ref{alg:occvalidate}) waits until it is certain about $A$, $B$ before proceeding.
 
-The serialization order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ{}:time} of Algorithm \ref{alg:occ{}}.
+The serialization order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ:time} of Algorithm \ref{alg:occ}.
 We define $\hat{A}_e$, $\hat{B}_e$, $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with the \hogwild{} algorithm, and additionally let $\tilde{A}_e$ and $\tilde{B}_e$ be the vectors of $\tilde{A}$ and $\tilde{B}$ that are used in the computation of $\Delta_+^{\min}(e)$ and $\Delta_-^{\min}(e)$.
-We will show that the outcome of Algorithm \ref{alg:occ{}} is equivalent to the sequential algorithm executed with ordering $\iota$.
+We will show that the outcome of Algorithm \ref{alg:occ} is equivalent to the sequential algorithm executed with ordering $\iota$.
 
 \begin{lem} $\hat{A}_e \subseteq A^{\iota(e)-1} \subseteq \tilde{A}_e \backslash e$, and $\hat{B}_e \supseteq B^{\iota(e)-1} \supseteq \tilde{B}_e \cup e$.
 \end{lem}
 \begin{proof}
 Clearly, $e \in \tilde{B}_e\cup e$ but $e\not\in \tilde{A}_e\backslash e$.
 By definition, $e \in B^{\iota(e)-1}$ but $e\not\in A^{\iota(e)-1}$.
-The \occ{} algorithm (Algorithm \ref{alg:occ{}}) only modifies $\hat{A}(e)$ and $\hat{B}(e)$ on Lines \ref{alg:occ{}:ahat}, \ref{alg:occ{}:bhat} when processing $e$, which \occ{}urs after the computation of the $\Delta$'s on Lines \ref{alg:occ{}:deltaplusmin} - \ref{alg:occ{}:deltaminusmax}, so $e \in \hat{B}_e$ but $e\not\in \hat{A}_e$.
+The \occ{} algorithm (Algorithm \ref{alg:occ}) only modifies $\hat{A}(e)$ and $\hat{B}(e)$ on Lines \ref{alg:occ:ahat}, \ref{alg:occ:bhat} when processing $e$, which \occ{}urs after the computation of the $\Delta$'s on Lines \ref{alg:occ:deltaplusmin} - \ref{alg:occ:deltaminusmax}, so $e \in \hat{B}_e$ but $e\not\in \hat{A}_e$.
 
 Consider any $e'\neq e$.
 Suppose $e' \in \hat{A}_e$.
-This is only possible if we have processed Line \ref{alg:occ{}:ahat}, which implies (by Line \ref{alg:occ{}:resultwait}) that $\forall j < \iota(e'), \text{result}(j) \neq 0$.
-But at the time when $\hat{A}_e$ is read (Lines \ref{alg:occ{}:deltaplusmin} - \ref{alg:occ{}:deltaminusmax}), we have result$(e)=0$, so it must be the case that $\iota(e') < \iota(e)$.
+This is only possible if we have processed Line \ref{alg:occ:ahat}, which implies (by Line \ref{alg:occ:resultwait}) that $\forall j < \iota(e'), \text{result}(j) \neq 0$.
+But at the time when $\hat{A}_e$ is read (Lines \ref{alg:occ:deltaplusmin} - \ref{alg:occ:deltaminusmax}), we have result$(e)=0$, so it must be the case that $\iota(e') < \iota(e)$.
 Thus, $e' \in A^{\iota(e)-1}$.
 
 Now suppose $e' \in A^{\iota(e)-1}$.
 By definition, this implies $\iota(e') < \iota(e)$ and $e \in A$, which in turn implies result$(\iota(e'))=1$.
-Hence, it must be the case that we have already set $\tilde{A}(e') \leftarrow 1$ (by the ordering imposed by $\iota$ on Line \ref{alg:occ{}:time}), but never execute $\tilde{A}(e') \leftarrow 0$, so $e' \in \tilde{A}_e$.
+Hence, it must be the case that we have already set $\tilde{A}(e') \leftarrow 1$ (by the ordering imposed by $\iota$ on Line \ref{alg:occ:time}), but never execute $\tilde{A}(e') \leftarrow 0$, so $e' \in \tilde{A}_e$.
 
 An analogous argument shows $e' \not\in \hat{B}_e \implies e' \not\in B^{\iota(e)-1} \implies e' \not\in\tilde{B}_e \cup e$.
 \end{proof}
 
 \begin{lem}
-During the validation process for element $e$, on Lines \ref{alg:occ{}validate:deltaplus}, \ref{alg:occ{}validate:deltaminus} of Algorithm \ref{alg:occ{}validate}, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
+During the validation process for element $e$, on Lines \ref{alg:occvalidate:deltaplus}, \ref{alg:occvalidate:deltaminus} of Algorithm \ref{alg:occvalidate}, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{lem}
 \begin{proof}
-At Line \ref{alg:occ{}validate:deltaplus}, we have guaranteed that $\forall j < \iota(e)$, processed$(j) = true$.
+At Line \ref{alg:occvalidate:deltaplus}, we have guaranteed that $\forall j < \iota(e)$, processed$(j) = true$.
 Thus, $\forall e': \iota(e') < \iota(e)$, $e' \in \hat{A} \iff e' \in A^{\iota(e)-1}$ and $e' \in \hat{B} \iff e' \in B^{\iota(e)-1}$.
-On the other hand, result$(\iota(e)) = 0$, so all $e'$ such that $\iota(e') > \iota(e)$ are blocked on Algorithm \ref{alg:occ{}} Line \ref{alg:occ{}:resultwait}, hence $\hat{A}(e') = 0$ and $\hat{B}(e') = 1$.
+On the other hand, result$(\iota(e)) = 0$, so all $e'$ such that $\iota(e') > \iota(e)$ are blocked on Algorithm \ref{alg:occ} Line \ref{alg:occ:resultwait}, hence $\hat{A}(e') = 0$ and $\hat{B}(e') = 1$.
 Thus, $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{proof}
 
-Algorithm \ref{alg:occ{}} computes
+Algorithm \ref{alg:occ} computes
 \begin{align*}
   \Delta_+^{\min}(e) &= F(\tilde{A}_e) - F(\tilde{A}_e \backslash e),
 & \Delta_+^{\max}(e) &= F(\hat{A}_e \cup e) - F(\hat{A})\\
@@ -655,36 +594,13 @@ Algorithm \ref{alg:occ{}} computes
 & \Delta_-^{\max}(e) &= F(\hat{B}_e \backslash e) - F(\hat{B}).
 \end{align*}
 
-\begin{cor}\label{lem:\occ{}deltas} Submodularity of $F$ implies that the $\Delta$'s computed by Algorithm \ref{alg:occ{}} satisfy: $\Delta_+^{\min}(e) \leq \Delta_+(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_-^{\max}(e)$.
+\begin{cor}\label{lem:\occ{}deltas} Submodularity of $F$ implies that the $\Delta$'s computed by Algorithm \ref{alg:occ} satisfy: $\Delta_+^{\min}(e) \leq \Delta_+(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_-^{\max}(e)$.
 \end{cor}
 
-\subsection{Separable sums $F$}
-Analogous to the \hogwild{} algorithm, we maintain $\hat\alpha_l$, $\hat\beta_l$ and additionally $\tilde\alpha_l = \sum_{j\in \tilde{A}\cup S_l} w_l(j)$ and $\tilde\beta_l = \sum_{j \in \tilde{B}\cup S_l} w_l(j)$.
-It can be shown that $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$, which then allows us to compute our bounds for $\Delta$'s.% as
-%$\Delta_+^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)$,
-%$\Delta_+^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right] - \lambda v(e)$,
-%$\Delta_-^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right] + \lambda v(e)$,
-%$\Delta_-^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\tilde\beta_l^{\iota(e)-1} + w_l(e))\right] + \lambda v(e)$.
+Like the \hogwild{} algorithm, the \occ{} algorithm can maintain statistics / sketches when dealing with functions of the form $F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$.
+We leave this discussion to Appendix \ref{sec:sepsum}.
 
-%\begin{lem} $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$
-%\end{lem}
-%
-%\begin{cor}
-%\begin{align*}
-%\Delta_+^{\max}(e)
-%&= \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)\\
-%&\geq \sum_{S_l \ni e} \left[g(\hat\alpha_l^{\iota(e)-1} + w_l(e)) - g(\hat\alpha_l^{\iota(e)-1})\right] - \lambda v(e)
-%&&= \Delta_+(e)\\
-%&\geq \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right] - \lambda v(e)
-%&&= \Delta_+^{\min}(e)\\
-%\Delta_-^{\max}(e)
-%&= \sum_{S_l \ni e} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right] + \lambda v(e)\\
-%&\geq \sum_{S_l \ni e} \left[g(\hat\beta_l^{\iota(e)-1} - w_l(e)) - g(\hat\beta_l^{\iota(e)-1})\right] + \lambda v(e)
-%&&= \Delta_-(e)\\
-%&\geq \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\tilde\beta_l^{\iota(e)-1} + w_l(e))\right] + \lambda v(e)
-%&&= \Delta_-^{\min}(e)
-%\end{align*}
-%\end{cor}
+
 
 ~
 
@@ -758,7 +674,7 @@ We will denote by $A_{seq}^i$, $B_{seq}^i$ the sets generated by the sequential 
 It suffices to show by induction that $A_{seq}^i = A^i$ and $B_{seq}^i = B^i$.
 For the base case, $A^0 = \emptyset = A_{seq}^0$, and $B^0 = V = B_{seq}^0$.
 Consider any element $e$.
-The \occ{} algorithm includes $e \in A$ iff $u_e < [\Delta_+^{\min}(e)]_+ ([\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+)^{-1}$ on Algorithm \ref{alg:occ{}} Line \ref{alg:occ{}:decisioninclude} or $u_e < [\Delta_+^{\text{exact}}(e)]_+ ([\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+)^{-1}$ on Algorithm \ref{alg:occ{}validate} Line \ref{alg:occ{}validate:decisioninclude}.
+The \occ{} algorithm includes $e \in A$ iff $u_e < [\Delta_+^{\min}(e)]_+ ([\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+)^{-1}$ on Algorithm \ref{alg:occ} Line \ref{alg:occ:decisioninclude} or $u_e < [\Delta_+^{\text{exact}}(e)]_+ ([\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+)^{-1}$ on Algorithm \ref{alg:occvalidate} Line \ref{alg:occvalidate:decisioninclude}.
 In both cases, Corollary \ref{lem:\occ{}deltas} implies $u_e < [\Delta_+(e)]_+ ([\Delta_+(e)]_+ + [\Delta_-(e)]_+)^{-1}$.
 By induction, $A^{\iota(e)-1} = A_{seq}^{\iota(e)-1}$ and $B^{\iota(e)-1} = B_{seq}^{\iota(e)-1}$, so the threshold is exactly that computed by the sequential algorithm.
 Hence, the \occ{} algorithm includes $e \in A$ iff the sequential algorithm includes $e \in A$.
@@ -992,7 +908,169 @@ Future work: constrained maximization, minimization; distributed setting, where 
 \newpage
 \appendix
 
-\input{hogwildproof}
+
+\section{Parallel algorithms for separable sums}
+\label{sec:sepsum}
+\begin{figure}[h]
+  \footnotesize
+  \centering
+  \begin{multicols}{2}
+    \begin{minipage}{0.49\textwidth}
+    \end{minipage}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\hogwild{} for separable sums}
+        \label{alg:hogwildsepsum}
+        \lFor{$e\in V$}{$\hat{A}(e) = 0$}\;
+        \lFor{$l = 1,\dots,L$}{$\hat\alpha_l = 0$, $\hat\beta_l = \sum_{e\in S_l}w_l(e)$}\;
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $\Delta_+^{\max}(e) = -\lambda v(e) + \sum_{S_l\ni e} g(\hat\alpha_l + w_l(e)) - g(\hat\alpha_l)$\;
+            $\Delta_-^{\max}(e) = +\lambda v(e) + \sum_{S_l\ni e} g(\hat\beta_l   - w_l(e)) - g(\hat\beta_l)$\;
+            Draw $u_e\sim Unif(0,1)$\;
+            \If {$u_e<\frac{[\Delta_{+}^{\max}(e)]_+}{[\Delta_{+}^{\min}(e)]_+ + [\Delta_{-}^{\max}(e)]_+}$}{
+              $\hat{A}(e) \leftarrow 1$\;
+              \lFor{$l: e \in S_l$}{
+                $\hat\alpha_l \leftarrow \hat\alpha_l + w_l(e)$
+              }
+            }\lElse{
+              \lFor{$l: e \in S_l$}{
+                $\hat\beta_l \leftarrow \hat\beta_l - w_l(e)$
+              }
+            }
+          }
+        }
+      \end{algorithm}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\occ{} validate for separable sums}
+        \label{alg:occvalidate}
+          \WaitUntil $\forall j < i$, processed$(j) = true$\;
+          $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;
+          $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;
+          \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{
+            result$(i) \leftarrow 1$\;
+          }\lElse{
+            result$(i) \leftarrow -1$\;
+          }
+      \end{algorithm}
+
+
+    \begin{minipage}{0.49\textwidth}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\occ{} for separable sums}
+        \label{alg:occsepsum}
+        \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}\;
+        \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}\;
+        \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}\;
+        $\iota = 0$\;
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $\tilde{A}(e) \leftarrow 1$\;
+            $\tilde{B}(e) \leftarrow 0$\;
+            $i = \iota$; $\iota \leftarrow \iota + 1$\;
+            $\Delta_+^{\min}(e) = F(\tilde{A} \cup e) - F(\tilde{A})$\;
+            $\Delta_+^{\max}(e) = F(\hat{A}   \cup e) - F(\hat{A})$\;
+            $\Delta_-^{\min}(e) = F(\tilde{B} \backslash e) - F(\tilde{B})$\;
+            $\Delta_-^{\max}(e) = F(\hat{B}   \backslash e) - F(\hat{B})$\;
+            Draw $u_e \sim Unif(0,1)$\;
+            \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{
+              result$(i) \leftarrow 1$\;
+            }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
+              result$(i) \leftarrow -1$\;
+            }
+            \WaitUntil $\forall j<i$, result$(j) \neq 0$\;
+            \lIf {result$(i) = 0$}{validate($p$, $e$, $i$)}\;
+            \If {result$(i) = 1$}{
+              $\hat{A}(e)   \leftarrow 1$\;
+              $\tilde{B}(e) \leftarrow 1$\;
+            }\Else{
+              $\tilde{A}(e) \leftarrow 0$\;
+              $\hat{B}(e)   \leftarrow 0$\;
+            }
+            processed$(i) = true$\;
+          }
+        }
+      \end{algorithm}
+    \end{minipage}
+  \end{multicols}
+\end{figure}
+
+\subsection{\hogwild{} for separable sums $F$}
+For some functions $F$, we can maintain sketches / statistics to aid the computation of $\Delta_+^{\max}$, $\Delta_-^{\max}$, and obtain the bounds given in Corollary \ref{cor:delta_bound}.
+In particular, we consider functions of the form
+$F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$,
+where $S_l \subseteq V$ are (possibly overlapping) groups of elements in the ground set, $g$ is a non-decreasing concave scalar function, and $w_l(i)$ and $v(i)$ are non-negative scalar weights.
+It is easy to see that
+$
+F(X \cup e) - F(X) = \sum_{l: e\in S_l} \left[g\left(w_l(e) + \sum_{i\in X\cup S_l} w_l(i)\right) - g\left(\sum_{i\in X\cup S_l} w_l(i)\right)\right] - \lambda v(e)$.
+Define
+%  $\hat\alpha_l              = \sum_{j\in \hat{A}\cup S_l} w_l(j)$,
+% $\hat\alpha_{l,e}          = \sum_{j\in \hat{A}_e\cup S_l} w_l(j)$,
+% $\alpha_l^{\iota(e)-1} = \sum_{j\in A^{\iota(e)-1}\cup S_l} w_l(j)$.
+%
+%  $\hat\beta_l              = \sum_{j\in \hat{B}\cup S_l} w_l(j)$,
+% $\hat\beta_{l,e}          = \sum_{j\in \hat{B}_e\cup S_l} w_l(j)$,
+% $\beta_l^{\iota(e)-1} = \sum_{j\in B^{\iota(e)-1}\cup S_l} w_l(j)$.
+%
+\begin{align*}
+  \hat\alpha_l              &= \sum_{j\in \hat{A}\cup S_l} w_l(j),
+& \hat\alpha_{l,e}          &= \sum_{j\in \hat{A}_e\cup S_l} w_l(j),
+& \alpha_l^{\iota(e)-1} &= \sum_{j\in A^{\iota(e)-1}\cup S_l} w_l(j).\\
+  \hat\beta_l              &= \sum_{j\in \hat{B}\cup S_l} w_l(j),
+& \hat\beta_{l,e}          &= \sum_{j\in \hat{B}_e\cup S_l} w_l(j),
+& \beta_l^{\iota(e)-1} &= \sum_{j\in B^{\iota(e)-1}\cup S_l} w_l(j).
+\end{align*}
+Algorithm \ref{alg:hogwildsepsum} updates $\hat\alpha_l$ and $\hat\beta_l$, and computes $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ using $\hat\alpha_{l,e}$ and $\hat\beta_{l,e}$.
+Following arguments analogous to that of Lemma \ref{lem:set_bound}, we can show:
+
+\begin{lem} For each $l$ and $e\in V$, $\hat\alpha_{l,e} \leq \alpha_l^{\iota(e)-1}$ and $\hat\beta_{l,e} \geq \beta_l^{\iota(e)-1}$.
+\end{lem}
+
+\begin{cor} Concavity of $g$ implies that $\Delta$'s computed by Algorithm \ref{alg:hogwildsepsum} satisfy
+\begin{align*}
+\Delta_+^{\max}(e)
+&&\geq&& \sum_{S_l\ni e} \left[g(\alpha_l^{\iota(e)-1} + w_l(e)) - g(\alpha_l^{\iota(e)-1})\right] - \lambda v(e)
+&&=&& \Delta_+(e),\\
+\Delta_-^{\max}(e)
+&&\geq&& \sum_{S_l\ni e} \left[g(\beta_l^{\iota(e)-1} - w_l(e)) - g(\beta_l^{\iota(e)-1})\right] + \lambda v(e)
+&&=&& \Delta_-(e),
+\end{align*}
+\end{cor}
+
+\subsection{\occ{} for separable sums $F$}
+Analogous to the \hogwild{} algorithm, we maintain $\hat\alpha_l$, $\hat\beta_l$ and additionally $\tilde\alpha_l = \sum_{j\in \tilde{A}\cup S_l} w_l(j)$ and $\tilde\beta_l = \sum_{j \in \tilde{B}\cup S_l} w_l(j)$.
+It can be shown that $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$, which then allows us to compute our bounds for $\Delta$'s.% as
+%$\Delta_+^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)$,
+%$\Delta_+^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right] - \lambda v(e)$,
+%$\Delta_-^{\max}(e) = \sum_{S_l \ni e} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right] + \lambda v(e)$,
+%$\Delta_-^{\min}(e) = \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\tilde\beta_l^{\iota(e)-1} + w_l(e))\right] + \lambda v(e)$.
+
+%\begin{lem} $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$
+%\end{lem}
+%
+%\begin{cor}
+%\begin{align*}
+%\Delta_+^{\max}(e)
+%&= \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right] - \lambda v(e)\\
+%&\geq \sum_{S_l \ni e} \left[g(\hat\alpha_l^{\iota(e)-1} + w_l(e)) - g(\hat\alpha_l^{\iota(e)-1})\right] - \lambda v(e)
+%&&= \Delta_+(e)\\
+%&\geq \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right] - \lambda v(e)
+%&&= \Delta_+^{\min}(e)\\
+%\Delta_-^{\max}(e)
+%&= \sum_{S_l \ni e} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right] + \lambda v(e)\\
+%&\geq \sum_{S_l \ni e} \left[g(\hat\beta_l^{\iota(e)-1} - w_l(e)) - g(\hat\beta_l^{\iota(e)-1})\right] + \lambda v(e)
+%&&= \Delta_-(e)\\
+%&\geq \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\tilde\beta_l^{\iota(e)-1} + w_l(e))\right] + \lambda v(e)
+%&&= \Delta_-^{\min}(e)
+%\end{align*}
+%\end{cor}
+
+
+\newpage\input{hogwildproof}
 
 \newpage\input{occproof}
 
