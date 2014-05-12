@@ -444,7 +444,7 @@ Work is only required to demonstrate that coordination is limited.
             $\Delta_{+}^{\max}(e) = F(\hat{A}\cup e) - F(\hat{A})$\;\label{alg:hogwild:deltaadd}
             $\Delta_{-}^{\max}(e) = F(\hat{B}\backslash e) - F(\hat{B})$\;\label{alg:hogwild:deltarem}
             Draw $u_e\sim Unif(0,1)$\;\label{alg:hogwild:time}
-            \If {$u_e<\frac{[\Delta_{+}^{\max}(e)]_+}{[\Delta_{+}^{\min}(e)]_+ + [\Delta_{-}^{\max}(e)]_+}$}{
+            \If {$u_e<\frac{[\Delta_{+}^{\max}(e)]_+}{[\Delta_{+}^{\max}(e)]_+ + [\Delta_{-}^{\max}(e)]_+}$}{
               $\hat{A}(e) \leftarrow 1$\;\label{alg:hogwild:add}
             }\lElse{
               $\hat{B}(e) \leftarrow 0$\label{alg:hogwild:rem}
@@ -534,29 +534,36 @@ Work is only required to demonstrate that coordination is limited.
 
 
 \section{\hogwild{} Bidirectional Greedy Algorithm}
-\xinghao{Provide more intuition for what the \occ{} algorithm is doing.}
+\xinghao{Provide more intuition for what the \hogwild{} algorithm is doing.}
 
-Algorithm \ref{alg:hogwild}\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; the \hogwild{} algorithm can also be extended to the multilinear version of \cite{buchbinder2012}.} is the \hogwild{} parallel bidirectional greedy unconstrained submodular maximization algorithm.
-We associate with each element $e$ a time $T_e$ at which Algorithm \ref{alg:hogwild} line \ref{alg:hogwild:time} is executed, and order the elements according to the times $T_e$.
-Let $\iota(e)$ be the position of $e$ in this ordering.
-This total ordering on elements also allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
+Algorithm \ref{alg:hogwild} is the \hogwild{} parallel bidirectional greedy algorithm for unconstrained submodular maximization.\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; the \hogwild{} algorithm can also be extended to the multilinear version of \cite{buchbinder2012}.}
+The \hogwild{} algorithm closely resembles the serial algorithm, but the elements $e \in V$ are no longer processed in a fixed order.  Thus, the sets $A, B$ are replaced by ``bounds'' $\hat{A}, \hat{B}$, where $\hat{A}$ is a subset of the ``true'' $A$ and $\hat{B}$ is a superset of the ``actual'' $B$ on each iteration.
+These bounding sets allow us to compute bounds $\Delta_{+}^{\max}, \Delta_{-}^{\max}$ which approximate $\Delta_{+}, \Delta_{-}$ from the serial algorithm.
+We now formalize this idea.
 
-Note that in Algorithm \ref{alg:hogwild}, lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem} may be executed in parallel with lines \ref{alg:hogwild:add} and \ref{alg:hogwild:rem}.
-Hence, $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ (lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem}) may be computed with different values of $\hat{A}(e')$.
-We denote by $\hat{A}_e$ and $\hat{B}_e$ respectively the vectors of $\hat{A}$ and $\hat{B}$ that are used in the computation of $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$.
-It immediately follows that
+We order the elements $e \in V$ according to the time at which Algorithm \ref{alg:hogwild} line \ref{alg:hogwild:time} is executed.
+Let $\iota(e)$ be the position of $e$ in this total ordering on elements.
+This ordering allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
+These ``true'' sets $A^i, B^i$ provide a serialization against which we can compare the \hogwild{} algorithm; in this serialization, Algorithm \ref{alg:submax} computes:
 \begin{align*}
   \Delta_{+}       (e) &= F(A^{\iota(e)-1}\cup i) - F(A^{\iota(e)-1}),
-& \Delta_{-}       (e) &= F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1})\\
-  \Delta_{+}^{\max}(e) &= F(\hat{A}_e\cup e) - F(\hat{A}_e),
-& \Delta_{-}^{\max}(e) &= F(\hat{B}_e\backslash e) - F(\hat{B}_e).
+& \Delta_{-}       (e) &= F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1}) \, .
 \end{align*}
 
+Note that in Algorithm \ref{alg:hogwild}, lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem} may be executed in parallel with lines \ref{alg:hogwild:add} and \ref{alg:hogwild:rem}.
+Hence, $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ (lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem}) may be computed with conflicting versions of $\hat{A}$ and $\hat{B}$.
+Denoting these versions by $\hat{A}_e$ and $\hat{B}_e$, Algorithm \ref{alg:hogwild} computes:
+\begin{align*}
+  \Delta_{+}^{\max}(e) &= F(\hat{A}_e\cup e) - F(\hat{A}_e),
+& \Delta_{-}^{\max}(e) &= F(\hat{B}_e\backslash e) - F(\hat{B}_e) \, .
+\end{align*}
 
+The next lemma shows that $\hat{A}_e, \hat{B}_e$ are bounding sets for the serialization's sets $A^{\iota(e)-1}, B^{\iota(e)-1}$.
 
-\begin{lem}\label{lem:hog:set_bound} For any $e\in V$, $\hat{A}_e \subseteq A^{\iota(e)-1}$, $\hat{B}_e \supseteq B^{\iota(e)-1}$.
+\begin{lem}\label{lem:hog:set_bound} For any $e\in V$, $\hat{A}_e \subseteq A^{\iota(e)-1}$, and $\hat{B}_e \supseteq B^{\iota(e)-1}$.
 \end{lem}
 \begin{proof}
+For any element $e$, we write $T_e$ to denote the time at which Algorithm \ref{alg:hogwild} line \ref{alg:hogwild:time} is executed.
 Consider any element $e'\in V$.
 If $e'\in \hat{A}_e$, it must be the case that the algorithm set $\hat{A}(e')$ to 1 (line \ref{alg:hogwild:add}) before $T_e$, which implies $\iota(e') < \iota(e)$, and hence $e' \in A^{\iota(e)-1}$.
 So $\hat{A}_e \subseteq A^{\iota(e)-1}$.
@@ -572,11 +579,14 @@ $\Delta_{+}(e) \leq \Delta_{+}^{\max}(e)$, and
 $\Delta_{-}(e) \leq \Delta_{-}^{\max}(e)$.
 \end{cor}
 
+The error in the \hogwild{} algorithm will depend on the tightness of the bounds in Corollary \ref{cor:hog:delta_bound}.
+We analyze this error in \secref{sec:analysis:hogwild}.
 
-For some functions $F$, we can maintain sketches / statistics to aid the computation of $\Delta_+^{\max}$, $\Delta_-^{\max}$, and obtain the bounds given in Corollary \ref{cor:hog:delta_bound}.
-In particular, in Appendix \ref{sec:sepsum} we consider functions of the form
-$F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$,
-where $S_l \subseteq V$ are (possibly overlapping) groups of elements in the ground set, $g$ is a non-decreasing concave scalar function, and $w_l(i)$ and $v(i)$ are non-negative scalar weights.
+For some functions $F$, we can maintain sketches or statistics to aid the computation of $\Delta_+^{\max}$, $\Delta_-^{\max}$, and still obtain the bounds given in Corollary \ref{cor:hog:delta_bound}.
+In Appendix \ref{sec:sepsum}, we consider functions of separable sums, which are useful for applications such as document summarization \cite{lin11}.
+%we consider functions of the form
+%$F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$,
+%where $S_l \subseteq V$ are (possibly overlapping) groups of elements in the ground set, $g$ is a non-decreasing concave scalar function, and $w_l(i)$ and $v(i)$ are non-negative scalar weights.
 
 
 
@@ -658,14 +668,14 @@ We leave this discussion to Appendix \ref{sec:sepsum}.
 
 
 
-\section{Analysis of Algorithms}
+\section{Analysis of Algorithms \label{sec:analysis}}
 
 \xinghao{What is the purpose of this section?
 We want to say that we have a choice between a slower but serially equivalent algorithm and a faster algorithm which is not serially equivalent.
 Nevertheless, the slower algorithm is not too slow, and the approximation guarantee of the algorithm that is not serially equivalent is not too weak.}
 
 
-\subsection{Approximation of \hogwild{} bidirectional greedy}
+\subsection{Approximation of \hogwild{} bidirectional greedy \label{sec:analysis:hogwild}}
 Let $F$ be submodular and non-negative.
 We assume for each $e$, there exists $\rho_e \geq 0$ such that
 $\Delta_+^{\max}(e) - \rho_e \leq \Delta_+(e)$, and
