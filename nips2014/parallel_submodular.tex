@@ -495,7 +495,6 @@ Work is only required to demonstrate that coordination is limited.
             }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
               result$(i) \leftarrow -1$\;
             }
-            \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
             \lIf {result$(i) = 0$} {validate($e$, $i$)}
             processAndRollback($e$, $i$)\;
           }
@@ -506,6 +505,7 @@ Work is only required to demonstrate that coordination is limited.
         \DontPrintSemicolon
         \caption{\occ{}: processAndRollback($e$, $i$)}
         \label{alg:occrollback}
+        \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
         \If {result$(i) = 1$}{
           $\hat{A}(e)   \leftarrow 1$\;\label{alg:occ:ahat}
           $\tilde{B}(e) \leftarrow 1$\;
