@@ -16,4 +16,5 @@ nips2014/*.fdb_latexmk
 nips2014/*.fdb_latexmk
 nips2014/parallel_submodular.pdf
 nips2014/nips_paper.pdf
+*.DS_Store
 
