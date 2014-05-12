@@ -371,15 +371,20 @@ The transaction $T_i$ is a function from the sets $A$ and $B$ to new sets $A$ an
 We fixed the source of randomness in advance to simplify the presentation.
 
 
-One can easily show that by composing the transactions $T_n (T_{n-1}(\ldots T_1(\emptyset, S)))$ we recover the serial double-greedy algorithm defined in \algref{alg:submax}.
-In fact, any ordering of the \emph{serial} composition of the transactions recovers a permuted execution of \algref{alg:submox} and therefore the optimal approximation algorithm.
-However, this raises the question, is it possible to apply transactions in parallel?
-If we execute transactions $T_i$ and $T_j$, with $i \neq j$, in parallel we produce two separate program states.
-In the context of the double greedy algorithm, we could take the union of the two transactions:
+By composing the transactions $T_n (T_{n-1}(\ldots T_1(\emptyset, S)))$ we recover the serial double-greedy algorithm defined in \algref{alg:submax}.
+In fact, any ordering of the \emph{serial} composition of the transactions recovers a permuted execution of \algref{alg:submax} and therefore the optimal approximation algorithm.
+However, this raises the question: \emph{is it possible to apply transactions in parallel?}
+If we execute transactions $T_i$ and $T_j$, with $i \neq j$, in parallel we
+need a method to merge the resulting program states.
+In the context of the double greedy algorithm, we could define the parallel execution of two transactions as:
 \begin{equation}
-T_i(A,B) \union T_j(A,B) = \left(T_i(A,B)_A \union T_j(A,B)_A,  \,\, T_i(A,B)_B  \union T_j(A,B)_B \right).
+T_i(A,B) + T_j(A,B) = \left(T_i(A,B)_A \union T_j(A,B)_A,  \,\, T_i(A,B)_B  \inter T_j(A,B)_B \right).
+\label{eqn:merge}
 \end{equation}
-While we can easily generalize such a strategy to many parallel transactions, we cannot in general guarantee that the resulting union corresponds to any serial composition of transactions and therefore recovers the approximation guarantees.
+the union of the resulting $A$ and the intersection of the resulting $B$.
+While we can easily generalize \eqnref{eqn:merge} to many parallel transactions, we cannot always guarantee that the result will corresponds to a serial composition of transactions.
+As a consequence, we cannot directly apply the analysis of Buchbinder et al.~\cite{buchbinder2012} to derive strong approximation guarantees for our parallel execution.
+
 
 
 Fortunately, several decades of research in data management systems have explored the design of efficient parallel transaction processing systems.
