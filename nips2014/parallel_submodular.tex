@@ -948,7 +948,7 @@ Future work: constrained maximization, minimization; distributed setting, where 
 
 \section{Parallel algorithms for separable sums}
 \label{sec:sepsum}
-\begin{figure}[h]
+\begin{figure}[H]
   \footnotesize
   \centering
   \begin{multicols}{2}
@@ -1143,56 +1143,9 @@ Following the arguments of Lemma \ref{lem:occ:set_bound} and Corollary \ref{cor:
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{comment}
-\section{Discussion on $\rho_i$}
 
-\section{\hogwild{} approximation for monotone $F$}
-\subsection{Proof for monotone functions}
-\begin{lem}\label{lem:singleelement_monotone} If $F$ is monotone submodular, for every $1 \leq i \leq n$,
-\[E[F(O^{i-1})-F(O^i)] \leq \frac{1}{2(1-\kappa_F)} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1})].\]
-\end{lem}
-\begin{proof}
-Since $F$ is monotone, we only have to check the case where $0 \leq \Delta_+(i) \leq \Delta_+^{\max}(i)$ and $0 \leq \Delta_-(i) \leq \Delta_-^{\max}(i)$.
-Following the proof structure of Case 8 in Lemma \ref{lem:singleelement}, we get
-\begin{align*}
-E[f(A^i) - f(A^{i-1}) | A^{i-1}, j] &\geq \frac{(1+\kappa_F)\Delta_+^{\max}(i)^2}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}\\
-E[f(B^i) - f(B^{i-1}) | A^{i-1}, j] &\geq \frac{(1+\kappa_F)\Delta_-^{\max}(i)^2}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}\\
-E(f(O^{i-1}) - f(O^i) | A^{i-1}, j] &\leq \frac{\Delta_+^{\max}(i)\Delta_-^{\max}(i)}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}
-\end{align*}
-\begin{align*}
-&E[F(O^{i-1}) - F(O^i) | A^{i-1}, j] - \frac{1}{2(1-\kappa_F)} E[f(A^i) - f(A^{i-1}) + f(B^i) - f(B^{i-1})| A^{i-1}, j]\\
-&\leq \frac{1/2}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}\bigg[
-2\Delta_+^{\max}(i)\Delta_-^{\max}(i)
-- \Delta_-^{\max}(i)^2
-- \Delta_+^{\max}(i)^2
-\bigg]\\
-&= \frac{1/2}{\Delta_+^{\max}(i) + \Delta_-^{\max}(i)}\bigg[-(\Delta_+^{\max}(i) - \Delta_-^{\max}(i))^2\bigg]\\
-&\leq 0.
-\end{align*}
-\end{proof}
-
-\begin{thm}\label{thm:randomapprox_monotone} Let $F$ be a non-negative monotone submodular function.
-The \hogwild{} bidirectional greedy algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
-\[
-E[F(A)] \geq \frac{1-\kappa_F}{2-\kappa_F}F^*,
-\]
-where $A$ is the algorithm output, $F^*$ is the optimal value, and $\kappa_F$ is the total curvature of the function.
-\end{thm}
-\begin{proof}
-Summing up the statement of Lemma \ref{lem:singleelement_monotone} for all $i$ gives us a telescoping sum, which reduces to:
-\begin{align*}
-E[F(O^0)-F(O^n)]
-&\leq \frac{1}{2(1-\kappa_F)} E[F(A^n) - F(A^0) + F(B^n) - F(B^0)]\\
-&\leq \frac{1}{2(1-\kappa_F)} E[F(A^n) + F(B^n)].
-\end{align*}
-Note that $O^0 = OPT$ and $O^n = A^n = B^n$, so $E[F(A^n)] \geq \frac{1-\kappa_F}{2-\kappa} F(OPT)$.
-\end{proof}
-\end{comment}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}
-
 
 % This document was modified from the file originally made available by
 % Pat Langley and Andrea Danyluk for ICML-2K. This version was
