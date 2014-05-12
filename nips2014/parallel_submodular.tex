@@ -438,7 +438,7 @@ Work is only required to demonstrate that coordination is limited.
         \DontPrintSemicolon
         \caption{\hogwild{} bidirectional greedy}
         \label{alg:hogwild}
-        \lFor{$e\in V$}{$\hat{A}(e) = 0$, $\hat{B}(e) = 1$}\;
+        \lFor{$e\in V$}{$\hat{A}(e) = 0$, $\hat{B}(e) = 1$}
         \ParForAll{$p \in \set{1, \ldots, P}$}{
           \While{$\exists$ element to process}{
             $e = $ next element to process\;
@@ -462,9 +462,9 @@ Work is only required to demonstrate that coordination is limited.
           $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
           $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
           \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
-            result$(i) \leftarrow 1$\;
+            result$(i) \leftarrow 1$
           }\lElse{
-            result$(i) \leftarrow -1$\;
+            result$(i) \leftarrow -1$
           }
       \end{algorithm}
 
@@ -475,9 +475,9 @@ Work is only required to demonstrate that coordination is limited.
         \DontPrintSemicolon
         \caption{\occ{} bidirectional greedy}
         \label{alg:occ}
-        \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}\;
-        \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}\;
-        \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}\;
+        \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}
+        \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}
+        \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}
         $\iota = 0$\;
         \ParForAll{$p \in \set{1, \ldots, P}$}{
           \While{$\exists$ element to process}{
@@ -496,7 +496,7 @@ Work is only required to demonstrate that coordination is limited.
               result$(i) \leftarrow -1$\;
             }
             \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
-            \lIf {result$(i) = 0$}{validate($p$, $e$, $i$)}\;
+            \lIf {result$(i) = 0$}{validate($p$, $e$, $i$)}
             \If {result$(i) = 1$}{
               $\hat{A}(e)   \leftarrow 1$\;\label{alg:occ:ahat}
               $\tilde{B}(e) \leftarrow 1$\;
