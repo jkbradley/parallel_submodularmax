@@ -433,7 +433,44 @@ Work is only required to demonstrate that coordination is limited.
         %\Output{$A_n$}
       \end{algorithm}
 
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\hogwild{} bidirectional greedy}
+        \label{alg:hogwild}
+        \lFor{$e\in V$}{$\hat{A}(e) = 0$, $\hat{B}(e) = 1$}
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $\Delta_{+}^{\max}(e) = F(\hat{A}\cup e) - F(\hat{A})$\;\label{alg:hogwild:deltaadd}
+            $\Delta_{-}^{\max}(e) = F(\hat{B}\backslash e) - F(\hat{B})$\;\label{alg:hogwild:deltarem}
+            Draw $u_e\sim Unif(0,1)$\;\label{alg:hogwild:time}
+            \If {$u_e<\frac{[\Delta_{+}^{\max}(e)]_+}{[\Delta_{+}^{\min}(e)]_+ + [\Delta_{-}^{\max}(e)]_+}$}{
+              $\hat{A}(e) \leftarrow 1$\;\label{alg:hogwild:add}
+            }\lElse{
+              $\hat{B}(e) \leftarrow 0$\label{alg:hogwild:rem}
+            }
+          }
+        }
+      \end{algorithm}
 
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\occ{}: validate($e$, $i$)}
+        \label{alg:occvalidate}
+        \WaitUntil $\forall j < i$, processed$(j) = true$\;
+        $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
+        $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
+        \If {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
+          result$(i) \leftarrow 1$
+        }\lElse{
+          result$(i) \leftarrow -1$
+        }
+      \end{algorithm}
+
+
+    \end{minipage}
+
+    \begin{minipage}{0.49\textwidth}
       \begin{algorithm}[H]
         \DontPrintSemicolon
         \caption{\occ{} bidirectional greedy}
@@ -458,56 +495,17 @@ Work is only required to demonstrate that coordination is limited.
             }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
               result$(i) \leftarrow -1$\;
             }
-            validate($e$, $i$)\;
-            % processAndRollback($e$, $i$)\;
-          }
-        }
-      \end{algorithm}
-
-    \end{minipage}
-
-    \begin{minipage}{0.49\textwidth}
-      \begin{algorithm}[H]
-        \DontPrintSemicolon
-        \caption{\hogwild{} bidirectional greedy}
-        \label{alg:hogwild}
-        \lFor{$e\in V$}{$\hat{A}(e) = 0$, $\hat{B}(e) = 1$}
-        \ParForAll{$p \in \set{1, \ldots, P}$}{
-          \While{$\exists$ element to process}{
-            $e = $ next element to process\;
-            $\Delta_{+}^{\max}(e) = F(\hat{A}\cup e) - F(\hat{A})$\;\label{alg:hogwild:deltaadd}
-            $\Delta_{-}^{\max}(e) = F(\hat{B}\backslash e) - F(\hat{B})$\;\label{alg:hogwild:deltarem}
-            Draw $u_e\sim Unif(0,1)$\;\label{alg:hogwild:time}
-            \If {$u_e<\frac{[\Delta_{+}^{\max}(e)]_+}{[\Delta_{+}^{\min}(e)]_+ + [\Delta_{-}^{\max}(e)]_+}$}{
-              $\hat{A}(e) \leftarrow 1$\;\label{alg:hogwild:add}
-            }\Else{
-              $\hat{B}(e) \leftarrow 0$\;\label{alg:hogwild:rem}
-            }
+            \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
+            \lIf {result$(i) = 0$} {validate($e$, $i$)}
+            processAndRollback($e$, $i$)\;
           }
         }
       \end{algorithm}
 
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{\occ{}: validate($e$, $i$)}
-        \label{alg:occvalidate}
-        \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
-        \If {result$(i) = 0$}{
-          \WaitUntil $\forall j < i$, processed$(j) = true$\;
-          $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
-          $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
-          \If {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
-            result$(i) \leftarrow 1$
-          }\Else{
-            result$(i) \leftarrow -1$
-          }
-        }
-      % \end{algorithm}
-
-      % \begin{algorithm}[H]
-      %   \DontPrintSemicolon
-      %   \caption{\occ{}: processAndRollback($e$, $i$)}
-      %   \label{alg:occrollback}
+        \caption{\occ{}: processAndRollback($e$, $i$)}
+        \label{alg:occrollback}
         \If {result$(i) = 1$}{
           $\hat{A}(e)   \leftarrow 1$\;\label{alg:occ:ahat}
           $\tilde{B}(e) \leftarrow 1$\;
