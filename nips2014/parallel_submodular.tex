@@ -355,11 +355,41 @@ The sequential bidirectional greedy \cite{buchbinder2012} algorithm monotonicall
 
 
 
-\section{Approaches for parallel learning}
+\section{Concurrency Patterns for Parallel Machine Learning}
 
-Two approaches that allow us to trade off speed with approximation guarantees.
+In this paper we adopt a transactional view of the program state and explore parallelization strategies through the lens of parallel transaction processing systems.
+We recast the program state, the sets $A$ and $B$, as data, and the operations, adding elements to $A$ and removing elements from $B$, as transactions.
+More precisely we reformulate the bidirectional greedy algorithm as a series of \emph{exchangeable}, \emph{Read-Write} transactions of the form:
+\begin{equation}
+T_i(A,B) :=
+\begin{cases}
+   (A \union i, B) & \text{if } u_i \leq \frac{\Delta_+(A,i)}{\Delta_+(A,i)+ \Delta_-(B,i)}  \\
+   (A, B \backslash i) & \text{otherwise. }
+  \end{cases}
+\end{equation}
+The transaction $T_i$ is a function from the sets $A$ and $B$ to new sets $A$ and $B$ based on the element $i \in S$ and the predetermined random bits $u_i$ for that element.
+We fixed the source of randomness in advance to simplify the presentation.
 
+
+One can easily show that by composing the transactions $T_n (T_{n-1}(\ldots T_1(\emptyset, S)))$ we recover the serial double-greedy algorithm defined in \algref{alg:submax}.
+In fact, any ordering of the \emph{serial} composition of the transactions recovers a permuted execution of \algref{alg:submox} and therefore the optimal approximation algorithm.
+However, this raises the question, is it possible to apply transactions in parallel?
+If we execute transactions $T_i$ and $T_j$, with $i \neq j$, in parallel we produce two separate program states.
+In the context of the double greedy algorithm, we could take the union of the two transactions:
+\begin{equation}
+T_i(A,B) \union T_j(A,B) = \left(T_i(A,B)_A \union T_j(A,B)_A,  \,\, T_i(A,B)_B  \union T_j(A,B)_B \right).
+\end{equation}
+While we can easily generalize such a strategy to many parallel transactions, we cannot in general guarantee that the resulting union corresponds to any serial composition of transactions and therefore recovers the approximation guarantees.
+
+
+Fortunately, several decades of research in data management systems have explored the design of efficient parallel transaction processing systems.
+The systems span a space ranging from extremely fast coordination free approaches which provide minimal guarantees on the composition of transactions to sophisticated concurrency control techniques which ensure a direct correspondence between parallel and serial executions at the cost of slightly reduced performance.
+
+
+%Two approaches that allow us to trade off speed with approximation guarantees.
+\joey{finish}
 \subsection{Coordination free}
+\joey{finish}
 Simply run everything in parallel.
 Optimized for speed, but does not necessarily provide the correct answer.
 Requires work to prove correctness.
