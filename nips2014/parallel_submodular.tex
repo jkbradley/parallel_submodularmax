@@ -407,6 +407,52 @@ Designed for correctness, but requires coordination that compromises speed.
 Work is only required to demonstrate that coordination is limited.
 
 
+\begin{figure}[h]
+  \footnotesize
+  \centering
+  \begin{multicols}{2}
+    \begin{minipage}{0.49\textwidth}
+
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Generalized transactions}
+        \label{alg:generalparallel}
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $\mathfrak{S}_e = \text{getSnapshot}$\;
+            (op, $\mathfrak{A}_e$) = propose($e$, $\mathfrak{S}_e$)\;
+            validate($e$, op, $\mathfrak{A}_e$)
+          }
+        }
+      \end{algorithm}
+
+    \end{minipage}
+
+    \begin{minipage}{0.49\textwidth}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{validate}
+        \label{alg:generalparallel:validate}
+        \If{op = fail $\vee \neg \mathfrak{A}_e(\mathfrak{S})$}{
+          \CommentSty{// Reject, and re-compute}\;
+          op = repropose($e$, $\mathfrak{S}$)\;
+        }
+        \CommentSty{// Apply op to current state}\;
+        $\mathfrak{S} \leftarrow \text{op}(\mathfrak{S})$\;
+      \end{algorithm}
+    \end{minipage}
+
+
+
+  \end{multicols}
+  \caption{\footnotesize Algorithm for generalized transactions. Each transaction makes a copy $\mathfrak{S}_e$ of the current state $\mathfrak{S}$, and proposes an operation op and a set of associated assumptions $\mathfrak{A}_e$. The valdiation procedure verifies that the assumptions hold on the current state, and ultimately applies op to the $\mathfrak{S}$.}
+  \label{fig:submax}
+\end{figure}
+
+
+
+
 
 \begin{figure}[h]
   \footnotesize
@@ -502,10 +548,10 @@ Work is only required to demonstrate that coordination is limited.
         $\Delta_-^{\max}(e) = F(\hat{B}_e   \backslash e) - F(\hat{B}_e)$\;\label{alg:occ:deltaminusmax}
         Draw $u_e \sim Unif(0,1)$\;
         \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{\label{alg:occ:decisioninclude}
-          result$ \leftarrow 1$
+          result$~\leftarrow 1$
         }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
-          result$ \leftarrow -1$\;
-        }
+          result$~\leftarrow -1$\;
+        }\lElse{result$~\leftarrow fail$}
         \Return (result, $u_e$)
       \end{algorithm}
 
@@ -515,7 +561,7 @@ Work is only required to demonstrate that coordination is limited.
         \label{alg:occvalidate}
         % \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
         \WaitUntil $\forall j < i$, processed$(j) = true$\;
-        \If{result$~= 0$}{
+        \If{result$~= fail$}{
           $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
           $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
           \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
