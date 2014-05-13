@@ -1,4 +1,4 @@
-\begin{thebibliography}{11}
+\begin{thebibliography}{12}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -16,6 +16,12 @@ Niv Buchbinder, Moran Feldman, Joseph~(Seffi) Naor, and Roy Schwartz.
 \newblock ISBN 978-0-7695-4874-6.
 \newblock \doi{10.1109/FOCS.2012.73}.
 \newblock URL \url{http://dx.doi.org/10.1109/FOCS.2012.73}.
+
+\bibitem[Lin and Bilmes(2011)]{lin11}
+Hui Lin and Jeff Bilmes.
+\newblock A class of submodular functions for document summarization.
+\newblock In \emph{The 49th Annual Meeting of the Association for Computational
+  Linguistics: Human Language Technologies (ACL-HLT)}, 2011.
 
 \bibitem[Leskovec(2011)]{snap}
 Jure Leskovec.

@@ -425,13 +425,80 @@ Work is only required to demonstrate that coordination is limited.
           \If {$u_i<\frac{[\Delta_{+}(i)]_+}{[\Delta_{+}(i)]_+ + [\Delta_{-}(i)]_+}$}{
             $A^i := A^{i-1} \cup i$;
             $B^i := B^{i-1}$\;
-          }\Else{
+          }\lElse{
             $A^i := A^{i-1}$;
-            $B^i := B^{i-1}\backslash i$\;
+            $B^i := B^{i-1}\backslash i$
           }
         }
         %\Output{$A_n$}
       \end{algorithm}
+
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Parallel bidirectional greedy}
+        \label{alg:par}
+        \lFor{$i\in V$}{$\hat{A}(i) = \tilde{A}(i) = 0$, $\hat{B}(i) \tilde{B}(i) = 1$}
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $i = $ next element to process\;
+            $(\hat{A}_e, \tilde{A}_e, \hat{B}_e, \tilde{B}_e)$ = getSnapshot($i$)\;
+            Draw $u_e\sim Unif(0,1)$\;
+            res($i$) = $\Gamma_e(\hat{A}_e, \tilde{A}_e, \hat{B}_e, \tilde{B}_e, u_e)$\;
+            validate($i$, res($i$), $u_e$, $\hat{A}_e$, $\tilde{A}_e$, $\hat{B}_e$, $\tilde{B}_e$)\;
+          }
+        }
+      \end{algorithm}
+
+    \end{minipage}
+
+    \begin{minipage}{0.49\textwidth}
+
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Parallel getSnapshot($i$)}
+        \label{alg:parsnapshot}
+        $\tilde{A}(i) \leftarrow 1$; $\tilde{B}(i) \leftarrow 0$\;
+        \Return ($\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$)
+      \end{algorithm}
+
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Parallel validate}
+        \label{alg:parvalidate}
+        \If{$\text{res}(i) = 0 \vee \hat{A}_i \not\subseteq A^{i-1} \not\subseteq \tilde{A}_i \vee \hat{B}_e \not\supseteq B^{i-1} \not\supseteq \tilde{B}_i$}{
+          $\Delta_+(i) = F(A^{i-1} \cup i) - F(A^{i-1})$\;
+          $\Delta_-(i) = F(B^{i-1} \backslash i) - F(B^{i-1})$\;
+          \lIf {$u_e < \frac{[\Delta_+(i)]_+}{[\Delta_+(i)]_+ + [\Delta_-(i)]_+}$}{
+            res$(i) \leftarrow 1$
+          }\lElse{
+            res$(i) \leftarrow -1$
+          }
+        }
+        \If {res$(i) = 1$}{
+          $A^i := A^{i-1} \cup i$;
+          $B^i := B^{i-1}$\;
+          $\hat{A}(i)   \leftarrow 1$;
+          $\tilde{B}(i) \leftarrow 1$\;
+        }\Else{
+          $A^i := A^{i-1}$;
+          $B^i := B^{i-1}\backslash i$\;
+          $\tilde{A}(i) \leftarrow 0$;
+          $\hat{B}(i)   \leftarrow 0$\;
+        }
+      \end{algorithm}
+
+    \end{minipage}
+
+
+
+  \end{multicols}
+  \label{fig:generalalgorithm}
+\end{figure}
+\begin{figure}[h]
+  \footnotesize
+  \centering
+  \begin{multicols}{2}
+    \begin{minipage}{0.49\textwidth}
 
       \begin{algorithm}[H]
         \DontPrintSemicolon
@@ -457,15 +524,27 @@ Work is only required to demonstrate that coordination is limited.
         \DontPrintSemicolon
         \caption{\occ{}: validate($e$, $i$)}
         \label{alg:occvalidate}
-        \WaitUntil $\forall j < i$, processed$(j) = true$\;
-        $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
-        $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
-        \If {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
-          result$(i) \leftarrow 1$
+        \If{res$(i) = 0$}{
+          \WaitUntil $\forall j < i$, processed$(j) = true$\;
+          $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
+          $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
+          \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
+            res$(i) \leftarrow 1$
+          }\lElse{
+            res$(i) \leftarrow -1$
+          }
+          }
+        \WaitUntil $\forall j<i$, res$(j) \neq 0$\;\label{alg:occ:reswait}
+        \lIf {res$(i) = 1$}{
+          $\hat{A}(e)   \leftarrow 1$;\label{alg:occ:ahat}
+          $\tilde{B}(e) \leftarrow 1$
         }\lElse{
-          result$(i) \leftarrow -1$
+          $\tilde{A}(e) \leftarrow 0$;
+          $\hat{B}(e)   \leftarrow 0$\label{alg:occ:bhat}
         }
+        processed$(i) = true$\;
       \end{algorithm}
+
 
 
     \end{minipage}
@@ -476,7 +555,7 @@ Work is only required to demonstrate that coordination is limited.
         \caption{\occ{} bidirectional greedy}
         \label{alg:occ}
         \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}
-        \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}
+        \lFor{$i = 1,\dots,|V|$}{res$(i) = 0$}
         \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}
         $\iota = 0$\;
         \ParForAll{$p \in \set{1, \ldots, P}$}{
@@ -491,39 +570,22 @@ Work is only required to demonstrate that coordination is limited.
             $\Delta_-^{\max}(e) = F(\hat{B}   \backslash e) - F(\hat{B})$\;\label{alg:occ:deltaminusmax}
             Draw $u_e \sim Unif(0,1)$\;
             \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{\label{alg:occ:decisioninclude}
-              result$(i) \leftarrow 1$\;
+              res$(i) \leftarrow 1$\;
             }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
-              result$(i) \leftarrow -1$\;
+              res$(i) \leftarrow -1$\;
             }
-            \lIf {result$(i) = 0$} {validate($e$, $i$)}
-            processAndRollback($e$, $i$)\;
+            validate($e$, $i$)
           }
         }
       \end{algorithm}
 
-      \begin{algorithm}[H]
-        \DontPrintSemicolon
-        \caption{\occ{}: processAndRollback($e$, $i$)}
-        \label{alg:occrollback}
-        \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
-        \If {result$(i) = 1$}{
-          $\hat{A}(e)   \leftarrow 1$\;\label{alg:occ:ahat}
-          $\tilde{B}(e) \leftarrow 1$\;
-        }\Else{
-          $\tilde{A}(e) \leftarrow 0$\;
-          $\hat{B}(e)   \leftarrow 0$\;\label{alg:occ:bhat}
-        }
-        processed$(i) = true$\;
-      \end{algorithm}
 
-
-
-  \label{fig:submax}
     \end{minipage}
 
 
 
   \end{multicols}
+  \label{fig:submax}
 \end{figure}
 
 
@@ -600,7 +662,7 @@ In Appendix \ref{sec:sepsum}, we consider functions of separable sums, which are
 \section{Optimistic Concurrency Control for Bidirectional Greedy Algorithm}
 \xinghao{Provide more intuition for what the \occ{} algorithm is doing.}
 
-Algorithm \ref{alg:occ}\footnote{The synchronization required by the \occ{} algorithm can be further reduced, for example, by replacing the operations from Line \ref{alg:occ:resultwait} onwards by a non-blocking function call.} is the \occ{} bidirectional greedy algorithm.
+Algorithm \ref{alg:occ}\footnote{The synchronization required by the \occ{} algorithm can be further reduced, for example, by replacing the validation by a non-blocking function call.} is the \occ{} bidirectional greedy algorithm.
 Unlike the \hogwild{} algorithm, the \occ{} algorithm ensures serial equivalence by maintaining four sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$.
 Each thread can determine locally if a decision to include / exclude an element can be taken safely.
 Otherwise, the validation process (Algorithm \ref{alg:occvalidate}) waits until it is certain about $A$, $B$ before proceeding.
@@ -998,7 +1060,7 @@ Future work: constrained maximization, minimization; distributed setting, where 
       \begin{algorithm}[H]
         \DontPrintSemicolon
         \caption{\occ{} validate for separable sums}
-        \label{alg:occvalidate}
+        \label{alg:occsepsumvalidate}
         \WaitUntil $\forall j < i$, processed$(j) = true$\;
         $\Delta_+^{\text{exact}}(e) = -\lambda v(e) + \sum_{S_l\ni e} g(\hat\alpha_l + w_l(e)) - g(\hat\alpha_l)$\;
         $\Delta_-^{\text{exact}}(e) = +\lambda v(e) + \sum_{S_l\ni e} g(\hat\beta_l   - w_l(e)) - g(\hat\beta_l)$\;
