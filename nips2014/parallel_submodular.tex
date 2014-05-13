@@ -460,15 +460,15 @@ Work is only required to demonstrate that coordination is limited.
         \caption{\occ{} bidirectional greedy}
         \label{alg:occ}
         \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}
-        \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}
+        % \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}
         \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}
         $\iota = 0$\;
         \ParForAll{$p \in \set{1, \ldots, P}$}{
           \While{$\exists$ element to process}{
             $e = $ next element to process\;
             $(\hat{A}_e, \tilde{A}_e, \hat{B}_e, \tilde{B}_e, i)$ = getSnapshot($e$)\;
-            (result$(i)$, $u_e$) = propose($e$, $\hat{A}_e$, $\tilde{A}_e$, $\hat{B}_e$, $\tilde{B}_e$)\;
-            validate($e$, $i$, $u_e$)
+            (result, $u_e$) = propose($e$, $\hat{A}_e$, $\tilde{A}_e$, $\hat{B}_e$, $\tilde{B}_e$)\;
+            validate($e$, $i$, $u_e$, result)
           }
         }
       \end{algorithm}
@@ -502,29 +502,29 @@ Work is only required to demonstrate that coordination is limited.
         $\Delta_-^{\max}(e) = F(\hat{B}_e   \backslash e) - F(\hat{B}_e)$\;\label{alg:occ:deltaminusmax}
         Draw $u_e \sim Unif(0,1)$\;
         \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{\label{alg:occ:decisioninclude}
-          res$ \leftarrow 1$
+          result$ \leftarrow 1$
         }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
-          res$ \leftarrow -1$\;
+          result$ \leftarrow -1$\;
         }
-        \Return (res, $u_e$)
+        \Return (result, $u_e$)
       \end{algorithm}
 
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{\occ{}: validate($e$, $i$, $u_e$)}
+        \caption{\occ{}: validate($e$, $i$, $u_e$, result)}
         \label{alg:occvalidate}
         % \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
         \WaitUntil $\forall j < i$, processed$(j) = true$\;
-        \If{result$(i) = 0$}{
+        \If{result$~= 0$}{
           $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
           $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
           \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
-            result$(i) \leftarrow 1$
+            result$~\leftarrow 1$
           }\lElse{
-            result$(i) \leftarrow -1$
+            result$~\leftarrow -1$
           }
         }
-        \lIf {result$(i) = 1$}{
+        \lIf {result$~= 1$}{
           $\hat{A}(e)   \leftarrow 1$;\label{alg:occ:ahat}
           $\tilde{B}(e) \leftarrow 1$
         }\lElse{
