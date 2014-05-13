@@ -441,10 +441,10 @@ Work is only required to demonstrate that coordination is limited.
         \ParForAll{$p \in \set{1, \ldots, P}$}{
           \While{$\exists$ element to process}{
             $i = $ next element to process\;
-            $(\hat{A}_e, \tilde{A}_e, \hat{B}_e, \tilde{B}_e)$ = getSnapshot($i$)\;
-            Draw $u_e\sim Unif(0,1)$\;
-            res($i$) = $\Gamma_e(\hat{A}_e, \tilde{A}_e, \hat{B}_e, \tilde{B}_e, u_e)$\;
-            validate($i$, res($i$), $u_e$, $\hat{A}_e$, $\tilde{A}_e$, $\hat{B}_e$, $\tilde{B}_e$)\;
+            $(\hat{A}_i, \tilde{A}_i, \hat{B}_i, \tilde{B}_i)$ = getSnapshot($i$)\;
+            Draw $u_i\sim Unif(0,1)$\;
+            (res($i$), $\hat{A}_i$, $\tilde{A}_i$, $\hat{B}_i$, $\tilde{B}_i$) = $\Gamma_i(\hat{A}_i, \tilde{A}_i, \hat{B}_i, \tilde{B}_i, u_i)$\;
+            validate($i$, res($i$), $u_i$, $\hat{A}_i$, $\tilde{A}_i$, $\hat{B}_i$, $\tilde{B}_i$)\;
           }
         }
       \end{algorithm}
