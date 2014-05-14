@@ -412,6 +412,54 @@ Work is only required to demonstrate that coordination is limited.
   \centering
   \begin{multicols}{2}
     \begin{minipage}{0.49\textwidth}
+
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{Generalized transactions}
+        \label{alg:generalparallel}
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $\mathfrak{S}_e = \text{getSnapshot}$\;
+            (op, $\mathfrak{A}_e$) = propose($e$, $\mathfrak{S}_e$)\;
+            validate($e$, op, $\mathfrak{A}_e$)
+          }
+        }
+      \end{algorithm}
+
+    \end{minipage}
+
+    \begin{minipage}{0.49\textwidth}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{validate}
+        \label{alg:generalparallel:validate}
+        \If{op = fail $\vee \neg \mathfrak{A}_e(\mathfrak{S})$}{
+          \CommentSty{// Reject, and re-compute}\;
+          op = repropose($e$, $\mathfrak{S}$)\;
+        }
+        \CommentSty{// Apply op to current state}\;
+        $\mathfrak{S} \leftarrow \text{op}(\mathfrak{S})$\;
+      \end{algorithm}
+    \end{minipage}
+
+
+
+  \end{multicols}
+  \caption{\footnotesize Algorithm for generalized transactions. Each transaction makes a copy $\mathfrak{S}_e$ of the current state $\mathfrak{S}$, and proposes an operation op and a set of associated assumptions $\mathfrak{A}_e$. The valdiation procedure verifies that the assumptions hold on the current state, and ultimately applies op to the $\mathfrak{S}$.}
+  \label{fig:submax}
+\end{figure}
+
+
+
+
+
+\begin{figure}[h]
+  \footnotesize
+  \centering
+  \begin{multicols}{2}
+    \begin{minipage}{0.49\textwidth}
+
       \begin{algorithm}[H]
         \DontPrintSemicolon
         \caption{Serial submodular maximization}
@@ -435,73 +483,6 @@ Work is only required to demonstrate that coordination is limited.
 
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{Parallel bidirectional greedy}
-        \label{alg:par}
-        \lFor{$i\in V$}{$\hat{A}(i) = \tilde{A}(i) = 0$, $\hat{B}(i) \tilde{B}(i) = 1$}
-        \ParForAll{$p \in \set{1, \ldots, P}$}{
-          \While{$\exists$ element to process}{
-            $i = $ next element to process\;
-            $(\hat{A}_i, \tilde{A}_i, \hat{B}_i, \tilde{B}_i)$ = getSnapshot($i$)\;
-            Draw $u_i\sim Unif(0,1)$\;
-            (res($i$), $\hat{A}_i$, $\tilde{A}_i$, $\hat{B}_i$, $\tilde{B}_i$) = $\Gamma_i(\hat{A}_i, \tilde{A}_i, \hat{B}_i, \tilde{B}_i, u_i)$\;
-            validate($i$, res($i$), $u_i$, $\hat{A}_i$, $\tilde{A}_i$, $\hat{B}_i$, $\tilde{B}_i$)\;
-          }
-        }
-      \end{algorithm}
-
-    \end{minipage}
-
-    \begin{minipage}{0.49\textwidth}
-
-      \begin{algorithm}[H]
-        \DontPrintSemicolon
-        \caption{Parallel getSnapshot($i$)}
-        \label{alg:parsnapshot}
-        $\tilde{A}(i) \leftarrow 1$; $\tilde{B}(i) \leftarrow 0$\;
-        \Return ($\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$)
-      \end{algorithm}
-
-      \begin{algorithm}[H]
-        \DontPrintSemicolon
-        \caption{Parallel validate}
-        \label{alg:parvalidate}
-        \If{$\text{res}(i) = 0 \vee \hat{A}_i \not\subseteq A^{i-1} \not\subseteq \tilde{A}_i \vee \hat{B}_e \not\supseteq B^{i-1} \not\supseteq \tilde{B}_i$}{
-          $\Delta_+(i) = F(A^{i-1} \cup i) - F(A^{i-1})$\;
-          $\Delta_-(i) = F(B^{i-1} \backslash i) - F(B^{i-1})$\;
-          \lIf {$u_e < \frac{[\Delta_+(i)]_+}{[\Delta_+(i)]_+ + [\Delta_-(i)]_+}$}{
-            res$(i) \leftarrow 1$
-          }\lElse{
-            res$(i) \leftarrow -1$
-          }
-        }
-        \If {res$(i) = 1$}{
-          $A^i := A^{i-1} \cup i$;
-          $B^i := B^{i-1}$\;
-          $\hat{A}(i)   \leftarrow 1$;
-          $\tilde{B}(i) \leftarrow 1$\;
-        }\Else{
-          $A^i := A^{i-1}$;
-          $B^i := B^{i-1}\backslash i$\;
-          $\tilde{A}(i) \leftarrow 0$;
-          $\hat{B}(i)   \leftarrow 0$\;
-        }
-      \end{algorithm}
-
-    \end{minipage}
-
-
-
-  \end{multicols}
-  \label{fig:generalalgorithm}
-\end{figure}
-\begin{figure}[h]
-  \footnotesize
-  \centering
-  \begin{multicols}{2}
-    \begin{minipage}{0.49\textwidth}
-
-      \begin{algorithm}[H]
-        \DontPrintSemicolon
         \caption{\hogwild{} bidirectional greedy}
         \label{alg:hogwild}
         \lFor{$e\in V$}{$\hat{A}(e) = 0$, $\hat{B}(e) = 1$}
@@ -522,29 +503,21 @@ Work is only required to demonstrate that coordination is limited.
 
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{\occ{}: validate($e$, $i$)}
-        \label{alg:occvalidate}
-        \If{res$(i) = 0$}{
-          \WaitUntil $\forall j < i$, processed$(j) = true$\;
-          $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
-          $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
-          \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
-            res$(i) \leftarrow 1$
-          }\lElse{
-            res$(i) \leftarrow -1$
+        \caption{\occ{} bidirectional greedy}
+        \label{alg:occ}
+        \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}
+        % \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}
+        \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}
+        $\iota = 0$\;
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $(\hat{A}_e, \tilde{A}_e, \hat{B}_e, \tilde{B}_e, i)$ = getSnapshot($e$)\;
+            (result, $u_e$) = propose($e$, $\hat{A}_e$, $\tilde{A}_e$, $\hat{B}_e$, $\tilde{B}_e$)\;
+            validate($e$, $i$, $u_e$, result)
           }
-          }
-        \WaitUntil $\forall j<i$, res$(j) \neq 0$\;\label{alg:occ:reswait}
-        \lIf {res$(i) = 1$}{
-          $\hat{A}(e)   \leftarrow 1$;\label{alg:occ:ahat}
-          $\tilde{B}(e) \leftarrow 1$
-        }\lElse{
-          $\tilde{A}(e) \leftarrow 0$;
-          $\hat{B}(e)   \leftarrow 0$\label{alg:occ:bhat}
         }
-        processed$(i) = true$\;
       \end{algorithm}
-
 
 
     \end{minipage}
@@ -552,31 +525,59 @@ Work is only required to demonstrate that coordination is limited.
     \begin{minipage}{0.49\textwidth}
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{\occ{} bidirectional greedy}
-        \label{alg:occ}
-        \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}
-        \lFor{$i = 1,\dots,|V|$}{res$(i) = 0$}
-        \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}
-        $\iota = 0$\;
-        \ParForAll{$p \in \set{1, \ldots, P}$}{
-          \While{$\exists$ element to process}{
-            $e = $ next element to process\;
-            $\tilde{A}(e) \leftarrow 1$\;
-            $\tilde{B}(e) \leftarrow 0$\;
-            $i = \iota$; $\iota \leftarrow \iota + 1$\;\label{alg:occ:time}
-            $\Delta_+^{\min}(e) = F(\tilde{A}) - F(\tilde{A} \backslash e)$\;\label{alg:occ:deltaplusmin}
-            $\Delta_+^{\max}(e) = F(\hat{A}   \cup e) - F(\hat{A})$\;\label{alg:occ:deltaplusmax}
-            $\Delta_-^{\min}(e) = F(\tilde{B}) - F(\tilde{B} \cup e)$\;\label{alg:occ:deltaminusmin}
-            $\Delta_-^{\max}(e) = F(\hat{B}   \backslash e) - F(\hat{B})$\;\label{alg:occ:deltaminusmax}
-            Draw $u_e \sim Unif(0,1)$\;
-            \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{\label{alg:occ:decisioninclude}
-              res$(i) \leftarrow 1$\;
-            }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
-              res$(i) \leftarrow -1$\;
-            }
-            validate($e$, $i$)
+        \caption{\occ{} getSnapshot($e$)}
+        \label{alg:occsnapshot}
+        $\tilde{A}(e) \leftarrow 1$;
+        $\tilde{B}(e) \leftarrow 0$\;
+        $i = \iota$;
+        $\iota \leftarrow \iota + 1$\;\label{alg:occ:time}
+        $\hat{A}_e = \hat{A}$;
+        $\hat{B}_e = \hat{B}$\;
+        $\tilde{A}_e = \tilde{A}$;
+        $\tilde{B}_e = \tilde{B}$\;
+        \Return $(\hat{A}_e, \tilde{A}_e, \hat{B}_e, \tilde{B}_e, i)$
+      \end{algorithm}
+
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\occ{} propose}
+        \label{alg:propose}
+        $\Delta_+^{\min}(e) = F(\tilde{A}_e) - F(\tilde{A}_e \backslash e)$\;\label{alg:occ:deltaplusmin}
+        $\Delta_+^{\max}(e) = F(\hat{A}_e   \cup e) - F(\hat{A}_e)$\;\label{alg:occ:deltaplusmax}
+        $\Delta_-^{\min}(e) = F(\tilde{B}_e) - F(\tilde{B}_e \cup e)$\;\label{alg:occ:deltaminusmin}
+        $\Delta_-^{\max}(e) = F(\hat{B}_e   \backslash e) - F(\hat{B}_e)$\;\label{alg:occ:deltaminusmax}
+        Draw $u_e \sim Unif(0,1)$\;
+        \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{\label{alg:occ:decisioninclude}
+          result$~\leftarrow 1$
+        }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
+          result$~\leftarrow -1$\;
+        }\lElse{result$~\leftarrow fail$}
+        \Return (result, $u_e$)
+      \end{algorithm}
+
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\occ{}: validate($e$, $i$, $u_e$, result)}
+        \label{alg:occvalidate}
+        % \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
+        \WaitUntil $\forall j < i$, processed$(j) = true$\;
+        \If{result$~= fail$}{
+          $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occvalidate:deltaplus}
+          $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occvalidate:deltaminus}
+          \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occvalidate:decisioninclude}
+            result$~\leftarrow 1$
+          }\lElse{
+            result$~\leftarrow -1$
           }
         }
+        \lIf {result$~= 1$}{
+          $\hat{A}(e)   \leftarrow 1$;\label{alg:occ:ahat}
+          $\tilde{B}(e) \leftarrow 1$
+        }\lElse{
+          $\tilde{A}(e) \leftarrow 0$;
+          $\hat{B}(e)   \leftarrow 0$\label{alg:occ:bhat}
+        }
+        processed$(i) = true$\;
       \end{algorithm}
 
 
