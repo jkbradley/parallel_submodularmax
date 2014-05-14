@@ -676,9 +676,13 @@ We will show that the outcome of Algorithm \ref{alg:occ} is equivalent to the se
 $\hat{A}_e \subseteq A^{\iota(e)-1} \subseteq \tilde{A}_e \backslash e$, and $\hat{B}_e \supseteq B^{\iota(e)-1} \supseteq \tilde{B}_e \cup e$.
 \end{lem}
 \begin{proof}
+
+
+\xinghao{The below proof is for shared state.}
+
 Clearly, $e \in \tilde{B}_e\cup e$ but $e\not\in \tilde{A}_e\backslash e$.
 By definition, $e \in B^{\iota(e)-1}$ but $e\not\in A^{\iota(e)-1}$.
-The \occ{} algorithm (Algorithm \ref{alg:occ}) only modifies $\hat{A}(e)$ and $\hat{B}(e)$ on Lines \ref{alg:occ:ahat}, \ref{alg:occ:bhat} when processing $e$, which \occ{}urs after the computation of the $\Delta$'s on Lines \ref{alg:occ:deltaplusmin} - \ref{alg:occ:deltaminusmax}, so $e \in \hat{B}_e$ but $e\not\in \hat{A}_e$.
+The \occ{} algorithm only modifies $\hat{A}(e)$ and $\hat{B}(e)$ on Algorithm \ref{alg:occ} Lines \ref{alg:occ:ahat}, \ref{alg:occ:bhat} when processing $e$, which occurs after the computation of the $\Delta$'s on Lines \ref{alg:occ:deltaplusmin} - \ref{alg:occ:deltaminusmax}, so $e \in \hat{B}_e$ but $e\not\in \hat{A}_e$.
 
 Consider any $e'\neq e$.
 Suppose $e' \in \hat{A}_e$.
