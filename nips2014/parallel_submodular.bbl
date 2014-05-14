@@ -1,4 +1,4 @@
-\begin{thebibliography}{12}
+\begin{thebibliography}{14}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -16,6 +16,18 @@ Niv Buchbinder, Moran Feldman, Joseph~(Seffi) Naor, and Roy Schwartz.
 \newblock ISBN 978-0-7695-4874-6.
 \newblock \doi{10.1109/FOCS.2012.73}.
 \newblock URL \url{http://dx.doi.org/10.1109/FOCS.2012.73}.
+
+\bibitem[Ozsu(2007)]{Ozsu07}
+M.~Tamer Ozsu.
+\newblock \emph{Principles of Distributed Database Systems}.
+\newblock Prentice Hall Press, Upper Saddle River, NJ, USA, 3rd edition, 2007.
+\newblock ISBN 9780130412126.
+
+\bibitem[Kung and Robinson(1981)]{kung1981:occ}
+Hsiang-Tsung Kung and John~T Robinson.
+\newblock On optimistic methods for concurrency control.
+\newblock \emph{ACM Transactions on Database Systems (TODS)}, 6\penalty0
+  (2):\penalty0 213--226, 1981.
 
 \bibitem[Lin and Bilmes(2011)]{lin11}
 Hui Lin and Jeff Bilmes.
