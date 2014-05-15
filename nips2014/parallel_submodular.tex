@@ -470,9 +470,9 @@ Alternatively, by carefully constructing the preconditions we can guarantee a se
         \ParForAll{$p \in \set{1, \ldots, P}$}{
           \While{$\exists$ element to process}{
             $e = $ next element to process\;
-            $\mathfrak{S}_e = \text{getSnapshot}$\;
-            ($T^\partial_e$, $\mathfrak{A}_e$) = propose($e$, $\mathfrak{S}_e$)\;
-            validate($e$, $T^\partial_e$, $\mathfrak{A}_e$)
+            $(\mathfrak{B}_e, i) = \text{getBounds}(e)$\;
+            $T^\partial_e$ = propose($e$, $\mathfrak{B}_e$)\;
+            commit($e$, $i$, $T^\partial_e$) \tcp{Non-blocking}
           }
         }
       \end{algorithm}
@@ -483,12 +483,13 @@ Alternatively, by carefully constructing the preconditions we can guarantee a se
       \begin{algorithm}[H]
         \SetKwBlock{Atomically}{Atomically}{}
         \DontPrintSemicolon
-        \caption{Validate}
-        \label{alg:generalparallel:validate}
+        \caption{Commit}
+        \label{alg:generalparallel:commit}
+        \WaitUntil $\forall j < i$, processed$(j) = true$\;
         \Atomically{
-        \If{$T^\partial_e =\text{Fail}$ or $\mathfrak{S}$ does not satisfy $\mathfrak{A}_e$}{
-          \tcp{Compensating Action}
-          $T^\partial_e$ = repropose($e$, $\mathfrak{S}$)\;
+        \If{$T^\partial_e =\text{Fail}$}{
+          \tcp{Reject and compensate}
+          $T^\partial_e$ = propose($e$, $\mathfrak{S}$)\;
         }
         \tcp{Advance program state}
         $\mathfrak{S} \leftarrow T^\partial_e(\mathfrak{S})$\;
@@ -499,7 +500,7 @@ Alternatively, by carefully constructing the preconditions we can guarantee a se
 
 
   \end{multicols}
-  \caption{\footnotesize Algorithm for generalized transactions. Each transaction makes a copy $\mathfrak{S}_e$ of the current state $\mathfrak{S}$, and proposes an operation op and a set of associated assumptions $\mathfrak{A}_e$. The valdiation procedure verifies that the assumptions hold on the current state, and ultimately applies op to the $\mathfrak{S}$.}
+  \caption{\footnotesize Algorithm for generalized transactions. Each transaction requests for its position $i$ in the commit ordering, as well as the bounds $\mathfrak{B}_e$ that are guaranteed to hold when it commits. Transactions are also guaranteed to be committed according to the given ordering.}
   \label{fig:submax}
 \end{figure}
 
