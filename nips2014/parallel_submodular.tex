@@ -406,8 +406,8 @@ The systems span a space ranging from extremely fast coordination free approache
 % A common technique is to introduce a validation stage that detects inconsistent transactions and prescribes a compensating action.
 % In \algref{alg:generalparallel} we describe a general validation based meta-algorithm that we extend in subsequent sections.
 % Each processor extracts a next element to process and a consistent but potentially out of data snapshot of the program state.
-% Based on the snapshop and selected element, each processor proposes a transaction, $T^\partial_e$, and the preconditions under which the transaction is valid, $\mathfrak{A}$.
-% We denote the transaction as $T^\partial_e$ to avoid confusion with \eqnref{eqn:greedytransaction} and because it encodes the effect (\eg remove $e$ from $B$) of more costly transactions (\eg \eqnref{eqn:greedytransaction}).
+% Based on the snapshop and selected element, each processor proposes a transaction, $\partial_e$, and the preconditions under which the transaction is valid, $\mathfrak{A}$.
+% We denote the transaction as $\partial_e$ to avoid confusion with \eqnref{eqn:greedytransaction} and because it encodes the effect (\eg remove $e$ from $B$) of more costly transactions (\eg \eqnref{eqn:greedytransaction}).
 
 
 % After proposing a transaction and corresponding preconditions, the processor validates the transaction by invoking the validation process defined in \algref{alg:generalparallel:validate}.
@@ -423,19 +423,20 @@ The systems span a space ranging from extremely fast coordination free approache
 % Alternatively, by carefully constructing the preconditions we can guarantee a serializable execution potentially at the expense of parallel scalability.
 
 \xinghao{Casting our meta-algorithm as a generalization of (pessimiistic) concurrency approach.}
-A transaction obtains from the server a set of conditions $\mathfrak{B}_e$ and an associated logical time $i$, such that $\mathfrak{B}_e$ is guaranteed to hold at $i$.
+In \algref{alg:generalparallel} we describe a common pattern for concurrency control.
+A transaction begins by requesting a set of guarantees $\mathfrak{G}_e$ and an associated logical time $i$, such that $\mathfrak{G}_e$ is guaranteed to hold at $i$.
 Under these conditions, the transaction attempts to propose and commit an update.
 However, if the guaranteed conditions are insufficient to do so, the transaction is rejected and the update is recomputed by the server.
 \xinghao{We could add a footnote here that states that an alternative approach which we do not discuss in detail is for the transaction to rollback and re-try.}
 The server is in charge of providing and guaranteeing the conditions, and processing commits in the logical order of $i$.
-It is straightforward to see that the output of the parallel execution is $T^\partial_n (T^\partial_{n-1}(\ldots T^\partial_1(\emptyset, V)))$.
+It is straightforward to see that the output of the parallel execution is $\partial_n (\partial_{n-1}(\ldots \partial_1(\emptyset, V)))$.
 A parallel algorithm is said to be \textit{serially equivalent} to a sequential algorithm if for any input, the output of the parallel algorithm corresponds to that of some sequential execution.
 
 \xinghao{\occ:} In our \occ{} double greedy algorithm, these conditions correspond to upper and lower bounds on the sets $A$ and $B$ at commit time.
 
 
 \xinghao{\hogwild:} The coordination-free approach attempts to reduce the need to coordinate guarantees and logical ordering.
-This is achieved by operating on potentially stale states -- the guarantee reduces to requiring $\mathfrak{B}_e$ be a stale version of $\mathfrak{S}$, and logical ordering is implicitly defined by the time of commit.
+This is achieved by operating on potentially stale states -- the guarantee reduces to requiring $\mathfrak{G}_e$ be a stale version of $\mathfrak{S}$, and logical ordering is implicitly defined by the time of commit.
 \xinghao{An interesting take on hogwild -- hogwild is not serially equivalent to the sequential algorithm, but it is serially equivalent to an approximate algorithm that operates on stale states.
 Thus, to understand hogwild, we analyze the approximate algorithm.
 The concept of CC buys us two things: firstly, to extend sequential algorithms into parallel ones; secondly, to project a parallel algorithm into a sequential algorithm, which aids our understanding and analysis.}
@@ -492,9 +493,9 @@ The concept of CC buys us two things: firstly, to extend sequential algorithms i
         \ParForAll{$p \in \set{1, \ldots, P}$}{
           \While{$\exists$ element to process}{
             $e = $ next element to process\;
-            $(\mathfrak{B}_e, i) = \text{getBounds}(e)$\;
-            $T^\partial_i$ = propose($e$, $\mathfrak{B}_e$)\;
-            commit($e$, $i$, $T^\partial_i$) \tcp{Non-blocking}
+            $(\mathfrak{G}_e, i) = \text{requestGuarantee}(e)$\;
+            $\partial_i$ = propose($e$, $\mathfrak{G}_e$)\;
+            commit($e$, $i$, $\partial_i$) \tcp{Non-blocking}
           }
         }
       \end{algorithm}
@@ -509,12 +510,12 @@ The concept of CC buys us two things: firstly, to extend sequential algorithms i
         \label{alg:generalparallel:commit}
         \WaitUntil $\forall j < i$, processed$(j) = true$\;
         \Atomically{
-        \If{$T^\partial_i =\text{Fail}$}{
+        \If{$\partial_i =\text{Fail}$}{
           \tcp{Reject and compensate}
-          $T^\partial_i$ = propose($e$, $\mathfrak{S}$)\;
+          $\partial_i$ = propose($e$, $\mathfrak{S}$)\;
         }
         \tcp{Advance program state}
-        $\mathfrak{S} \leftarrow T^\partial_i(\mathfrak{S})$\;
+        $\mathfrak{S} \leftarrow \partial_i(\mathfrak{S})$\;
         }
       \end{algorithm}
     \end{minipage}
@@ -522,7 +523,7 @@ The concept of CC buys us two things: firstly, to extend sequential algorithms i
 
 
   \end{multicols}
-  \caption{\footnotesize Algorithm for generalized transactions. Each transaction requests for its position $i$ in the commit ordering, as well as the bounds $\mathfrak{B}_e$ that are guaranteed to hold when it commits. Transactions are also guaranteed to be committed according to the given ordering.}
+  \caption{\footnotesize Algorithm for generalized transactions. Each transaction requests for its position $i$ in the commit ordering, as well as the bounds $\mathfrak{G}_e$ that are guaranteed to hold when it commits. Transactions are also guaranteed to be committed according to the given ordering.}
   \label{fig:submax}
 \end{figure}
 
