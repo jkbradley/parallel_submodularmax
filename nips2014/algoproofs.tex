@@ -48,9 +48,9 @@ An analogous argument shows $e' \not\in \hat{B}_e \implies e' \not\in B^{\iota(e
 
 
 
-\lemoccvalidate*
+\lemoccdefer*
 \begin{proof}
-At Line \ref{alg:occvalidate:deltaplus}, we have guaranteed that $\forall j < \iota(e)$, processed$(j) = true$.
+At Line \ref{alg:occdefer:deltaplus}, we have guaranteed that $\forall j < \iota(e)$, processed$(j) = true$.
 Thus, $\forall e': \iota(e') < \iota(e)$, $e' \in \hat{A} \iff e' \in A^{\iota(e)-1}$ and $e' \in \hat{B} \iff e' \in B^{\iota(e)-1}$.
 On the other hand, result$(\iota(e)) = 0$, so all $e'$ such that $\iota(e') > \iota(e)$ are blocked on Algorithm \ref{alg:occ} Line \ref{alg:occ:resultwait}, hence $\hat{A}(e') = 0$ and $\hat{B}(e') = 1$.
 Thus, $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.

@@ -747,7 +747,7 @@ In the \occ{} algorithm, $\forall e\in V$,
 $\hat{A}_e \subseteq A^{\iota(e)-1} \subseteq \tilde{A}_e \backslash e$, and $\hat{B}_e \supseteq B^{\iota(e)-1} \supseteq \tilde{B}_e \cup e$.
 \end{restatable}
 
-\begin{restatable}{lem}{lemoccvalidate}\label{lem:occ:validate}
+\begin{restatable}{lem}{lemoccdefer}\label{lem:occ:defer}
 In the \occ{} algorithm, during the commit process for deferred element $e$, on Lines \ref{alg:occcommit:deltaplus}, \ref{alg:occcommit:deltaminus} of \algref{alg:occcommit}, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{restatable}
 
@@ -895,7 +895,7 @@ Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16
 
 We measured the runtime and speedup (ratio of runtime on 1 thread to runtime on $p$ threads).
 For the \hogwild{} algorithm, we measured $F(A_{\hogwild})-F(A_{\seqalg})$, the difference between the objective value on the sets returned by \hogwild{} and the sequential algorithms.
-We verified the correctness of the \occ{} algorithm by comparing the sets returned by the \occ{} and sequential algorithms, and also measured the fraction of elements that are validated by \occ{}.
+We verified the correctness of the \occ{} algorithm by comparing the sets returned by the \occ{} and sequential algorithms, and also measured the fraction of elements that are deferred for computation at the server by \occ{}.
 
 %\begin{table}[h]
 %\centering
@@ -978,7 +978,7 @@ The set cover problem is reduced to a vertex cover on the directed graph.
   Fig \ref{fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$.
   Fig \ref{fig:speedup_maxgraphcut}, \ref{fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads).
   Fig \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and \hogwild{} algorithms, i.e. $[F(A_{\hogwild{}}) / F(A_{\seqalg}) - 1] \times 100\%$.
-  Fig \ref{fig:validated_maxgraphcut} -- percentage of elements validated by the \occ{} algorithm on the max graph cut problem.
+  Fig \ref{fig:validated_maxgraphcut} -- percentage of elements deferred by \occ{} on the max graph cut problem.
   }
 \label{fig:results_quality}
 \end{figure}
@@ -987,7 +987,7 @@ The set cover problem is reduced to a vertex cover on the directed graph.
 Due to space constraints, we only present part of our results in Figure \ref{fig:results_quality}, deferring full results to Appendix \ref{app:exptresults}.
 \textbf{Runtime, Speedup:} Both parallel algorithms are faster than the sequential algorithm with three or more threads, and show good speedup properties as more threads are added ($\sim$ 10x or more for all graphs and both functions).
 \textbf{Objective value:} The objective value of the \hogwild{} algorithm decreases with the number of threads, but differs from the sequential objective value by less than $0.01\%$.
-\textbf{Validations:} The \occ{} algorithm validates more elements as threads are added, but less than 0.015\% are validated with 16 threads, which has negligible effect on the runtime / speedup.
+\textbf{Validations:} The \occ{} algorithm defers more elements as threads are added, but less than 0.015\% are deferred with 16 threads, which has negligible effect on the runtime / speedup.
 
 \subsection{Adversarial ordering}
 
@@ -995,7 +995,7 @@ To highlight the philosophical differences between the two parallel algorithms, 
 The algorithms are presented with an adversarial ordering, with permutation, so vertices close in the ordering are adjacent to one another, and tend to be processed concurrently.
 This causes \hogwild{} to make more mistakes, and \occ{} to face more uncertainty.
 
-As Figure \ref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually validating $>90\%$ of elements.
+As Figure \ref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually deferring $>90\%$ of elements.
 On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwild{}})$ that is only $20\%$ of $F(A_{Seq2G})$.
 For the set cover problem, we maintain statistics that are updated atomically by both algorithms.
 The adversarial ordering forces more concurrent atomic updates, and hence, \hogwild{} does not achieve good speedup.
