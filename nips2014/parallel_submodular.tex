@@ -48,9 +48,9 @@
 \newcommand{\ie}{{\em i.e.,}~}
 \newcommand{\eg}{{\em e.g.,}~}
 
-\newcommand{\hogwild}{CF2G}
-\newcommand{\occ}{CC2G}
-\newcommand{\seqalg}{Seq2G}
+\newcommand{\hogwild}{CF-2g}
+\newcommand{\occ}{CC-2g}
+\newcommand{\seqalg}{Seq-2g}
 
 \begingroup
     \makeatletter
@@ -303,7 +303,7 @@ We implement and evaluate both algorithms on multi-core hardware and billion edg
 %
 % Many machine learning problems can be formulated as maximization of submodular functions. \cite{buchbinder2012} recently proposed a double greedy algorithm for unconstrained submodular maximization that achieves a tight 1/2-approximation. However, double greedy is an inherently sequential, linear time algorithm that does not scale to big data.
 
-% We present two approaches to extend the bidirectional greedy algorithm to a parallel setting.
+% We present two approaches to extend the double greedy algorithm to a parallel setting.
 % The first, `coordination-free' approach emphasizes speed at the cost of a weaker approximation guarantee -- it achieves a $(1/2 - O(1/N))$ approximation for max cut on a complete graph.
 % The second, `concurrency control' approach guarantees the same tight 1/2-approximation, at the cost of greater coordination.
 
@@ -329,12 +329,12 @@ Contributions of the paper
 
 
 
-The bidirectional greedy algorithm \cite{buchbinder2012} gives an approximation of $E[F(A)] = 1/2 f(OPT)$, where $A$ is the algorithm output, and $OPT$ is an optimal solution.
+The double greedy algorithm \cite{buchbinder2012} gives an approximation of $E[F(A)] = 1/2 f(OPT)$, where $A$ is the algorithm output, and $OPT$ is an optimal solution.
 
 The \hogwild{} algorithm can give an approximation of $E[F(A)] = \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$, where $\rho_i$ is the maximum difference in the marginal gain that may result from not knowing the full information when deciding whether to include or exclude element $i$.
 
-The \occ{} algorithm \xinghao{for the lack of a better name} guarantees an outcome that is equivalent to a sequential run of the bidirectional greedy algorithm.
-Theoretical properties of the bidirectional greedy algorithm immediately translates to the \occ{} algorithm -- in particular, the \occ{} algorithm gives the same approximation factor of $1/2$.
+The \occ{} algorithm \xinghao{for the lack of a better name} guarantees an outcome that is equivalent to a sequential run of the double greedy algorithm.
+Theoretical properties of the double greedy algorithm immediately translates to the \occ{} algorithm -- in particular, the \occ{} algorithm gives the same approximation factor of $1/2$.
 In contrast to the \hogwild{} approach, \occ{} introduces more coordination and thus provides less concurrency.
 
 
@@ -355,10 +355,10 @@ While those algorithms are theoretically beneficial and tend to work very well i
 Recent work has addressed parallel versions of the greedy algorithm by \cite{} for maximizing \emph{monotone} submodular functions that satisfy $F(A) \leq F(B)$ for any $A \subseteq B \subseteq V$ \cite{krause, mapgreedy}. However, in several important cases such as MAP inference, zoubin, and when trading off gains with (linear) cost functions (functions of the form $F(S) = G(S) + \lambda M(S)$, where $G(S)$ is monotone submodular and $M(S)$ is a linear (modular) cost function), we aim to maximize a \emph{non-monotone} submodular function to which the greedy algorithm of \cite{} no longer applies. For the non-monotone case, \citet{buchbinder2012} recently proposed an optimal double greedy algorithm that they develop and analyze in a serial setting. Here, we theoretically and empirically study parallel analogs of this algorithm.
 
 \paragraph{The sequential double greedy algorithm.}
-The sequential double greedy algorithm (Algorithm \ref{alg:submax}) maintains two sets $A^i \subseteq B^i$. Initially, $A^0 = \emptyset$ and $B^0 = V$. In iteration $i$, the set $A^i$ contains the items selected before item/iteration $i$, and $B^i$ contains $A^i$ and the items that are so far undecided. The algorithm sequentially passes through the items in $V$ and determines online whether to keep item $i$ (add to $A^i$) or discard it (remove from $B^i$). The decision depends on the gain of $i$ with respect to $A^i$, and the gain of removing $i$ from $B^i$.
+The sequential double greedy algorithm (\algref{alg:submax}) maintains two sets $A^i \subseteq B^i$. Initially, $A^0 = \emptyset$ and $B^0 = V$. In iteration $i$, the set $A^i$ contains the items selected before item/iteration $i$, and $B^i$ contains $A^i$ and the items that are so far undecided. The algorithm sequentially passes through the items in $V$ and determines online whether to keep item $i$ (add to $A^i$) or discard it (remove from $B^i$). The decision depends on the gain of $i$ with respect to $A^i$, and the gain of removing $i$ from $B^i$.
 
-%Describe the bidirectional greedy algorithm:
-%The sequential bidirectional greedy \cite{buchbinder2012} algorithm monotonically grows $A^i$ and shrinks $B^i$.
+%Describe the double greedy algorithm:
+%The sequential double greedy \cite{buchbinder2012} algorithm monotonically grows $A^i$ and shrinks $B^i$.
 
 
 
@@ -372,7 +372,7 @@ The sequential double greedy algorithm (Algorithm \ref{alg:submax}) maintains tw
 
 In this paper we adopt a transactional view of the program state and explore parallelization strategies through the lens of parallel transaction processing systems.
 We recast the program state, the sets $A$ and $B$, as data, and the operations, adding elements to $A$ and removing elements from $B$, as transactions.
-More precisely we reformulate the bidirectional greedy algorithm (\algref{alg:submax}) as a series of \emph{exchangeable}, \emph{Read-Write} transactions of the form:
+More precisely we reformulate the double greedy algorithm (\algref{alg:submax}) as a series of \emph{exchangeable}, \emph{Read-Write} transactions of the form:
 \begin{equation}
 T_e(A,B) :=
 \begin{cases}
@@ -424,7 +424,7 @@ The systems span a space ranging from extremely fast coordination free approache
 % By weakening the preconditions we can minimized or even eliminate invalid transactions and the need for validation.
 % Alternatively, by carefully constructing the preconditions we can guarantee a serializable execution potentially at the expense of parallel scalability.
 
-\xinghao{Casting our meta-algorithm as a generalization of (pessimiistic) concurrency approach.}
+% \xinghao{Casting our meta-algorithm as a generalization of (pessimiistic) concurrency approach.}
 In \algref{alg:generalparallel} we describe a common pattern for concurrency control.
 A transaction begins by requesting a set of guarantees $\mathfrak{g}_e$ and an associated logical time $i$, such that $\mathfrak{g}_e$ is guaranteed to hold at $i$.
 Under these conditions, the transaction attempts to propose and commit an update.
@@ -434,12 +434,6 @@ However, if the guaranteed conditions are insufficient to do so, the transaction
 The server is in charge of providing and guaranteeing the conditions, and processing commits in the logical order of $i$, producing the output $\partial_n (\partial_{n-1}(\ldots \partial_1(\mathfrak{S})))$.
 A parallel algorithm is said to be \textit{serially equivalent} to a sequential algorithm if for any input, the output of the parallel algorithm corresponds to that of some sequential execution.
 
-In our \occ{} double greedy algorithm, these conditions correspond to upper and lower bounds on the sets $A$ and $B$ at commit time.
-On the other hand, the coordination-free approach attempts to reduce the need to coordinate guarantees and logical ordering.
-This is achieved by operating on potentially stale states -- the guarantee reduces to requiring $\mathfrak{g}_e$ be a stale version of $\mathfrak{S}$, and logical ordering is implicitly defined by the time of commit.
-% \xinghao{An interesting take on hogwild -- hogwild is not serially equivalent to the sequential algorithm, but it is serially equivalent to an approximate algorithm that operates on stale states.
-% Thus, to understand hogwild, we analyze the approximate algorithm.
-% The concept of CC buys us two things: firstly, to extend sequential algorithms into parallel ones; secondly, to project a parallel algorithm into a sequential algorithm, which aids our understanding and analysis.}
 
 
 
@@ -560,7 +554,7 @@ This is achieved by operating on potentially stale states -- the guarantee reduc
 
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{\hogwild{} bidirectional greedy}
+        \caption{\hogwild{} double greedy}
         \label{alg:hogwild}
         \lFor{$e\in V$}{$\hat{A}(e) = 0$, $\hat{B}(e) = 1$}
         \ParForAll{$p \in \set{1, \ldots, P}$}{
@@ -580,7 +574,7 @@ This is achieved by operating on potentially stale states -- the guarantee reduc
 
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{\occ{} bidirectional greedy}
+        \caption{\occ{} double greedy}
         \label{alg:occ}
         \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}
         % \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}
@@ -673,26 +667,32 @@ This is achieved by operating on potentially stale states -- the guarantee reduc
 
 
 
-\section{\hogwild{} Bidirectional Greedy Algorithm}
-\xinghao{Provide more intuition for what the \hogwild{} algorithm is doing.}
+\section{\hogwild{} Double Greedy Algorithm}
+\xinghao{======== Provide more intuition for what the \hogwild{} algorithm is doing.}
+The coordination-free approach attempts to reduce the need to coordinate guarantees and logical ordering.
+This is achieved by operating on potentially stale states -- the guarantee reduces to requiring $\mathfrak{g}_e$ be a stale version of $\mathfrak{S}$, and logical ordering is implicitly defined by the time of commit.
+% \xinghao{An interesting take on hogwild -- hogwild is not serially equivalent to the sequential algorithm, but it is serially equivalent to an approximate algorithm that operates on stale states.
+% Thus, to understand hogwild, we analyze the approximate algorithm.
+% The concept of CC buys us two things: firstly, to extend sequential algorithms into parallel ones; secondly, to project a parallel algorithm into a sequential algorithm, which aids our understanding and analysis.}
+\xinghao{End comment. ========}
 
-Algorithm \ref{alg:hogwild} is the \hogwild{} parallel bidirectional greedy algorithm for unconstrained submodular maximization.\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; the \hogwild{} algorithm can also be extended to the multilinear version of \cite{buchbinder2012}.}
+\algref{alg:hogwild} is the \hogwild{} parallel double greedy algorithm for unconstrained submodular maximization.\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; the \hogwild{} algorithm can also be extended to the multilinear version of \cite{buchbinder2012}.}
 The \hogwild{} algorithm closely resembles the serial algorithm, but the elements $e \in V$ are no longer processed in a fixed order.  Thus, the sets $A, B$ are replaced by ``bounds'' $\hat{A}, \hat{B}$, where $\hat{A}$ is a subset of the ``true'' $A$ and $\hat{B}$ is a superset of the ``actual'' $B$ on each iteration.
 These bounding sets allow us to compute bounds $\Delta_{+}^{\max}, \Delta_{-}^{\max}$ which approximate $\Delta_{+}, \Delta_{-}$ from the serial algorithm.
 We now formalize this idea.
 
-We order the elements $e \in V$ according to the time at which Algorithm \ref{alg:hogwild} line \ref{alg:hogwild:time} is executed.
+We order the elements $e \in V$ according to the time at which \algref{alg:hogwild} line \ref{alg:hogwild:time} is executed.
 Let $\iota(e)$ be the position of $e$ in this total ordering on elements.
 This ordering allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
-These ``true'' sets $A^i, B^i$ provide a serialization against which we can compare the \hogwild{} algorithm; in this serialization, Algorithm \ref{alg:submax} computes:
+These ``true'' sets $A^i, B^i$ provide a serialization against which we can compare the \hogwild{} algorithm; in this serialization, \algref{alg:submax} computes:
 \begin{align*}
   \Delta_{+}       (e) &= F(A^{\iota(e)-1}\cup i) - F(A^{\iota(e)-1}),
 & \Delta_{-}       (e) &= F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1}) \, .
 \end{align*}
 
-Note that in Algorithm \ref{alg:hogwild}, lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem} may be executed in parallel with lines \ref{alg:hogwild:add} and \ref{alg:hogwild:rem}.
+Note that in \algref{alg:hogwild}, lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem} may be executed in parallel with lines \ref{alg:hogwild:add} and \ref{alg:hogwild:rem}.
 Hence, $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ (lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem}) may be computed with conflicting versions of $\hat{A}$ and $\hat{B}$.
-Denoting these versions by $\hat{A}_e$ and $\hat{B}_e$, Algorithm \ref{alg:hogwild} computes:
+Denoting these versions by $\hat{A}_e$ and $\hat{B}_e$, \algref{alg:hogwild} computes:
 \begin{align*}
   \Delta_{+}^{\max}(e) &= F(\hat{A}_e\cup e) - F(\hat{A}_e),
 & \Delta_{-}^{\max}(e) &= F(\hat{B}_e\backslash e) - F(\hat{B}_e) \, .
@@ -729,18 +729,19 @@ We analyze this error in \secref{sec:analysis:hogwild}.
 
 
 
-\section{Optimistic Concurrency Control for Bidirectional Greedy Algorithm}
+\section{Concurrency Control for Double Greedy Algorithm}
 % \xinghao{Provide more intuition for what the \occ{} algorithm is doing.}
 
-\occ{}, the `concurrency-control double greedy' algorithm, is presented in \ref{alg:occ}, and closely follows the meta-algorithm of \algref{alg:generalparallel} and \algref{alg:generalparallel:commit}.
-
-Serial equivalence is ensured by maintaining four sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$ at commit time.
+\occ{}, the `concurrency-control double greedy' algorithm, is presented in \algref{alg:occ}, and closely follows the meta-algorithm of \algref{alg:generalparallel} and \algref{alg:generalparallel:commit}.
+Serial equivalence is ensured by maintaining sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$ at commit time.
 Each thread can determine locally if a decision to include / exclude an element can be taken safely.
 Otherwise, the computation is deferred to the commit process (\algref{alg:occcommit}) which waits until it is certain about $A$, $B$ before proceeding.
 
 The commit order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ:time} of \algref{alg:occ}.
 We define $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with the \hogwild{} algorithm.
-Additionally, let $\hat{A}_e$, $\hat{B}_e$, $\tilde{A}_e$, and $\tilde{B}_e$ be the sets that are returned by \algref{alg:occsnapshot}.
+Additionally, let $\hat{A}_e$, $\hat{B}_e$, $\tilde{A}_e$, and $\tilde{B}_e$ be the sets that are returned by \algref{alg:occsnapshot}\footnote{
+  For clarity, we present the algorithm as creating a copy of $\hat{A}$, $\hat{B}$, $\tilde{A}$, and $\tilde{B}$ for each element. In practice, it is more efficient to update and access them in shared memory. Nevertheless, our theorems hold for both settings.
+}.
 Indeed, these sets are guaranteed to be bounds on $A^{\iota(e)-1}$, $B^{\iota(e)-1}$:
 
 \begin{restatable}{lem}{lemoccsetbound}\label{lem:occ:set_bound}
@@ -749,13 +750,13 @@ $\hat{A}_e \subseteq A^{\iota(e)-1} \subseteq \tilde{A}_e \backslash e$, and $\h
 \end{restatable}
 Intuitively, these bounds are maintained by recording potential effects of concurrent transactions in $\tilde{A}$, $\tilde{B}$, and only recording the actual effects in $\hat{A}$, $\hat{B}$;
 we leave the full proof to Appendix \ref{app:algoproof}.
-Furthermore, since later transactions are blocked, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$ during the commit process.
+Furthermore, since later transactions are blocked, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$ at commit.
 
 \begin{restatable}{lem}{lemoccdefer}\label{lem:occ:defer}
 In the \occ{} algorithm, during the commit process for deferred element $e$, on Lines \ref{alg:occcommit:deltaplus}, \ref{alg:occcommit:deltaminus} of \algref{alg:occcommit}, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{restatable}
 
-Algorithm \ref{alg:occ} computes
+\algref{alg:occ} computes
 \begin{align*}
   \Delta_+^{\min}(e) &= F(\tilde{A}_e) - F(\tilde{A}_e \backslash e),
 & \Delta_+^{\max}(e) &= F(\hat{A}_e \cup e) - F(\hat{A})\\
@@ -790,20 +791,20 @@ We want to say that we have a choice between a slower but serially equivalent al
 Nevertheless, the slower algorithm is not too slow, and the approximation guarantee of the algorithm that is not serially equivalent is not too weak.}
 
 
-\subsection{Approximation of \hogwild{} bidirectional greedy \label{sec:analysis:hogwild}}
-Let $F$ be submodular and non-negative.
-We assume for each $e$, the random variable $\rho_e := \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$ is bounded.
-This is trivially possible since
-\begin{align*}
-\rho_e
-&&\leq&&& \max_{S,T\subseteq V} \{[F(S\cup e) - F(S)] - [F(S \cup T \cup e) - F(S \cup T)]\}
-&\leq&& F(e)\kappa_F
-\end{align*}
-where $\kappa_F$ is the total curvature of $F$.
-% Summing over $e$ then gives us $\sum_e \rho_e \leq \kappa_F\sum_e F(e)$.
+\subsection{Approximation of \hogwild{} double greedy \label{sec:analysis:hogwild}}
+% Let $F$ be submodular and non-negative.
+% We assume for each $e$, the random variable $\rho_e := \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$ is bounded.
+% This is trivially possible since
+% \begin{align*}
+% \rho_e
+% &&\leq&&& \max_{S,T\subseteq V} \{[F(S\cup e) - F(S)] - [F(S \cup T \cup e) - F(S \cup T)]\}
+% &\leq&& F(e)\kappa_F
+% \end{align*}
+% where $\kappa_F$ is the total curvature of $F$.
+% % Summing over $e$ then gives us $\sum_e \rho_e \leq \kappa_F\sum_e F(e)$.
 
 \begin{restatable}{thm}{thmrandomapprox}\label{thm:randomapprox} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
-The \hogwild{} bidirectional greedy algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
+The \hogwild{} algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
 $
 E[F(A_{hog})] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^n E[\rho_i]$,
 where $A_{hog}$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i = \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$.
@@ -831,14 +832,14 @@ Then, $\sum_e E[\rho_e] \geq \tau + L(1-\lambda^\tau)$, which is linear in $\tau
 
 
 \subsection{Correctness of \occ{}}
-\begin{thm} \occ{} is serially equivalent to bidirectional greedy.
+\begin{thm} \occ{} is serially equivalent to double greedy.
 \end{thm}
 \begin{proof}
 We will denote by $A_{seq}^i$, $B_{seq}^i$ the sets generated by the sequential algorithm, reserving $A^i$, $B^i$ for sets generated by the \occ{} algorithm.
 It suffices to show by induction that $A_{seq}^i = A^i$ and $B_{seq}^i = B^i$.
 For the base case, $A^0 = \emptyset = A_{seq}^0$, and $B^0 = V = B_{seq}^0$.
 Consider any element $e$.
-The \occ{} algorithm includes $e \in A$ iff $u_e < [\Delta_+^{\min}(e)]_+ ([\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+)^{-1}$ on Algorithm \ref{alg:occ} Line \ref{alg:occ:decisioninclude} or $u_e < [\Delta_+^{\text{exact}}(e)]_+ ([\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+)^{-1}$ on Algorithm \ref{alg:occcommit} Line \ref{alg:occcommit:decisioninclude}.
+The \occ{} algorithm includes $e \in A$ iff $u_e < [\Delta_+^{\min}(e)]_+ ([\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+)^{-1}$ on \algref{alg:occ} Line \ref{alg:occ:decisioninclude} or $u_e < [\Delta_+^{\text{exact}}(e)]_+ ([\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+)^{-1}$ on \algref{alg:occcommit} Line \ref{alg:occcommit:decisioninclude}.
 In both cases, Corollary \ref{cor:occ:delta_bound} implies $u_e < [\Delta_+(e)]_+ ([\Delta_+(e)]_+ + [\Delta_-(e)]_+)^{-1}$.
 By induction, $A^{\iota(e)-1} = A_{seq}^{\iota(e)-1}$ and $B^{\iota(e)-1} = B_{seq}^{\iota(e)-1}$, so the threshold is exactly that computed by the sequential algorithm.
 Hence, the \occ{} algorithm includes $e \in A$ iff the sequential algorithm includes $e \in A$.
