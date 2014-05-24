@@ -1,0 +1,172 @@
+\section{Parallel algorithms for separable sums}
+\label{sec:sepsum}
+\begin{figure}[H]
+  \footnotesize
+  \centering
+  \begin{multicols}{2}
+    \begin{minipage}{0.49\textwidth}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\hogwild{} for separable sums}
+        \label{alg:hogwildsepsum}
+        \lFor{$e\in V$}{$\hat{A}(e) = 0$}\;
+        \lFor{$l = 1,\dots,L$}{$\hat\alpha_l = 0$, $\hat\beta_l = \sum_{e\in S_l}w_l(e)$}\;
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $\Delta_+^{\max}(e) = -\lambda v(e) + \sum_{S_l\ni e} g(\hat\alpha_l + w_l(e)) - g(\hat\alpha_l)$\;
+            $\Delta_-^{\max}(e) = +\lambda v(e) + \sum_{S_l\ni e} g(\hat\beta_l   - w_l(e)) - g(\hat\beta_l)$\;
+            Draw $u_e\sim Unif(0,1)$\;
+            \If {$u_e<\frac{[\Delta_{+}^{\max}(e)]_+}{[\Delta_{+}^{\min}(e)]_+ + [\Delta_{-}^{\max}(e)]_+}$}{
+              $\hat{A}(e) \leftarrow 1$\;
+              \lFor{$l: e \in S_l$}{
+                $\hat\alpha_l \leftarrow \hat\alpha_l + w_l(e)$
+              }
+            }\lElse{
+              \lFor{$l: e \in S_l$}{
+                $\hat\beta_l \leftarrow \hat\beta_l - w_l(e)$
+              }
+            }
+          }
+        }
+      \end{algorithm}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\occ{} validate for separable sums}
+        \label{alg:occsepsumvalidate}
+        \WaitUntil $\forall j < i$, processed$(j) = true$\;
+        $\Delta_+^{\text{exact}}(e) = -\lambda v(e) + \sum_{S_l\ni e} g(\hat\alpha_l + w_l(e)) - g(\hat\alpha_l)$\;
+        $\Delta_-^{\text{exact}}(e) = +\lambda v(e) + \sum_{S_l\ni e} g(\hat\beta_l   - w_l(e)) - g(\hat\beta_l)$\;
+        \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{
+          result$(i) \leftarrow 1$\;
+        }\lElse{
+          result$(i) \leftarrow -1$\;
+        }
+      \end{algorithm}
+
+    \end{minipage}
+
+    \begin{minipage}{0.49\textwidth}
+      \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \caption{\occ{} for separable sums}
+        \label{alg:occsepsum}
+        \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}\;
+        \For{$l = 1,\dots,L$}{
+          $\hat\alpha_l = \tilde\alpha_l = 0$\;
+          $\hat\beta_l = \tilde\beta_l = \sum_{e\in S_l}w_l(e)$\;
+        }
+        \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}\;
+        \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}\;
+        $\iota = 0$\;
+        \ParForAll{$p \in \set{1, \ldots, P}$}{
+          \While{$\exists$ element to process}{
+            $e = $ next element to process\;
+            $\tilde{A}(e) \leftarrow 1$\;
+            $\tilde{B}(e) \leftarrow 0$\;
+            \For{$l: e \in S_l$}{
+              $\tilde\alpha_l \leftarrow \tilde\alpha_l + w_l(e)$\;
+              $\tilde\beta_l  \leftarrow \tilde\beta_l  - w_l(e)$\;
+            }
+            $i = \iota$; $\iota \leftarrow \iota + 1$\;
+            $\Delta_+^{\min}(e) = -\lambda v(e) + \sum_{S_l\ni e} g(\tilde\alpha_l) - g(\tilde\alpha_l - w_l(e))$\;
+            $\Delta_+^{\max}(e) = -\lambda v(e) + \sum_{S_l\ni e} g(\hat\alpha_l + w_l(e)) - g(\hat\alpha_l)$\;
+            $\Delta_-^{\min}(e) = +\lambda v(e) + \sum_{S_l\ni e} g(\tilde\beta_l) - g(\tilde\beta_l + w_l(e))$\;
+            $\Delta_-^{\max}(e) = +\lambda v(e) + \sum_{S_l\ni e} g(\hat\beta_l   - w_l(e)) - g(\hat\beta_l)$\;
+            Draw $u_e \sim Unif(0,1)$\;
+            \If {$u_e < \frac{[\Delta_+^{\min}(e)]_+}{[\Delta_+^{\min}(e)]_+ + [\Delta_-^{\max}(e)]_+}$}{
+              result$(i) \leftarrow 1$\;
+            }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
+              result$(i) \leftarrow -1$\;
+            }
+            \WaitUntil $\forall j<i$, result$(j) \neq 0$\;
+            \lIf {result$(i) = 0$}{validate($p$, $e$, $i$)}\;
+            \If {result$(i) = 1$}{
+              $\hat{A}(e)   \leftarrow 1$\;
+              $\tilde{B}(e) \leftarrow 1$\;
+              \For{$l: e \in S_l$}{
+                $\hat\alpha_l   \leftarrow \hat\alpha_l   + w_l(e)$\;
+                $\tilde\beta_l  \leftarrow \tilde\beta_l  + w_l(e)$\;
+              }
+            }\Else{
+              $\tilde{A}(e) \leftarrow 0$\;
+              $\hat{B}(e)   \leftarrow 0$\;
+              \For{$l: e \in S_l$}{
+                $\tilde\alpha_l \leftarrow \tilde\alpha_l - w_l(e)$\;
+                $\hat\beta_l    \leftarrow \hat\beta_l    - w_l(e)$\;
+              }
+            }
+            processed$(i) = true$\;
+          }
+        }
+      \end{algorithm}
+    \end{minipage}
+  \end{multicols}
+\end{figure}
+
+For some functions $F$, we can maintain sketches / statistics to aid the computation of $\Delta_+^{\max}$, $\Delta_-^{\max}$, $\Delta_+^{\min}$, $\Delta_-^{\min}$.
+In particular, we consider functions of the form
+$F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$,
+where $S_l \subseteq V$ are (possibly overlapping) groups of elements in the ground set, $g$ is a non-decreasing concave scalar function, and $w_l(i)$ and $v(i)$ are non-negative scalar weights.
+It is easy to see that
+$
+F(X \cup e) - F(X) = \sum_{l: e\in S_l} \left[g\left(w_l(e) + \sum_{i\in X\cup S_l} w_l(i)\right) - g\left(\sum_{i\in X\cup S_l} w_l(i)\right)\right] - \lambda v(e)$.
+Define
+%  $\hat\alpha_l              = \sum_{j\in \hat{A}\cup S_l} w_l(j)$,
+% $\hat\alpha_{l,e}          = \sum_{j\in \hat{A}_e\cup S_l} w_l(j)$,
+% $\alpha_l^{\iota(e)-1} = \sum_{j\in A^{\iota(e)-1}\cup S_l} w_l(j)$.
+%
+%  $\hat\beta_l              = \sum_{j\in \hat{B}\cup S_l} w_l(j)$,
+% $\hat\beta_{l,e}          = \sum_{j\in \hat{B}_e\cup S_l} w_l(j)$,
+% $\beta_l^{\iota(e)-1} = \sum_{j\in B^{\iota(e)-1}\cup S_l} w_l(j)$.
+%
+\begin{align*}
+  \hat\alpha_l              &= \sum_{j\in \hat{A}\cup S_l} w_l(j),
+& \hat\alpha_{l,e}          &= \sum_{j\in \hat{A}_e\cup S_l} w_l(j),
+& \alpha_l^{\iota(e)-1} &= \sum_{j\in A^{\iota(e)-1}\cup S_l} w_l(j).\\
+  \hat\beta_l              &= \sum_{j\in \hat{B}\cup S_l} w_l(j),
+& \hat\beta_{l,e}          &= \sum_{j\in \hat{B}_e\cup S_l} w_l(j),
+& \beta_l^{\iota(e)-1} &= \sum_{j\in B^{\iota(e)-1}\cup S_l} w_l(j).
+\end{align*}
+
+
+\subsection{\hogwild{} for separable sums $F$}
+Algorithm \ref{alg:hogwildsepsum} updates $\hat\alpha_l$ and $\hat\beta_l$, and computes $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ using $\hat\alpha_{l,e}$ and $\hat\beta_{l,e}$.
+Following arguments analogous to that of Lemma \ref{lem:hog:set_bound}, we can show:
+
+\begin{lem} For each $l$ and $e\in V$, $\hat\alpha_{l,e} \leq \alpha_l^{\iota(e)-1}$ and $\hat\beta_{l,e} \geq \beta_l^{\iota(e)-1}$.
+\end{lem}
+
+\begin{cor} Concavity of $g$ implies that $\Delta$'s computed by Algorithm \ref{alg:hogwildsepsum} satisfy
+\begin{align*}
+\Delta_+^{\max}(e)
+&&\geq&& \sum_{S_l\ni e} \left[g(\alpha_l^{\iota(e)-1} + w_l(e)) - g(\alpha_l^{\iota(e)-1})\right] - \lambda v(e)
+&&=&& \Delta_+(e),\\
+\Delta_-^{\max}(e)
+&&\geq&& \sum_{S_l\ni e} \left[g(\beta_l^{\iota(e)-1} - w_l(e)) - g(\beta_l^{\iota(e)-1})\right] + \lambda v(e)
+&&=&& \Delta_-(e),
+\end{align*}
+\end{cor}
+
+\subsection{\occ{} for separable sums $F$}
+Analogous to the \hogwild{} algorithm, we maintain $\hat\alpha_l$, $\hat\beta_l$ and additionally $\tilde\alpha_l = \sum_{j\in \tilde{A}\cup S_l} w_l(j)$ and $\tilde\beta_l = \sum_{j \in \tilde{B}\cup S_l} w_l(j)$.
+Following the arguments of Lemma \ref{lem:occ:set_bound} and Corollary \ref{cor:occ:delta_bound}, we can show the following.
+\begin{lem} $\hat\alpha_{l,e} \leq \alpha^{\iota(e)-1} \leq \tilde\alpha_{l,e} - w_l(e)$ and $\hat\beta_{l,e} \geq \beta^{\iota(e)-1} \geq \tilde\beta_{l,e} + w_l(e)$
+\end{lem}
+
+\begin{cor} Concavity of $g$ implies that the $\Delta$'s computed by Algorithm \ref{alg:occsepsum} satisfy:
+\begin{align*}
+\Delta_+^{\max}(e)
+&= - \lambda v(e) + \sum_{S_l \ni e} \left[g(\hat\alpha_{l,e} + w_l(e)) - g(\hat\alpha_{l,e})\right]\\
+&\geq - \lambda v(e) + \sum_{S_l \ni e} \left[g(\hat\alpha_l^{\iota(e)-1} + w_l(e)) - g(\hat\alpha_l^{\iota(e)-1})\right]
+&&= \Delta_+(e)\\
+&\geq - \lambda v(e) + \sum_{S_l \ni e} \left[g(\tilde\alpha_{l,e}) - g(\tilde\alpha_{l,e} - w_l(e))\right]
+&&= \Delta_+^{\min}(e),\\
+\Delta_-^{\max}(e)
+&= \lambda v(e) + \sum_{S_l \ni e} \left[g(\hat\beta_{l,e} - w_l(e)) - g(\hat\beta_{l,e})\right]\\
+&\geq \lambda v(e) + \sum_{S_l \ni e} \left[g(\hat\beta_l^{\iota(e)-1} - w_l(e)) - g(\hat\beta_l^{\iota(e)-1})\right]
+&&= \Delta_-(e)\\
+&\geq \lambda v(e) + \sum_{S_l \ni e} \left[g(\tilde\beta_l^{\iota(e)-1}) - g(\tilde\beta_l^{\iota(e)-1} + w_l(e))\right]
+&&= \Delta_-^{\min}(e).
+\end{align*}
+\end{cor}
