@@ -3,7 +3,7 @@
 
 \lemhogsetbound*
 \begin{proof}
-For any element $e$, we write $T_e$ to denote the time at which Algorithm \ref{alg:hogwild} line \ref{alg:hogwild:time} is executed.
+For any element $e$, we write $T_e$ to denote the time at which \algref{alg:hogwild} line \ref{alg:hogwild:time} is executed.
 Consider any element $e'\in V$.
 If $e'\in \hat{A}_e$, it must be the case that the algorithm set $\hat{A}(e')$ to 1 (line \ref{alg:hogwild:add}) before $T_e$, which implies $\iota(e') < \iota(e)$, and hence $e' \in A^{\iota(e)-1}$.
 So $\hat{A}_e \subseteq A^{\iota(e)-1}$.
@@ -15,44 +15,38 @@ So $\hat{B}_e \subseteq B^{\iota(e)-1}$.
 
 
 
-
+~
 
 
 
 \lemoccsetbound*
 \begin{proof}
 
-
-\xinghao{The below proof is for shared state.}
-
 Clearly, $e \in \tilde{B}_e\cup e$ but $e\not\in \tilde{A}_e\backslash e$.
 By definition, $e \in B^{\iota(e)-1}$ but $e\not\in A^{\iota(e)-1}$.
-The \occ{} algorithm only modifies $\hat{A}(e)$ and $\hat{B}(e)$ on Algorithm \ref{alg:occ} Lines \ref{alg:occ:ahat}, \ref{alg:occ:bhat} when processing $e$, which occurs after the computation of the $\Delta$'s on Lines \ref{alg:occ:deltaplusmin} - \ref{alg:occ:deltaminusmax}, so $e \in \hat{B}_e$ but $e\not\in \hat{A}_e$.
+\occ{} only modifies $\hat{A}(e)$ and $\hat{B}(e)$ on when committing the transaction on $e$, which occurs after obtaining the bounds in getGuarantee$(e)$, so $e \in \hat{B}_e$ but $e\not\in \hat{A}_e$.
 
 Consider any $e'\neq e$.
 Suppose $e' \in \hat{A}_e$.
-This is only possible if we have processed Line \ref{alg:occ:ahat}, which implies (by Line \ref{alg:occ:resultwait}) that $\forall j < \iota(e'), \text{result}(j) \neq 0$.
-But at the time when $\hat{A}_e$ is read (Lines \ref{alg:occ:deltaplusmin} - \ref{alg:occ:deltaminusmax}), we have result$(e)=0$, so it must be the case that $\iota(e') < \iota(e)$.
+This is only possible if we have committed the transaction on $e'$ before the call getGuarantee$(e)$, so it must be the case that $\iota(e') < \iota(e)$.
 Thus, $e' \in A^{\iota(e)-1}$.
 
 Now suppose $e' \in A^{\iota(e)-1}$.
-By definition, this implies $\iota(e') < \iota(e)$ and $e \in A$, which in turn implies result$(\iota(e'))=1$.
-Hence, it must be the case that we have already set $\tilde{A}(e') \leftarrow 1$ (by the ordering imposed by $\iota$ on Line \ref{alg:occ:time}), but never execute $\tilde{A}(e') \leftarrow 0$, so $e' \in \tilde{A}_e$.
+By definition, this implies $\iota(e') < \iota(e)$ and $e' \in A$.
+Hence, it must be the case that we have already set $\tilde{A}(e') \leftarrow 1$ (by the ordering imposed by $\iota$ on Line \ref{alg:occ:time}), but never execute $\tilde{A}(e') \leftarrow 0$ (since $e' \in A$), so $e' \in \tilde{A}_e$.
 
 An analogous argument shows $e' \not\in \hat{B}_e \implies e' \not\in B^{\iota(e)-1} \implies e' \not\in\tilde{B}_e \cup e$.
 \end{proof}
 
 
 
-
+~
 
 
 
 
 \lemoccdefer*
 \begin{proof}
-At Line \ref{alg:occdefer:deltaplus}, we have guaranteed that $\forall j < \iota(e)$, processed$(j) = true$.
-Thus, $\forall e': \iota(e') < \iota(e)$, $e' \in \hat{A} \iff e' \in A^{\iota(e)-1}$ and $e' \in \hat{B} \iff e' \in B^{\iota(e)-1}$.
-On the other hand, result$(\iota(e)) = 0$, so all $e'$ such that $\iota(e') > \iota(e)$ are blocked on Algorithm \ref{alg:occ} Line \ref{alg:occ:resultwait}, hence $\hat{A}(e') = 0$ and $\hat{B}(e') = 1$.
-Thus, $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
+\algref{alg:occcommit} Line \ref{alg:occ:processedwait} ensures that all elements ordered before $e$ are committed, and that no element ordered after $e$ are committed.
+This suffices to guarantee that $e' \in \hat{A} \iff e' \in A^{\iota(e)-1}$ and $e' \in \hat{B} \iff e' \in B^{\iota(e)-1}$.
 \end{proof}

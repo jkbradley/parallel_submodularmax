@@ -48,9 +48,15 @@
 \newcommand{\ie}{{\em i.e.,}~}
 \newcommand{\eg}{{\em e.g.,}~}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Algorithm names
 \newcommand{\hogwild}{CF-2g}
 \newcommand{\occ}{CC-2g}
 \newcommand{\seqalg}{Seq-2g}
+\newcommand{\hogwildshort}{CF}
+\newcommand{\occshort}{CC}
+\newcommand{\seqalgshort}{Seq}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begingroup
     \makeatletter
@@ -631,7 +637,7 @@ A parallel algorithm is said to be \textit{serially equivalent} to a sequential 
         \caption{\occ{}: commit($e$, $i$, $u_e$, result)}
         \label{alg:occcommit}
         % \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
-        \WaitUntil $\forall j < i$, processed$(j) = true$\;
+        \WaitUntil $\forall j < i$, processed$(j) = true$\;\label{alg:occ:processedwait}
         \If{result$~= fail$}{
           $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occcommit:deltaplus}
           $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occcommit:deltaminus}
@@ -810,8 +816,8 @@ On the other hand, \occ{} is a scalable algorithm that guarantees the tight 1/2 
 \begin{restatable}{thm}{thmrandomapprox}\label{thm:randomapprox} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
 The \hogwild{} algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
 $
-E[F(A_{hog})] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^n E[\rho_i]$,
-where $A_{hog}$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i = \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$.
+E[F(A_{\hogwildshort{}})] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^n E[\rho_i]$,
+where $A_{\hogwildshort{}}$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i = \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$.
 \end{restatable}
 
 The proof of \thmref{thm:randomapprox} follows the structure in \cite{buchbinder2012}. We present the details in Appendix \ref{app:proofhogwild}.
@@ -848,15 +854,14 @@ In both cases, Corollary \ref{cor:occ:delta_bound} implies $u_e < [\Delta_+(e)]_
 By induction, $A^{\iota(e)-1} = A_{seq}^{\iota(e)-1}$ and $B^{\iota(e)-1} = B_{seq}^{\iota(e)-1}$, so the threshold is exactly that computed by the sequential algorithm.
 Hence, the \occ{} algorithm includes $e \in A$ iff the sequential algorithm includes $e \in A$.
 (An analogous argument works for the case where $e$ is excluded from $B$.)
-
 \end{proof}
 
 As an immediate consequence, theoretical properties of the sequential algorithm are preserved by the \occ{} algorithm, including the approximation guarantees:
 
 \begin{thm} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
 The \occ{} algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
-$E[F(A_{\occ{}})] \geq \frac{1}{2}F^*$,
-where $A_{\occ{}}$ is the output of the algorithm, and $F^*$ is the optimal value.
+$E[F(A_{\occshort{}})] \geq \frac{1}{2}F^*$,
+where $A_{\occshort{}}$ is the output of the algorithm, and $F^*$ is the optimal value.
 \end{thm}
 
 
@@ -981,7 +986,7 @@ The set cover problem is reduced to a vertex cover on the directed graph.
   \caption{\footnotesize Experimental results.
   Fig \ref{fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$.
   Fig \ref{fig:speedup_maxgraphcut}, \ref{fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads).
-  Fig \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and \hogwild{} algorithms, i.e. $[F(A_{\hogwild{}}) / F(A_{\seqalg}) - 1] \times 100\%$.
+  Fig \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and \hogwild{} algorithms, i.e. $[F(A_{\hogwildshort{}}) / F(A_{\seqalg}) - 1] \times 100\%$.
   Fig \ref{fig:validated_maxgraphcut} -- percentage of elements deferred by \occ{} on the max graph cut problem.
   }
 \label{fig:results_quality}
@@ -1000,7 +1005,7 @@ The algorithms are presented with an adversarial ordering, with permutation, so 
 This causes \hogwild{} to make more mistakes, and \occ{} to defer more computations.
 
 As Figure \ref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually deferring $>90\%$ of elements.
-On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwild{}})$ that is only $20\%$ of $F(A_{Seq2G})$.
+On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwildshort{}})$ that is only $20\%$ of $F(A_{\seqalgshort{}})$.
 For the set cover problem, we maintain statistics that are updated atomically by both algorithms.
 The adversarial ordering forces more concurrent atomic updates, and hence, \hogwild{} does not achieve good speedup.
 \footnote{We could have reduced coordination by computing $F$ directly, but doing so would result in longer runtimes.}
