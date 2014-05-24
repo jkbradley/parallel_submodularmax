@@ -589,7 +589,7 @@ This is achieved by operating on potentially stale states -- the guarantee reduc
         \ParForAll{$p \in \set{1, \ldots, P}$}{
           \While{$\exists$ element to process}{
             $e = $ next element to process\;
-            $(\hat{A}_e, \tilde{A}_e, \hat{B}_e, \tilde{B}_e, i)$ = getSnapshot($e$)\;
+            $(\hat{A}_e, \tilde{A}_e, \hat{B}_e, \tilde{B}_e, i)$ = getGuarantee($e$)\;
             (result, $u_e$) = propose($e$, $\hat{A}_e$, $\tilde{A}_e$, $\hat{B}_e$, $\tilde{B}_e$)\;
             commit($e$, $i$, $u_e$, result)
           }
@@ -602,7 +602,7 @@ This is achieved by operating on potentially stale states -- the guarantee reduc
     \begin{minipage}{0.49\textwidth}
       \begin{algorithm}[H]
         \DontPrintSemicolon
-        \caption{\occ{} getSnapshot($e$)}
+        \caption{\occ{} getGuarantee($e$)}
         \label{alg:occsnapshot}
         $\tilde{A}(e) \leftarrow 1$;
         $\tilde{B}(e) \leftarrow 0$\;
@@ -730,22 +730,26 @@ We analyze this error in \secref{sec:analysis:hogwild}.
 
 
 \section{Optimistic Concurrency Control for Bidirectional Greedy Algorithm}
-\xinghao{Provide more intuition for what the \occ{} algorithm is doing.}
+% \xinghao{Provide more intuition for what the \occ{} algorithm is doing.}
 
-Algorithm \ref{alg:occ}\footnote{The synchronization required by the \occ{} algorithm can be further reduced, for example, by replacing the validation by a non-blocking function call.} is the \occ{} bidirectional greedy algorithm.
-Unlike the \hogwild{} algorithm, the \occ{} algorithm ensures serial equivalence by maintaining four sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$.
+\occ{}, the `concurrency-control double greedy' algorithm, is presented in \ref{alg:occ}, and closely follows the meta-algorithm of \algref{alg:generalparallel} and \algref{alg:generalparallel:commit}.
+
+Serial equivalence is ensured by maintaining four sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$ at commit time.
 Each thread can determine locally if a decision to include / exclude an element can be taken safely.
 Otherwise, the computation is deferred to the commit process (\algref{alg:occcommit}) which waits until it is certain about $A$, $B$ before proceeding.
 
-The serialization order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ:time} of Algorithm \ref{alg:occ}.
-We define $\hat{A}_e$, $\hat{B}_e$, $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with the \hogwild{} algorithm, and additionally let $\tilde{A}_e$ and $\tilde{B}_e$ be the vectors of $\tilde{A}$ and $\tilde{B}$ that are used in the computation of $\Delta_+^{\min}(e)$ and $\Delta_-^{\min}(e)$.
-We will show that the outcome of \algref{alg:occ} is equivalent to the sequential algorithm executed with ordering $\iota$.
-\xinghao{Proofs in appendix.}
+The commit order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ:time} of \algref{alg:occ}.
+We define $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with the \hogwild{} algorithm.
+Additionally, let $\hat{A}_e$, $\hat{B}_e$, $\tilde{A}_e$, and $\tilde{B}_e$ be the sets that are returned by \algref{alg:occsnapshot}.
+Indeed, these sets are guaranteed to be bounds on $A^{\iota(e)-1}$, $B^{\iota(e)-1}$:
 
 \begin{restatable}{lem}{lemoccsetbound}\label{lem:occ:set_bound}
 In the \occ{} algorithm, $\forall e\in V$,
 $\hat{A}_e \subseteq A^{\iota(e)-1} \subseteq \tilde{A}_e \backslash e$, and $\hat{B}_e \supseteq B^{\iota(e)-1} \supseteq \tilde{B}_e \cup e$.
 \end{restatable}
+Intuitively, these bounds are maintained by recording potential effects of concurrent transactions in $\tilde{A}$, $\tilde{B}$, and only recording the actual effects in $\hat{A}$, $\hat{B}$;
+we leave the full proof to Appendix \ref{app:algoproof}.
+Furthermore, since later transactions are blocked, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$ during the commit process.
 
 \begin{restatable}{lem}{lemoccdefer}\label{lem:occ:defer}
 In the \occ{} algorithm, during the commit process for deferred element $e$, on Lines \ref{alg:occcommit:deltaplus}, \ref{alg:occcommit:deltaminus} of \algref{alg:occcommit}, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
