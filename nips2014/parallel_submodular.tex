@@ -786,9 +786,13 @@ In the \occ{} algorithm, during the commit process for deferred element $e$, on 
 
 \section{Analysis of Algorithms \label{sec:analysis}}
 
-\xinghao{What is the purpose of this section?
-We want to say that we have a choice between a slower but serially equivalent algorithm and a faster algorithm which is not serially equivalent.
-Nevertheless, the slower algorithm is not too slow, and the approximation guarantee of the algorithm that is not serially equivalent is not too weak.}
+% \xinghao{What is the purpose of this section?
+% We want to say that we have a choice between a slower but serially equivalent algorithm and a faster algorithm which is not serially equivalent.
+% Nevertheless, the slower algorithm is not too slow, and the approximation guarantee of the algorithm that is not serially equivalent is not too weak.}
+
+Our two algorithms appear to be diametrically opposed in their parallelization strategies.
+However, we show that \hogwild{} emphasizes speed but nevertheless suffers a bounded loss in its approximation.
+On the other hand, \occ{} is a scalable algorithm that guarantees the tight 1/2 approximation.
 
 
 \subsection{Approximation of \hogwild{} double greedy \label{sec:analysis:hogwild}}
@@ -810,7 +814,7 @@ E[F(A_{hog})] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^n E[\rho_i]$,
 where $A_{hog}$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i = \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$.
 \end{restatable}
 
-We prove the theorem in Appendix \ref{app:proofhogwild}.
+The proof of \thmref{thm:randomapprox} follows the structure in \cite{buchbinder2012}. We present the details in Appendix \ref{app:proofhogwild}.
 
 
 
@@ -867,10 +871,10 @@ Full details of the bounds are given in Appendix \ref{app:proofocc}.
 
 \textbf{Example: max graph cut.}
 Assume that there is a bounded delay $\tau$.
-The expected number of deferred elements is upper bounded by $\tau \frac{2\#edges}{N}$.
+The expected \emph{fraction} of deferred elements is upper bounded by $\tau \frac{2\#edges}{N^2}$.
 
 \textbf{Example: set cover.}
-Assuming a bounded delay $\tau$ and non-overlapping sets $S_l$'s, the expected number of deferred elements is upper bounded by $2\tau$.
+Assuming a bounded delay $\tau$ and non-overlapping sets $S_l$'s, the expected \emph{number} of deferred elements is upper bounded by $2\tau$.
 
 
 
@@ -987,13 +991,13 @@ The set cover problem is reduced to a vertex cover on the directed graph.
 Due to space constraints, we only present part of our results in Figure \ref{fig:results_quality}, deferring full results to Appendix \ref{app:exptresults}.
 \textbf{Runtime, Speedup:} Both parallel algorithms are faster than the sequential algorithm with three or more threads, and show good speedup properties as more threads are added ($\sim$ 10x or more for all graphs and both functions).
 \textbf{Objective value:} The objective value of the \hogwild{} algorithm decreases with the number of threads, but differs from the sequential objective value by less than $0.01\%$.
-\textbf{Validations:} The \occ{} algorithm defers more elements as threads are added, but less than 0.015\% are deferred with 16 threads, which has negligible effect on the runtime / speedup.
+\textbf{Deferments:} The \occ{} algorithm defers more elements as threads are added, but less than 0.015\% are deferred with 16 threads, which has negligible effect on the runtime / speedup.
 
 \subsection{Adversarial ordering}
 
-To highlight the philosophical differences between the two parallel algorithms, we conducted experiments on a ring Cayley graph on $\mathbb{Z}_{10^6}$ with generating set $\{\pm 1,\dots, \pm 1000\}$.
+To highlight the differences in approaches between the two parallel algorithms, we conducted experiments on a ring Cayley graph on $\mathbb{Z}_{10^6}$ with generating set $\{\pm 1,\dots, \pm 1000\}$.
 The algorithms are presented with an adversarial ordering, with permutation, so vertices close in the ordering are adjacent to one another, and tend to be processed concurrently.
-This causes \hogwild{} to make more mistakes, and \occ{} to face more uncertainty.
+This causes \hogwild{} to make more mistakes, and \occ{} to defer more computations.
 
 As Figure \ref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually deferring $>90\%$ of elements.
 On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwild{}})$ that is only $20\%$ of $F(A_{Seq2G})$.
