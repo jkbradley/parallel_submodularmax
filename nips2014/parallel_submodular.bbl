@@ -1,4 +1,4 @@
-\begin{thebibliography}{17}
+\begin{thebibliography}{16}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -45,12 +45,6 @@ Hsiang-Tsung Kung and John~T Robinson.
 \newblock On optimistic methods for concurrency control.
 \newblock \emph{ACM Transactions on Database Systems (TODS)}, 6\penalty0
   (2):\penalty0 213--226, 1981.
-
-\bibitem[Lin and Bilmes(2011)]{lin11}
-Hui Lin and Jeff Bilmes.
-\newblock A class of submodular functions for document summarization.
-\newblock In \emph{The 49th Annual Meeting of the Association for Computational
-  Linguistics: Human Language Technologies (ACL-HLT)}, 2011.
 
 \bibitem[Leskovec(2011)]{snap}
 Jure Leskovec.
