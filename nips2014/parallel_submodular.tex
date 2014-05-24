@@ -788,26 +788,21 @@ Nevertheless, the slower algorithm is not too slow, and the approximation guaran
 
 \subsection{Approximation of \hogwild{} bidirectional greedy \label{sec:analysis:hogwild}}
 Let $F$ be submodular and non-negative.
-We assume for each $e$, there exists $\rho_e \geq 0$ such that
-$\Delta_+^{\max}(e) - \rho_e \leq \Delta_+(e)$, and
-$\Delta_-^{\max}(e) - \rho_e \leq \Delta_-(e)$.
-This is possible, for example, by defining
+We assume for each $e$, the random variable $\rho_e := \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$ is bounded.
+This is trivially possible since
 \begin{align*}
 \rho_e
-&&:=&&&   \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}\\
 &&\leq&&& \max_{S,T\subseteq V} \{[F(S\cup e) - F(S)] - [F(S \cup T \cup e) - F(S \cup T)]\}
-%&\leq F(e) - F(\emptyset) - F(V) + F(V\backslash e)\\
-%&\leq F(e)\left(1 - \frac{F(V) - F(V\backslash e)}{F(e)}\right)\\
 &\leq&& F(e)\kappa_F
 \end{align*}
 where $\kappa_F$ is the total curvature of $F$.
-Summing over $e$ then gives us $\sum_e \rho_e \leq \kappa_F\sum_e F(e)$.
+% Summing over $e$ then gives us $\sum_e \rho_e \leq \kappa_F\sum_e F(e)$.
 
 \begin{restatable}{thm}{thmrandomapprox}\label{thm:randomapprox} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
 The \hogwild{} bidirectional greedy algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
 $
 E[F(A_{hog})] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^n E[\rho_i]$,
-where $A_{hog}$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i$ is a random variable such that $\rho_i \geq \Delta_+^{\max}(i) - \Delta_+(i)$ and $\rho_i \geq \Delta_-^{\max}(i) - \Delta_-(i)$.
+where $A_{hog}$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i = \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$.
 \end{restatable}
 
 We prove the theorem in Appendix \ref{app:proofhogwild}.

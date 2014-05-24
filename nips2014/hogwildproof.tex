@@ -21,7 +21,9 @@ O^i \cup i+1 &\subseteq B^i.
 \begin{proof} This is just Lemma II.1 of \cite{buchbinder2012}.
 \end{proof}
 
-\begin{lem}\label{lem:singleelement} For every $1 \leq i \leq n$,
+\begin{lem}\label{lem:singleelement}
+Let $\rho_i = \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$.
+For every $1 \leq i \leq n$,
 \[E[F(O^{i-1})-F(O^i)] \leq \frac{1}{2} E[F(A^i) - F(A^{i-1}) + F(B^i) - F(B^{i-1}) + \rho_i].\]
 \end{lem}
 \begin{proof}
@@ -177,10 +179,10 @@ For the max graph cut function, it is easy to see that
 \Delta_-^{\max} &= + w_i(\hat{A}_i) + w_i(C_i) + w_i(D_i) - w_i(\bar{A}_j)
 \end{align*}
 
-Thus, we can set $\rho_i = 2w_i(C_i)$.
+Thus, we can see that $\rho_i \leq 2w_i(C_i)$.
 
 Suppose we have bounded delay $\tau$, so $|C_i| \leq \tau$.
-Then $w_i(C_i)$ has a hypergeometric distribution with mean $\frac{\text{deg}(i)}{N}\tau$, and $E[\rho_i] = 2\tau\frac{\text{deg}(i)}{N}$.
+Then $w_i(C_i)$ has a hypergeometric distribution with mean $\frac{\text{deg}(i)}{N}\tau$, and $E[\rho_i] \leq 2\tau\frac{\text{deg}(i)}{N}$.
 The approximation of the hogwild algorithm is then $E[F(A^n)] \geq \frac{1}{2} F^* - \tau\frac{\#\text{edges}}{2N}$.
 In sparse graphs, the hogwild algorithm is off by a small additional term, which albeit grows linearly in $\tau$.
 In a complete graph, $F^* = \frac{1}{2}\#\text{edges}$, so $E[F(A^n)] \geq F^*\left(\frac{1}{2} - \frac{\tau}{N}\right)$, which makes it possible to scale $\tau$ linearly with $N$ while retaining the same approximation factor.
@@ -253,7 +255,7 @@ Also, $P(\pi(e_l^t) = k) = \frac{n_l}{N}{n-1 \choose t-1}{N-n \choose k-t} / {N-
 &= \frac{n_l}{N} \tau.
 \end{align*}
 
-Now if we define $\rho_e = \Delta_+^{\max}(e) - \Delta_+(e) + \Delta_-^{\max}(e) - \Delta_-(e)$, we get
+Since $\Delta_+^{\max}(e) \geq \Delta_+(e)$ and $\Delta_-^{\max}(e) \geq \Delta_-^{\max}(e)$, we have that $\rho_e \leq \Delta_+^{\max}(e) - \Delta_+(e) + \Delta_-^{\max}(e) - \Delta_-(e)$, so
 \begin{align*}
 \mathbb{E}\left[\sum_e \rho_e\right]
 &= \mathbb{E}\left[\sum_e \Delta_+^{\max}(e) - \Delta_+(e) + \Delta_-^{\max}(e) - \Delta_-(e) \right]\\
