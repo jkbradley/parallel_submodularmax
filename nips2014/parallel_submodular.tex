@@ -319,29 +319,32 @@ We implement and evaluate both algorithms on multi-core hardware and billion edg
 \section{Introduction}
 
 
-Motivate parallel machine learning from big data setting
 
-Briefly mention two approaches (coordination-free, concurrency control)
+Many machine learning problems such as sensor placement \cite{krauseGuestrin11}, image co-segmentation \cite{kim11}, MAP inference with determinantal point process priors \cite{}, influence maximization \cite{} or document summarization \cite{} have recently been phrased as the maximization of a submodular function.
+Such a formulation allows to use algorithms for submodular maximization \cite{} that offer theoretical worst-case guarantees on the quality of the solution.
+One such algorithm for unconstrained non-monotone submodular maximization is the double greedy algorithm of \cite{buchbinder2012}, which gives a tight approximation guarantee of 1/2.
 
-In this paper, we focus on unconstrained non-monotone submodular maximization.. and say briefly why this problem is important
+While those algorithms are theoretically beneficial and tend to work very well in practice, their design is inherently sequential. Increasingly often, one wishes to solve the above-mentioned problems at very large scale. This development raises the question of parallel algorithms for submodular maximization that ideally preserve the theoretical bounds, or weaken them gracefully, in a quantifiable manner. 
 
-Contributions of the paper
+In this paper, we study the double greedy algorithm as a \emph{transactional database system}.
+This fresh perspective allows us to adapt ideas from database research ranging from extremely fast coordination free approaches which provide minimal guarantees on the composition of transactions to sophisticated concurrency control techniques which ensure a direct correspondence between parallel and serial executions at the cost of slightly reduced performance.
+We propose \hogwild{} as a coordination free double greedy algorithm, and \occ{} as a concurrency control double greedy algorithm.
+
+The primary contributions of this paper are:
 \begin{enumerate}
-\item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which allows one to choose between speed and stronger approximation guarantees.
-\item We prove the serial equivalence of \occ{} to \seqalg{}; we analytically bound the amount of coordination of \occ{} for two example problems.
+\item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which allows one to choose between speed and tight approximation guarantees.
+\item We prove that \occ{} produces an outcome equivalent to the sequential double greedy algorithm, thus preserving the tight approximation guarantee of 1/2.
+\item We analytically bound the amount of coordination of \occ{} for two example problems.
 \item We provide approximation guarantees for \hogwild{}; we analytically bound the expected loss in objective value for two example problems.
 \item We demonstrate empirically using two synthetic and three real datasets that our parallel algorithms perform well in terms of both speed and objective values.
 \end{enumerate}
 
-
-
-The double greedy algorithm \cite{buchbinder2012} gives an approximation of $E[F(A)] = 1/2 f(OPT)$, where $A$ is the algorithm output, and $OPT$ is an optimal solution.
-
-\hogwild{} can give an approximation of $E[F(A)] = \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$, where $\rho_i$ is the maximum difference in the marginal gain that may result from not knowing the full information when deciding whether to include or exclude element $i$.
-
-\occ{} guarantees an outcome that is equivalent to a sequential run of \seqalg{}.
-Theoretical properties of \seqalg{} immediately translates to \occ{} -- in particular, \occ{} gives the same approximation factor of $1/2$.
-In contrast to the \hogwild{} approach, \occ{} introduces more coordination and thus provides less concurrency.
+The rest of the paper is organized as follows.
+Section \ref{sec:submodularmax} discusses the problem of subdmoular maximization and introduces the double greedy algorithm.
+Section \ref{sec:concurrencycontrol} provides background on concurrency control in databases.
+We describe and provide intuition for our \hogwild{} and \occ{} algorithms in Sections \ref{sec:alghogwild} and \ref{sec:algocc}.
+Section \ref{sec:analysis} analyzes the parallel algorithms.
+Both algorithms are evaluated in Section \ref{sec:evaluation}, and we conclude with related work and discussions in Sections \ref{sec:related} and \ref{sec:discussions}.
 
 
 
@@ -353,7 +356,10 @@ In contrast to the \hogwild{} approach, \occ{} introduces more coordination and 
 
 
 
-\section{Submodular maximization}
+
+
+
+\section{Submodular Maximization \label{sec:submodularmax}}
 A set function $F: 2^V \to \mathbb{R}$ defined over subsets of a ground set $V$ is \emph{submodular} if it satisfies \emph{diminishing marginal returns}: for all $A \subseteq B \subseteq V$ and  $e \notin V$, it holds that $F(A \union \{e\}) - F(A) \geq F(B \union \{e\}) - F(B)$. Throughout this paper, we will assume that $F$ is nonnegative and $F(\emptyset)=0$. Submodular functions have emerged in areas such as game theory \cite{}, combinatorial optimization \cite{}, stochastic processes \cite{}, and, more recently, in machine learning too \cite{tutorial,tutorial2}. Problems such as sensor placement \cite{krauseGuestrin11}, image co-segmentation \cite{kim11}, MAP inference with determinantal point process priors \cite{}, influence maximization \cite{} or document summarization \cite{} may be phrased as the maximization of a submodular function. Such a formulation allows to use algorithms for submodular maximization \cite{} that offer theoretical worst-case guarantees on the quality of the solution.
 
 While those algorithms are theoretically beneficial and tend to work very well in practice, their design is inherently sequential. But increasingly often, one wishes to solve the above-mentioned problems at very large scale. This development raises the question of parallel algorithms for submodular maximization that ideally preserve the theoretical bounds, or weaken them gracefully, in a quantifiable manner. 
@@ -374,7 +380,7 @@ Recent work has addressed parallel versions of the greedy algorithm by \cite{} f
 
 
 
-\section{Concurrency Patterns for Parallel Machine Learning}
+\section{Concurrency Patterns for Parallel Machine Learning \label{sec:concurrencycontrol}}
 
 In this paper we adopt a transactional view of the program state and explore parallelization strategies through the lens of parallel transaction processing systems.
 We recast the program state, the sets $A$ and $B$, as data, and the operations, adding elements to $A$ and removing elements from $B$, as transactions.
@@ -673,7 +679,7 @@ A parallel algorithm is said to be \textit{serially equivalent} to a sequential 
 
 
 
-\section{\hogwild{} Double Greedy Algorithm}
+\section{\hogwild{} Double Greedy Algorithm \label{sec:alghogwild}}
 \xinghao{======== Provide more intuition for what \hogwild{} is doing.}
 The coordination-free approach attempts to reduce the need to coordinate guarantees and logical ordering.
 This is achieved by operating on potentially stale states -- the guarantee reduces to requiring $\mathfrak{g}_e$ be a stale version of $\mathfrak{S}$, and logical ordering is implicitly defined by the time of commit.
@@ -735,7 +741,7 @@ We analyze this error in \secref{sec:analysis:hogwild}.
 
 
 
-\section{Concurrency Control for Double Greedy Algorithm}
+\section{Concurrency Control for Double Greedy Algorithm \label{sec:algocc}}
 % \xinghao{Provide more intuition for what \occ{} is doing.}
 
 \occ{}, the `concurrency-control double greedy' algorithm, is presented in \algref{alg:occ}, and closely follows the meta-algorithm of \algref{alg:generalparallel} and \algref{alg:generalparallel:commit}.
@@ -889,7 +895,7 @@ Assuming a bounded delay $\tau$ and non-overlapping sets $S_l$'s, the expected \
 
 
 
-\section{Evaluation}
+\section{Evaluation \label{sec:evaluation}}
 
 We implemented the parallel and sequential double greedy algorithms in Java / Scala.
 Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16 threads, for 10 iterations.
@@ -1039,7 +1045,7 @@ Nevertheless, we present results that do use the partitioning scheme, so as to b
 
 
 
-\section{Related Work}
+\section{Related Work \label{sec:related}}
 \textbf{Similar approach, different problem: } OCC DP-means \cite{pan2013}; Hogwild SGD \cite{Recht11}; Coordination-free LDA \cite{Ahmed12} / parameter servers \cite{li2013, ho2013}
 
 \textbf{Similar problem, different approach: } distributed greedy submodular maximization for monotone functions \cite{Mirzasoleiman2013}
@@ -1049,7 +1055,7 @@ Nevertheless, we present results that do use the partitioning scheme, so as to b
 
 
 
-\section{Discussions}
+\section{Discussions \label{sec:discussions}}
 
 Conclusion: \xinghao{link back to intro, motivation}; we present two approaches to parallelizing unconstrained submodular maximization, which allows one to choose between speed and tight approximation guarantees.
 

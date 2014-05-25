@@ -17,6 +17,12 @@ Niv Buchbinder, Moran Feldman, Joseph~(Seffi) Naor, and Roy Schwartz.
 \newblock \doi{10.1109/FOCS.2012.73}.
 \newblock URL \url{http://dx.doi.org/10.1109/FOCS.2012.73}.
 
+\bibitem[Kim et~al.(2011)Kim, Xing, Li, and Kanade]{kim11}
+G.~Kim, E.~P. Xing, F.~Li, and T.~Kanade.
+\newblock Distributed cosegmentation via submodular optimization on anisotropic
+  diffusion.
+\newblock In \emph{ICCV}, 2011.
+
 \bibitem[Krause and Jegelka(2013)]{tutorial}
 A.~Krause and S.~Jegelka.
 \newblock Submodularity in machine learning -- new directions.
@@ -27,12 +33,6 @@ J.~Bilmes.
 \newblock Deep mathematical properties of submodularity with applications to
   machine learning.
 \newblock NIPS Tutorial, 2013.
-
-\bibitem[Kim et~al.(2011)Kim, Xing, Li, and Kanade]{kim11}
-G.~Kim, E.~P. Xing, F.~Li, and T.~Kanade.
-\newblock Distributed cosegmentation via submodular optimization on anisotropic
-  diffusion.
-\newblock In \emph{ICCV}, 2011.
 
 \bibitem[Ozsu(2007)]{Ozsu07}
 M.~Tamer Ozsu.
