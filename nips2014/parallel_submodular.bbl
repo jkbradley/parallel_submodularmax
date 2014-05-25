@@ -1,4 +1,4 @@
-\begin{thebibliography}{16}
+\begin{thebibliography}{25}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -17,11 +17,58 @@ Niv Buchbinder, Moran Feldman, Joseph~(Seffi) Naor, and Roy Schwartz.
 \newblock \doi{10.1109/FOCS.2012.73}.
 \newblock URL \url{http://dx.doi.org/10.1109/FOCS.2012.73}.
 
+\bibitem[Krause and Guestrin(2011)]{krauseGuestrin11}
+A.~Krause and C.~Guestrin.
+\newblock Submodularity and its applications in optimized information
+  gathering: An introduction.
+\newblock \emph{ACM Transactions on Intelligent Systems and Technology},
+  2\penalty0 (4), 2011.
+
 \bibitem[Kim et~al.(2011)Kim, Xing, Li, and Kanade]{kim11}
 G.~Kim, E.~P. Xing, F.~Li, and T.~Kanade.
 \newblock Distributed cosegmentation via submodular optimization on anisotropic
   diffusion.
 \newblock In \emph{ICCV}, 2011.
+
+\bibitem[J.~Gillenwater and Taskar(2012)]{gillenwater12}
+A.~Kulesza J.~Gillenwater and B.~Taskar.
+\newblock Near-optimal {MAP} inference for determinantal point processes.
+\newblock In \emph{NIPS}, 2012.
+
+\bibitem[Kempe et~al.(2003)Kempe, Kleinberg, and Tardos]{kkt03}
+D.~Kempe, J.~Kleinberg, and E.~Tardos.
+\newblock Maximizing the spread of influence through a social network.
+\newblock In \emph{ACM SIGKDD Conference on Knowledge Discovery and Data Mining
+  (KDD)}, 2003.
+
+\bibitem[Lin and Bilmes(2011)]{lin11}
+Hui Lin and Jeff Bilmes.
+\newblock A class of submodular functions for document summarization.
+\newblock In \emph{The 49th Annual Meeting of the Association for Computational
+  Linguistics: Human Language Technologies (ACL-HLT)}, 2011.
+
+\bibitem[Nemhauser et~al.(1978)Nemhauser, Wolsey, and Fisher]{nemhauser1978}
+G.L. Nemhauser, L.A. Wolsey, and M.L. Fisher.
+\newblock An analysis of approximations for maximizing submodular set
+  functions---{I}.
+\newblock \emph{Mathematical Programming}, 14\penalty0 (1):\penalty0 265--294,
+  1978.
+
+\bibitem[Shapley(1971)]{shapley71}
+L.~S. Shapley.
+\newblock Cores of convex games.
+\newblock \emph{International Journal of Game Theory}, 1\penalty0 (1):\penalty0
+  11--26, 1971.
+
+\bibitem[Frank(1993)]{frank93}
+A.~Frank.
+\newblock Submodular functions in graph theory.
+\newblock \emph{Discrete Mathematics}, 111:\penalty0 231--243, 1993.
+
+\bibitem[Schrijver(2002)]{schrijver02}
+A.~Schrijver.
+\newblock \emph{Combinatorial Optimization -- Polyhedra and efficiency}.
+\newblock Springer, 2002.
 
 \bibitem[Krause and Jegelka(2013)]{tutorial}
 A.~Krause and S.~Jegelka.
@@ -33,6 +80,18 @@ J.~Bilmes.
 \newblock Deep mathematical properties of submodularity with applications to
   machine learning.
 \newblock NIPS Tutorial, 2013.
+
+\bibitem[Mirzasoleiman et~al.(2013)Mirzasoleiman, Karbasi, Sarkar, and
+  Krause]{Mirzasoleiman2013}
+Baharan Mirzasoleiman, Amin Karbasi, Rik Sarkar, and Andreas Krause.
+\newblock Distributed submodular maximization: Identifying representative
+  elements in massive data.
+\newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
+
+\bibitem[Kumar et~al.(2013)Kumar, Moseley, Vassilvitskii, and Vattani]{kumar13}
+R.~Kumar, B.~Moseley, S.~Vassilvitskii, and A.~Vattani.
+\newblock Fast greedy algorithms in {M}ap{R}educe and streaming.
+\newblock In \emph{SPAA}, 2013.
 
 \bibitem[Ozsu(2007)]{Ozsu07}
 M.~Tamer Ozsu.
@@ -104,13 +163,6 @@ Qirong Ho, James Cipar, Henggang Cui, Seunghak Lee, Jin~Kyu Kim, Phillip~B.
   Gibbons, Garth~A Gibson, Greg Ganger, and Eric Xing.
 \newblock More effective distributed ml via a stale synchronous parallel
   parameter server.
-\newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
-
-\bibitem[Mirzasoleiman et~al.(2013)Mirzasoleiman, Karbasi, Sarkar, and
-  Krause]{Mirzasoleiman2013}
-Baharan Mirzasoleiman, Amin Karbasi, Rik Sarkar, and Andreas Krause.
-\newblock Distributed submodular maximization: Identifying representative
-  elements in massive data.
 \newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
 
 \end{thebibliography}
