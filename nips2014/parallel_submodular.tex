@@ -681,20 +681,18 @@ A parallel algorithm is said to be \textit{serially equivalent} to a sequential 
 
 
 \section{\hogwild{} Double Greedy Algorithm \label{sec:alghogwild}}
-\xinghao{======== Provide more intuition for what \hogwild{} is doing.}
 The coordination-free approach attempts to reduce the need to coordinate guarantees and logical ordering.
 This is achieved by operating on potentially stale states -- the guarantee reduces to requiring $\mathfrak{g}_e$ be a stale version of $\mathfrak{S}$, and logical ordering is implicitly defined by the time of commit.
 % \xinghao{An interesting take on hogwild -- hogwild is not serially equivalent to the sequential algorithm, but it is serially equivalent to an approximate algorithm that operates on stale states.
 % Thus, to understand hogwild, we analyze the approximate algorithm.
 % The concept of CC buys us two things: firstly, to extend sequential algorithms into parallel ones; secondly, to project a parallel algorithm into a sequential algorithm, which aids our understanding and analysis.}
-\xinghao{End comment. ========}
 
 \algref{alg:hogwild} is the \hogwild{} parallel double greedy algorithm for unconstrained submodular maximization.\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; \hogwild{} can also be extended to the multilinear version of \cite{buchbinder2012}.}
-\hogwild{} closely resembles the serial \seqalg{}, but the elements $e \in V$ are no longer processed in a fixed order.  Thus, the sets $A, B$ are replaced by ``bounds'' $\hat{A}, \hat{B}$, where $\hat{A}$ is a subset of the ``true'' $A$ and $\hat{B}$ is a superset of the ``actual'' $B$ on each iteration.
+\hogwild{} closely resembles the serial \seqalg{}, but the elements $e \in V$ are no longer processed in a fixed order.  Thus, the sets $A, B$ are replaced by potentially stale ``bounds'' $\hat{A}, \hat{B}$, where $\hat{A}$ is a subset of the ``true'' $A$ and $\hat{B}$ is a superset of the ``actual'' $B$ on each iteration.
 These bounding sets allow us to compute bounds $\Delta_{+}^{\max}, \Delta_{-}^{\max}$ which approximate $\Delta_{+}, \Delta_{-}$ from the serial algorithm.
 We now formalize this idea.
 
-We order the elements $e \in V$ according to the time at which \algref{alg:hogwild} line \ref{alg:hogwild:time} is executed.
+We order the elements $e \in V$ according to the commit time, i.e. when \algref{alg:hogwild} line \ref{alg:hogwild:time} is executed.
 Let $\iota(e)$ be the position of $e$ in this total ordering on elements.
 This ordering allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
 These ``true'' sets $A^i, B^i$ provide a serialization against which we can compare \hogwild{}; in this serialization, \algref{alg:submax} computes:
@@ -712,7 +710,8 @@ Denoting these versions by $\hat{A}_e$ and $\hat{B}_e$, \algref{alg:hogwild} com
 \end{align*}
 
 The next lemma shows that $\hat{A}_e, \hat{B}_e$ are bounding sets for the serialization's sets $A^{\iota(e)-1}, B^{\iota(e)-1}$.
-\xinghao{Proof in appendix.}
+Intuitively, the bounds hold because $\hat{A}_e$, $\hat{B}_e$ are stale versions of $A^{\iota(e)-1}$, $B^{\iota(e)-1}$, which are monotonically non-decreasing and non-increasing sets.
+Full details of proof are given in Appendix \ref{app:algoproof}.
 
 \begin{restatable}{lem}{lemhogsetbound}\label{lem:hog:set_bound}
 In \hogwild{}, for any $e\in V$, $\hat{A}_e \subseteq A^{\iota(e)-1}$, and $\hat{B}_e \supseteq B^{\iota(e)-1}$.
