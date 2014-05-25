@@ -328,7 +328,7 @@ In this paper, we focus on unconstrained non-monotone submodular maximization.. 
 Contributions of the paper
 \begin{enumerate}
 \item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which allows one to choose between speed and stronger approximation guarantees.
-\item We prove the serial equivalence of \occ{} to the sequential algorithm; we analytically bound the amount of coordination of the \occ{} algorithm for two example problems.
+\item We prove the serial equivalence of \occ{} to \seqalg{}; we analytically bound the amount of coordination of \occ{} for two example problems.
 \item We provide approximation guarantees for \hogwild{}; we analytically bound the expected loss in objective value for two example problems.
 \item We demonstrate empirically using two synthetic and three real datasets that our parallel algorithms perform well in terms of both speed and objective values.
 \end{enumerate}
@@ -337,10 +337,10 @@ Contributions of the paper
 
 The double greedy algorithm \cite{buchbinder2012} gives an approximation of $E[F(A)] = 1/2 f(OPT)$, where $A$ is the algorithm output, and $OPT$ is an optimal solution.
 
-The \hogwild{} algorithm can give an approximation of $E[F(A)] = \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$, where $\rho_i$ is the maximum difference in the marginal gain that may result from not knowing the full information when deciding whether to include or exclude element $i$.
+\hogwild{} can give an approximation of $E[F(A)] = \frac{1}{2} F(OPT) - \frac{1}{4}\sum_iE[\rho_i]$, where $\rho_i$ is the maximum difference in the marginal gain that may result from not knowing the full information when deciding whether to include or exclude element $i$.
 
-The \occ{} algorithm \xinghao{for the lack of a better name} guarantees an outcome that is equivalent to a sequential run of the double greedy algorithm.
-Theoretical properties of the double greedy algorithm immediately translates to the \occ{} algorithm -- in particular, the \occ{} algorithm gives the same approximation factor of $1/2$.
+\occ{} guarantees an outcome that is equivalent to a sequential run of \seqalg{}.
+Theoretical properties of \seqalg{} immediately translates to \occ{} -- in particular, \occ{} gives the same approximation factor of $1/2$.
 In contrast to the \hogwild{} approach, \occ{} introduces more coordination and thus provides less concurrency.
 
 
@@ -361,7 +361,7 @@ While those algorithms are theoretically beneficial and tend to work very well i
 Recent work has addressed parallel versions of the greedy algorithm by \cite{} for maximizing \emph{monotone} submodular functions that satisfy $F(A) \leq F(B)$ for any $A \subseteq B \subseteq V$ \cite{krause, mapgreedy}. However, in several important cases such as MAP inference, zoubin, and when trading off gains with (linear) cost functions (functions of the form $F(S) = G(S) + \lambda M(S)$, where $G(S)$ is monotone submodular and $M(S)$ is a linear (modular) cost function), we aim to maximize a \emph{non-monotone} submodular function to which the greedy algorithm of \cite{} no longer applies. For the non-monotone case, \citet{buchbinder2012} recently proposed an optimal double greedy algorithm that they develop and analyze in a serial setting. Here, we theoretically and empirically study parallel analogs of this algorithm.
 
 \paragraph{The sequential double greedy algorithm.}
-The sequential double greedy algorithm (\algref{alg:submax}) maintains two sets $A^i \subseteq B^i$. Initially, $A^0 = \emptyset$ and $B^0 = V$. In iteration $i$, the set $A^i$ contains the items selected before item/iteration $i$, and $B^i$ contains $A^i$ and the items that are so far undecided. The algorithm sequentially passes through the items in $V$ and determines online whether to keep item $i$ (add to $A^i$) or discard it (remove from $B^i$). The decision depends on the gain of $i$ with respect to $A^i$, and the gain of removing $i$ from $B^i$.
+\seqalg{} the sequential double greedy algorithm (\algref{alg:submax}) maintains two sets $A^i \subseteq B^i$. Initially, $A^0 = \emptyset$ and $B^0 = V$. In iteration $i$, the set $A^i$ contains the items selected before item/iteration $i$, and $B^i$ contains $A^i$ and the items that are so far undecided. The algorithm sequentially passes through the items in $V$ and determines online whether to keep item $i$ (add to $A^i$) or discard it (remove from $B^i$). The decision depends on the gain of $i$ with respect to $A^i$, and the gain of removing $i$ from $B^i$.
 
 %Describe the double greedy algorithm:
 %The sequential double greedy \cite{buchbinder2012} algorithm monotonically grows $A^i$ and shrinks $B^i$.
@@ -674,7 +674,7 @@ A parallel algorithm is said to be \textit{serially equivalent} to a sequential 
 
 
 \section{\hogwild{} Double Greedy Algorithm}
-\xinghao{======== Provide more intuition for what the \hogwild{} algorithm is doing.}
+\xinghao{======== Provide more intuition for what \hogwild{} is doing.}
 The coordination-free approach attempts to reduce the need to coordinate guarantees and logical ordering.
 This is achieved by operating on potentially stale states -- the guarantee reduces to requiring $\mathfrak{g}_e$ be a stale version of $\mathfrak{S}$, and logical ordering is implicitly defined by the time of commit.
 % \xinghao{An interesting take on hogwild -- hogwild is not serially equivalent to the sequential algorithm, but it is serially equivalent to an approximate algorithm that operates on stale states.
@@ -682,15 +682,15 @@ This is achieved by operating on potentially stale states -- the guarantee reduc
 % The concept of CC buys us two things: firstly, to extend sequential algorithms into parallel ones; secondly, to project a parallel algorithm into a sequential algorithm, which aids our understanding and analysis.}
 \xinghao{End comment. ========}
 
-\algref{alg:hogwild} is the \hogwild{} parallel double greedy algorithm for unconstrained submodular maximization.\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; the \hogwild{} algorithm can also be extended to the multilinear version of \cite{buchbinder2012}.}
-The \hogwild{} algorithm closely resembles the serial algorithm, but the elements $e \in V$ are no longer processed in a fixed order.  Thus, the sets $A, B$ are replaced by ``bounds'' $\hat{A}, \hat{B}$, where $\hat{A}$ is a subset of the ``true'' $A$ and $\hat{B}$ is a superset of the ``actual'' $B$ on each iteration.
+\algref{alg:hogwild} is the \hogwild{} parallel double greedy algorithm for unconstrained submodular maximization.\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; \hogwild{} can also be extended to the multilinear version of \cite{buchbinder2012}.}
+\hogwild{} closely resembles the serial \seqalg{}, but the elements $e \in V$ are no longer processed in a fixed order.  Thus, the sets $A, B$ are replaced by ``bounds'' $\hat{A}, \hat{B}$, where $\hat{A}$ is a subset of the ``true'' $A$ and $\hat{B}$ is a superset of the ``actual'' $B$ on each iteration.
 These bounding sets allow us to compute bounds $\Delta_{+}^{\max}, \Delta_{-}^{\max}$ which approximate $\Delta_{+}, \Delta_{-}$ from the serial algorithm.
 We now formalize this idea.
 
 We order the elements $e \in V$ according to the time at which \algref{alg:hogwild} line \ref{alg:hogwild:time} is executed.
 Let $\iota(e)$ be the position of $e$ in this total ordering on elements.
 This ordering allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
-These ``true'' sets $A^i, B^i$ provide a serialization against which we can compare the \hogwild{} algorithm; in this serialization, \algref{alg:submax} computes:
+These ``true'' sets $A^i, B^i$ provide a serialization against which we can compare \hogwild{}; in this serialization, \algref{alg:submax} computes:
 \begin{align*}
   \Delta_{+}       (e) &= F(A^{\iota(e)-1}\cup i) - F(A^{\iota(e)-1}),
 & \Delta_{-}       (e) &= F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1}) \, .
@@ -708,7 +708,7 @@ The next lemma shows that $\hat{A}_e, \hat{B}_e$ are bounding sets for the seria
 \xinghao{Proof in appendix.}
 
 \begin{restatable}{lem}{lemhogsetbound}\label{lem:hog:set_bound}
-In the \hogwild{} algorithm, for any $e\in V$, $\hat{A}_e \subseteq A^{\iota(e)-1}$, and $\hat{B}_e \supseteq B^{\iota(e)-1}$.
+In \hogwild{}, for any $e\in V$, $\hat{A}_e \subseteq A^{\iota(e)-1}$, and $\hat{B}_e \supseteq B^{\iota(e)-1}$.
 \end{restatable}
 
 \begin{cor}\label{cor:hog:delta_bound}
@@ -717,7 +717,7 @@ $\Delta_{+}(e) \leq \Delta_{+}^{\max}(e)$, and
 $\Delta_{-}(e) \leq \Delta_{-}^{\max}(e)$.
 \end{cor}
 
-The error in the \hogwild{} algorithm will depend on the tightness of the bounds in Corollary \ref{cor:hog:delta_bound}.
+The error in \hogwild{} will depend on the tightness of the bounds in Corollary \ref{cor:hog:delta_bound}.
 We analyze this error in \secref{sec:analysis:hogwild}.
 
 % For some functions $F$, we can maintain sketches or statistics to aid the computation of $\Delta_+^{\max}$, $\Delta_-^{\max}$, and still obtain the bounds given in Corollary \ref{cor:hog:delta_bound}.
@@ -736,7 +736,7 @@ We analyze this error in \secref{sec:analysis:hogwild}.
 
 
 \section{Concurrency Control for Double Greedy Algorithm}
-% \xinghao{Provide more intuition for what the \occ{} algorithm is doing.}
+% \xinghao{Provide more intuition for what \occ{} is doing.}
 
 \occ{}, the `concurrency-control double greedy' algorithm, is presented in \algref{alg:occ}, and closely follows the meta-algorithm of \algref{alg:generalparallel} and \algref{alg:generalparallel:commit}.
 Serial equivalence is ensured by maintaining sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$ at commit time.
@@ -744,14 +744,14 @@ Each thread can determine locally if a decision to include / exclude an element 
 Otherwise, the computation is deferred to the commit process (\algref{alg:occcommit}) which waits until it is certain about $A$, $B$ before proceeding.
 
 The commit order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ:time} of \algref{alg:occ}.
-We define $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with the \hogwild{} algorithm.
+We define $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with \hogwild{}.
 Additionally, let $\hat{A}_e$, $\hat{B}_e$, $\tilde{A}_e$, and $\tilde{B}_e$ be the sets that are returned by \algref{alg:occsnapshot}\footnote{
   For clarity, we present the algorithm as creating a copy of $\hat{A}$, $\hat{B}$, $\tilde{A}$, and $\tilde{B}$ for each element. In practice, it is more efficient to update and access them in shared memory. Nevertheless, our theorems hold for both settings.
 }.
 Indeed, these sets are guaranteed to be bounds on $A^{\iota(e)-1}$, $B^{\iota(e)-1}$:
 
 \begin{restatable}{lem}{lemoccsetbound}\label{lem:occ:set_bound}
-In the \occ{} algorithm, $\forall e\in V$,
+In \occ{}, $\forall e\in V$,
 $\hat{A}_e \subseteq A^{\iota(e)-1} \subseteq \tilde{A}_e \backslash e$, and $\hat{B}_e \supseteq B^{\iota(e)-1} \supseteq \tilde{B}_e \cup e$.
 \end{restatable}
 Intuitively, these bounds are maintained by recording potential effects of concurrent transactions in $\tilde{A}$, $\tilde{B}$, and only recording the actual effects in $\hat{A}$, $\hat{B}$;
@@ -759,7 +759,7 @@ we leave the full proof to Appendix \ref{app:algoproof}.
 Furthermore, since later transactions are blocked, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$ at commit.
 
 \begin{restatable}{lem}{lemoccdefer}\label{lem:occ:defer}
-In the \occ{} algorithm, during the commit process for deferred element $e$, on Lines \ref{alg:occcommit:deltaplus}, \ref{alg:occcommit:deltaminus} of \algref{alg:occcommit}, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
+In \occ{}, during the commit process for deferred element $e$, on Lines \ref{alg:occcommit:deltaplus}, \ref{alg:occcommit:deltaminus} of \algref{alg:occcommit}, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{restatable}
 
 \algref{alg:occ} computes
@@ -773,7 +773,7 @@ In the \occ{} algorithm, during the commit process for deferred element $e$, on 
 \begin{cor}\label{cor:occ:delta_bound} Submodularity of $F$ implies that the $\Delta$'s computed by \occ{} satisfy: $\Delta_+^{\min}(e) \leq \Delta_+(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_-^{\max}(e)$.
 \end{cor}
 
-% Like the \hogwild{} algorithm, the \occ{} algorithm can maintain statistics / sketches when dealing with functions of the form $F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$.
+% Like \hogwild{}, \occ{} can maintain statistics / sketches when dealing with functions of the form $F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$.
 % We leave this discussion to Appendix \ref{sec:sepsum}.
 
 
@@ -814,7 +814,7 @@ On the other hand, \occ{} is a scalable algorithm that guarantees the tight 1/2 
 % % Summing over $e$ then gives us $\sum_e \rho_e \leq \kappa_F\sum_e F(e)$.
 
 \begin{restatable}{thm}{thmrandomapprox}\label{thm:randomapprox} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
-The \hogwild{} algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
+\hogwild{} solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
 $
 E[F(A_{\hogwildshort{}})] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^n E[\rho_i]$,
 where $A_{\hogwildshort{}}$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i = \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$.
@@ -826,8 +826,8 @@ The proof of \thmref{thm:randomapprox} follows the structure in \cite{buchbinder
 
 \textbf{Example: max graph cut.}
 Assuming bounded delay of $\tau$ and edges with unit weight, we can bound $\sum_i E[\rho_i] \leq 2\tau\frac{\text{\#edges}}{2N}$
-The approximation of the \hogwild{} algorithm is then $E[F(A^n)] \geq = \frac{1}{2} F(OPT) - \tau\frac{\#\text{edges}}{2N}$.
-In sparse graphs, the \hogwild{} algorithm is off by a small additional term, which albeit grows linearly in $\tau$.
+The approximation of \hogwild{} is then $E[F(A^n)] \geq = \frac{1}{2} F(OPT) - \tau\frac{\#\text{edges}}{2N}$.
+In sparse graphs, \hogwild{} is off by a small additional term, which albeit grows linearly in $\tau$.
 In a complete graph, $F^* = \frac{1}{2}\#\text{edges}$, so $E[F(A^n)] \geq F^*\left(\frac{1}{2} - \frac{\tau}{N}\right)$, which makes it possible to scale $\tau$ linearly with $N$ while retaining the same approximation factor.
 
 
@@ -842,7 +842,7 @@ Then, $\sum_e E[\rho_e] \geq \tau + L(1-\lambda^\tau)$, which is linear in $\tau
 
 
 \subsection{Correctness of \occ{}}
-\begin{restatable}{thm}{thmoccserializable} \occ{} is serially equivalent to double greedy.
+\begin{restatable}{thm}{thmoccserializable} \occ{} is serially equivalent to \seqalg{}.
 \end{restatable}
 We prove the serial equivalence by induction on the commit order of elements.
 It suffices to show that \occ{} takes the same decision as \seqalg{} for each element -- locally if it is safe to do so, and otherwise deferring to the server.
@@ -851,7 +851,7 @@ Full details of the proof are given in Appendix \ref{app:occserializable}.
 As an immediate consequence, theoretical properties of \seqalg{} are preserved by \occ{}, including the approximation guarantees:
 
 \begin{thm} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
-The \occ{} algorithm solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
+\occ{} solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
 $E[F(A_{\occshort{}})] \geq \frac{1}{2}F^*$,
 where $A_{\occshort{}}$ is the output of the algorithm, and $F^*$ is the optimal value.
 \end{thm}
@@ -862,7 +862,7 @@ where $A_{\occshort{}}$ is the output of the algorithm, and $F^*$ is the optimal
 \subsection{Scalability of \occ{}}
 Whenever an element deferred for computation the server, it needs to wait for all earlier elements to be processed, and the server is blocked from committing all later elements.
 Each deferment effectively constitutes a barrier to the parallel processing.
-Hence, the scalability of the \occ{} algorithm is dependent on the number of deferments.
+Hence, the scalability of \occ{} is dependent on the number of deferments.
 Nevertheless, we show for a couple of example problems that the number of deferments can be bounded.
 Full details of the bounds are given in Appendix \ref{app:proofocc}.
 
@@ -895,8 +895,8 @@ We implemented the parallel and sequential double greedy algorithms in Java / Sc
 Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16 threads, for 10 iterations.
 
 We measured the runtime and speedup (ratio of runtime on 1 thread to runtime on $p$ threads).
-For the \hogwild{} algorithm, we measured $F(A_{\hogwild})-F(A_{\seqalg})$, the difference between the objective value on the sets returned by \hogwild{} and the sequential algorithms.
-We verified the correctness of the \occ{} algorithm by comparing the sets returned by the \occ{} and sequential algorithms, and also measured the fraction of elements that are deferred for computation at the server by \occ{}.
+For \hogwild{}, we measured $F(A_{\hogwild})-F(A_{\seqalg})$, the difference between the objective value on the sets returned by \hogwild{} and \seqalg{}.
+We verified the correctness of \occ{} by comparing the sets returned by the \occ{} and \seqalg{}, and also measured the fraction of elements that are deferred for computation at the server by \occ{}.
 
 %\begin{table}[h]
 %\centering
@@ -978,7 +978,7 @@ The set cover problem is reduced to a vertex cover on the directed graph.
   \caption{\footnotesize Experimental results.
   Fig \ref{fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$.
   Fig \ref{fig:speedup_maxgraphcut}, \ref{fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads).
-  Fig \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of the sequential and \hogwild{} algorithms, i.e. $[F(A_{\hogwildshort{}}) / F(A_{\seqalg}) - 1] \times 100\%$.
+  Fig \ref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of \seqalg{} and \hogwild{}, i.e. $[F(A_{\hogwildshort{}}) / F(A_{\seqalgshort{}}) - 1] \times 100\%$.
   Fig \ref{fig:validated_maxgraphcut} -- percentage of elements deferred by \occ{} on the max graph cut problem.
   }
 \label{fig:results_quality}
@@ -987,8 +987,8 @@ The set cover problem is reduced to a vertex cover on the directed graph.
 
 Due to space constraints, we only present part of our results in Figure \ref{fig:results_quality}, deferring full results to Appendix \ref{app:exptresults}.
 \textbf{Runtime, Speedup:} Both parallel algorithms are faster than the sequential algorithm with three or more threads, and show good speedup properties as more threads are added ($\sim$ 10x or more for all graphs and both functions).
-\textbf{Objective value:} The objective value of the \hogwild{} algorithm decreases with the number of threads, but differs from the sequential objective value by less than $0.01\%$.
-\textbf{Deferments:} The \occ{} algorithm defers more elements as threads are added, but less than 0.015\% are deferred with 16 threads, which has negligible effect on the runtime / speedup.
+\textbf{Objective value:} The objective value of \hogwild{} decreases with the number of threads, but differs from the sequential objective value by less than $0.01\%$.
+\textbf{Deferments:} \occ{} defers more elements as threads are added, but less than 0.015\% are deferred with 16 threads, which has negligible effect on the runtime / speedup.
 
 \subsection{Adversarial ordering}
 
