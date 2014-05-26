@@ -375,7 +375,7 @@ Both algorithms are evaluated in Section \ref{sec:evaluation}, and we conclude w
 
 \section{Submodular Maximization \label{sec:submodularmax}}
 A set function $F: 2^V \to \mathbb{R}$ defined over subsets of a ground set $V$ is \emph{submodular} if it satisfies \emph{diminishing marginal returns}: for all $A \subseteq B \subseteq V$ and  $e \notin V$, it holds that $F(A \union \{e\}) - F(A) \geq F(B \union \{e\}) - F(B)$. Throughout this paper, we will assume that $F$ is nonnegative and $F(\emptyset)=0$. Submodular functions have emerged in areas such as game theory \cite{shapley71}, graph theory \cite{frank93}, combinatorial optimization \cite{schrijver02}, %stochastic processes \cite{}, 
-and, more recently, in machine learning too \cite{tutorial,tutorial2}. Phrasing machine learning problems as submodular optimization problems enables e.g.\ the use of algorithms for submodular maximization \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution.
+and, more recently, in machine learning \cite{tutorial,tutorial2}. Phrasing machine learning problems as submodular optimization problems enables e.g.\ the use of algorithms for submodular maximization \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution.
 %Problems like as sensor placement \cite{krauseGuestrin11}, image co-segmentation \cite{kim11}, MAP inference with determinantal point process priors \cite{gillenwater12}, influence maximization \cite{kkt03} or document summarization \cite{lin11} may be phrased as the maximization of a submodular function, which enables the use of algorithms for submodular maximization \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution.
 
 While those algorithms are theoretically beneficial and tend to work very well in practice, their design is inherently sequential. 
@@ -414,7 +414,7 @@ T_e(A,B) :=
   \label{eqn:greedytransaction}
 \end{equation}
 The transaction $T_e$ is a function from the sets $A$ and $B$ to new sets $A$ and $B$ based on the element $e \in V$ and the predetermined random bits $u_e$ for that element.
-We fixed the source of randomness in advance to simplify the presentation as $T_e$ becomes a deterministic function.
+We fixed the source of randomness in advance to simplify the presentation. % as $T_e$ becomes a deterministic function.
 
 
 By composing the transactions $T_n (T_{n-1}(\ldots T_1(\emptyset, V)))$ we recover the serial double-greedy algorithm defined in \algref{alg:submax}.
@@ -464,7 +464,9 @@ However, if the guaranteed conditions are insufficient to do so, the transaction
 % \xinghao{We could add a footnote here that states that an alternative approach which we do not discuss in detail is for the transaction to rollback and re-try.}
 
 The server is in charge of providing and guaranteeing the conditions, and processing commits in the logical order of $i$, producing the output $\partial_n (\partial_{n-1}(\ldots \partial_1(\mathfrak{S})))$.
-A parallel algorithm is said to be \textit{serially equivalent} to a sequential algorithm if for any input, the output of the parallel algorithm corresponds to that of some sequential execution.
+A parallel algorithm is said to be \textit{serializable} 
+%to a sequential algorithm 
+if for any input, the output of the parallel algorithm corresponds to that of some sequential execution.
 
 
 
@@ -540,7 +542,7 @@ A parallel algorithm is said to be \textit{serially equivalent} to a sequential 
           \tcp{Deferred proposal}
           $\partial_i$ = propose($e$, $\mathfrak{S}$)\;
         }
-        \tcp{Advance program state}
+        \tcp{Advance the program state}
         $\mathfrak{S} \leftarrow \partial_i(\mathfrak{S})$\;
         }
       \end{algorithm}
