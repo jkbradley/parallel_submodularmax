@@ -1,4 +1,4 @@
-\begin{thebibliography}{25}
+\begin{thebibliography}{27}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -80,6 +80,16 @@ J.~Bilmes.
 \newblock Deep mathematical properties of submodularity with applications to
   machine learning.
 \newblock NIPS Tutorial, 2013.
+
+\bibitem[Badanidiyuru and Vondr\'ak(2014)]{badan14}
+A.~Badanidiyuru and J.~Vondr\'ak.
+\newblock Fast algorithms for maximizing submodular functions.
+\newblock In \emph{SODA}, 2014.
+
+\bibitem[Wei et~al.(2014)Wei, Iyer, and Bilmes]{wei14}
+K.~Wei, R.~Iyer, and J.~Bilmes.
+\newblock Fast multi-stage submodular maximization.
+\newblock In \emph{ICML}, 2014.
 
 \bibitem[Mirzasoleiman et~al.(2013)Mirzasoleiman, Karbasi, Sarkar, and
   Krause]{Mirzasoleiman2013}
