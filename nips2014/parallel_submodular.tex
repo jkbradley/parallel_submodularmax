@@ -464,10 +464,13 @@ However, if the guaranteed conditions are insufficient to do so, the transaction
 % \xinghao{We could add a footnote here that states that an alternative approach which we do not discuss in detail is for the transaction to rollback and re-try.}
 
 The server is in charge of providing and guaranteeing the conditions, and processing commits in the logical order of $i$, producing the output $\partial_n (\partial_{n-1}(\ldots \partial_1(\mathfrak{S})))$.
-A parallel algorithm is said to be \textit{serializable} 
+A parallel algorithm is said to be \emph{serializable} 
 %to a sequential algorithm 
 if for any input, the output of the parallel algorithm corresponds to that of some sequential execution.
 
+Typically, the cost of proposing the update $\partial_i$ dominates the overall computation cost.
+Thus, distributing the work of proposals over multiple threads allows database systems to achieve parallelism, even with the strongly serial commit process on the server.
+Crucially, having a small number of deferred proposals, leaving the server to mainly perform the lightweight advancement of program state.
 
 
 
