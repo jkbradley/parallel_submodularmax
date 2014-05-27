@@ -593,7 +593,8 @@ Crucially, having a small number of deferred proposals, leaving the server to ma
         \DontPrintSemicolon
         \caption{\hogwild{}: coord-free double greedy}
         \label{alg:hogwild}
-        \lFor{$e\in V$}{$\hat{A}(e) = 0$, $\hat{B}(e) = 1$}
+        $\hat{A} = \emptyset$, $\hat{B} = V$\;
+        % \lFor{$e\in V$}{$\hat{A}(e) = 0$, $\hat{B}(e) = 1$}
         \ParForAll{$p \in \set{1, \ldots, P}$}{
           \While{$\exists$ element to process}{
             $e = $ next element to process\;
@@ -613,7 +614,8 @@ Crucially, having a small number of deferred proposals, leaving the server to ma
         \DontPrintSemicolon
         \caption{\occ{}: concurrency control}
         \label{alg:occ}
-        \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}
+        $\hat{A} = \tilde{A} = \emptyset$, $\hat{B} = \tilde{B} = V$\;
+        % \lFor{$e\in V$}{$\hat{A}(e) = \tilde{A}(e) = 0$, $\hat{B}(e) = \tilde{B}(e) = 1$}
         % \lFor{$i = 1,\dots,|V|$}{result$(i) = 0$}
         \lFor{$i = 1,\dots,|V|$}{processed$(i) = false$}
         $\iota = 0$\;
@@ -704,7 +706,7 @@ Crucially, having a small number of deferred proposals, leaving the server to ma
 
 
 
-\section{\hogwild{} Double Greedy Algorithm \label{sec:alghogwild}}
+\section{Coordination Free Double Greedy Algorithm \label{sec:alghogwild}}
 The coordination-free approach attempts to reduce the need to coordinate guarantees and logical ordering.
 This is achieved by operating on potentially stale states -- the guarantee reduces to requiring $\mathfrak{g}_e$ be a stale version of $\mathfrak{S}$, and logical ordering is implicitly defined by the time of commit.
 In using these weak guarantees, \hogwild{} is overly optimistically assuming that concurrent transactions are independent, which could potentially lead to erroneous decisions.
@@ -721,18 +723,24 @@ We order the elements $e \in V$ according to the commit time, i.e. when \algref{
 Let $\iota(e)$ be the position of $e$ in this total ordering on elements.
 This ordering allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
 These ``true'' sets $A^i, B^i$ provide a serialization against which we can compare \hogwild{}; in this serialization, \algref{alg:submax} computes:
-\begin{align*}
-  \Delta_{+}       (e) &= F(A^{\iota(e)-1}\cup i) - F(A^{\iota(e)-1}),
-& \Delta_{-}       (e) &= F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1}) \, .
-\end{align*}
+$\Delta_{+}       (e) = F(A^{\iota(e)-1}\cup i) - F(A^{\iota(e)-1})$
+and
+$\Delta_{-}       (e) = F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1})$.
+% \begin{align*}
+%   \Delta_{+}       (e) &= F(A^{\iota(e)-1}\cup i) - F(A^{\iota(e)-1}),
+% & \Delta_{-}       (e) &= F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1}) \, .
+% \end{align*}
 
 Note that in \algref{alg:hogwild}, lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem} may be executed in parallel with lines \ref{alg:hogwild:add} and \ref{alg:hogwild:rem}.
 Hence, $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ (lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem}) may be computed with conflicting versions of $\hat{A}$ and $\hat{B}$.
-Denoting these versions by $\hat{A}_e$ and $\hat{B}_e$, \algref{alg:hogwild} computes:
-\begin{align*}
-  \Delta_{+}^{\max}(e) &= F(\hat{A}_e\cup e) - F(\hat{A}_e),
-& \Delta_{-}^{\max}(e) &= F(\hat{B}_e\backslash e) - F(\hat{B}_e) \, .
-\end{align*}
+Denoting these versions by $\hat{A}_e$ and $\hat{B}_e$, \algref{alg:hogwild} computes,
+$\Delta_{+}^{\max}(e) = F(\hat{A}_e\cup e) - F(\hat{A}_e)$
+and
+$\Delta_{-}^{\max}(e) = F(\hat{B}_e\backslash e) - F(\hat{B}_e)$.
+% \begin{align*}
+%   \Delta_{+}^{\max}(e) &= F(\hat{A}_e\cup e) - F(\hat{A}_e),
+% & \Delta_{-}^{\max}(e) &= F(\hat{B}_e\backslash e) - F(\hat{B}_e) \, .
+% \end{align*}
 
 The next lemma shows that $\hat{A}_e, \hat{B}_e$ are bounding sets for the serialization's sets $A^{\iota(e)-1}, B^{\iota(e)-1}$.
 Intuitively, the bounds hold because $\hat{A}_e$, $\hat{B}_e$ are stale versions of $A^{\iota(e)-1}$, $B^{\iota(e)-1}$, which are monotonically non-decreasing and non-increasing sets.
@@ -749,7 +757,7 @@ $\Delta_{-}(e) \leq \Delta_{-}^{\max}(e)$.
 \end{cor}
 
 The error in \hogwild{} depends on the tightness of the bounds in \corref{cor:hog:delta_bound}.
-We analyze this error in \secref{sec:analysis:hogwild}.
+We analyze this in \secref{sec:analysis:hogwild}.
 
 % For some functions $F$, we can maintain sketches or statistics to aid the computation of $\Delta_+^{\max}$, $\Delta_-^{\max}$, and still obtain the bounds given in Corollary \ref{cor:hog:delta_bound}.
 % In Appendix \ref{sec:sepsum}, we consider functions of separable sums, which are useful for applications such as document summarization \cite{lin11}.
@@ -774,7 +782,7 @@ Unlike in \hogwild{}, the concurrency control mechanisms of \occ{} ensures that 
 
 Serializability is achieved by maintaining sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$ at commit time.
 Each thread can determine locally if a decision to include / exclude an element can be taken safely.
-Otherwise, the computation is deferred to the commit process (\algref{alg:occcommit}) which waits until it is certain about $A$, $B$ before proceeding.
+Otherwise, the proposal is deferred to the commit process (\algref{alg:occcommit}) which waits until it is certain about $A$, $B$ before proceeding.
 
 The commit order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ:time} of \algref{alg:occ}.
 We define $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with \hogwild{}.
@@ -795,13 +803,13 @@ Furthermore, since later transactions are blocked, we have $\hat{A} = A^{\iota(e
 In \occ{}, during the commit process for deferred element $e$, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{restatable}
 
-\algref{alg:occ} computes
-\begin{align*}
-  \Delta_+^{\min}(e) &= F(\tilde{A}_e) - F(\tilde{A}_e \backslash e),
-& \Delta_+^{\max}(e) &= F(\hat{A}_e \cup e) - F(\hat{A})\\
-  \Delta_-^{\min}(e) &= F(\tilde{B}_e) - F(\tilde{B}_e \cup e),
-& \Delta_-^{\max}(e) &= F(\hat{B}_e \backslash e) - F(\hat{B}).
-\end{align*}
+% \algref{alg:occ} computes
+% \begin{align*}
+%   \Delta_+^{\min}(e) &= F(\tilde{A}_e) - F(\tilde{A}_e \backslash e),
+% & \Delta_+^{\max}(e) &= F(\hat{A}_e \cup e) - F(\hat{A})\\
+%   \Delta_-^{\min}(e) &= F(\tilde{B}_e) - F(\tilde{B}_e \cup e),
+% & \Delta_-^{\max}(e) &= F(\hat{B}_e \backslash e) - F(\hat{B}).
+% \end{align*}
 
 \begin{cor}\label{cor:occ:delta_bound} Submodularity of $F$ implies that the $\Delta$'s computed by \occ{} satisfy: $\Delta_+^{\min}(e) \leq \Delta_+(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_-^{\max}(e)$.
 \end{cor}
@@ -967,11 +975,11 @@ IT-2004     & 41,291,594 &  1,135,718,909 & 2004 crawl of the .it domain \cite{B
 
 
 We tested our parallel algorithms on the max graph cut and set cover problems with two synthetic graphs and three real datasets (Table \ref{tab:graphstats}).
-Graphs were pre-processed to remove self-loops.
+% Graphs were pre-processed to remove self-loops.
 We found that vertices were typically indexed such that vertices close to each another in the graph were also close in their indices.
 To reduce this dependency, we randomly permuted the ordering of vertices.
-For the max graph cut problem, we removed directions on edges to obtain undirected graphs.
-The set cover problem is reduced to a vertex cover on the directed graph.
+% For the max graph cut problem, we removed directions on edges to obtain undirected graphs.
+% The set cover problem is reduced to a vertex cover on the directed graph.
 
 
 \begin{figure}[ht]
@@ -1028,6 +1036,12 @@ Due to space constraints, we only present part of our results in \figref{fig:res
 To highlight the differences in approaches between the two parallel algorithms, we conducted experiments on a ring Cayley graph on $\mathbb{Z}_{10^6}$ with generating set $\{\pm 1,\dots, \pm 1000\}$.
 The algorithms are presented with an adversarial ordering, without permutation, so vertices close in the ordering are adjacent to one another, and tend to be processed concurrently.
 This causes \hogwild{} to make more mistakes, and \occ{} to defer more proposals.
+% \xinghao{These experiments were conducted by using an atomic integer to select elements to process. We could instead use a partitioning scheme, which has 2 advantages. Firstly, there is less coordination -- for \hogwild{}, we essentially have no coordination.
+% Secondly, when faced with an adversarial ordering, the partitioning scheme allows big jumps / re-orderings, which reduces the number of validations and \textit{increases} the objective value of both parallel algorithms.}
+\footnote{
+We point out by using a partitioning scheme, it is possible to avoid the problems caused by the adversarial ordering, and to improve scalability.
+Nevertheless, we present results that do use the partitioning scheme, so as to better highlight the differences between the two parallel algorithms.
+}
 
 As \figref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually deferring $>90\%$ of elements.
 On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwildshort{}})$ that is only $20\%$ of $F(A_{\seqalgshort{}})$.
@@ -1058,11 +1072,6 @@ The adversarial ordering forces more concurrent atomic updates, and hence, \hogw
 \label{fig:results_adversarial}
 \end{figure}
 
-% \xinghao{These experiments were conducted by using an atomic integer to select elements to process. We could instead use a partitioning scheme, which has 2 advantages. Firstly, there is less coordination -- for \hogwild{}, we essentially have no coordination.
-% Secondly, when faced with an adversarial ordering, the partitioning scheme allows big jumps / re-orderings, which reduces the number of validations and \textit{increases} the objective value of both parallel algorithms.}
-
-We point out by using a partitioning scheme, it is possible to avoid the problems caused by the adversarial ordering, and to improve scalability.
-Nevertheless, we present results that do use the partitioning scheme, so as to better highlight the differences between the two parallel algorithms.
 
 
 
