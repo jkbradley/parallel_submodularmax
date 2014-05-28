@@ -1069,12 +1069,11 @@ This causes \hogwild{} to make more mistakes, and \occ{} to defer more proposals
 We point out by using a partitioning scheme, it is possible to avoid the problems caused by the adversarial ordering, and to improve scalability.
 Nevertheless, we present results that do \emph{not} use the partitioning scheme, so as to better highlight the differences between the two parallel algorithms.
 }
-
 As \figref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually deferring $>90\%$ of elements.
-On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwildshort{}})$ that is only $20\%$ of $F(A_{\seqalgshort{}})$.
-For the set cover problem, we maintain statistics that are updated atomically by both algorithms.
-The adversarial ordering forces more concurrent atomic updates, and hence, \hogwild{} does not achieve good speedup.
-\footnote{We could have reduced coordination by computing $F$ directly, but doing so would result in longer runtimes.}
+On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwildshort{}})$ that is $20\%$ of $F(A_{\seqalgshort{}})$.
+% For the set cover problem, we maintain statistics that are updated atomically by both algorithms.
+% The adversarial ordering forces more concurrent atomic updates, and hence, \hogwild{} does not achieve good speedup.
+% \footnote{We could have reduced coordination by computing $F$ directly, but doing so would result in longer runtimes.}
 
 \begin{figure}[ht]
   \centering
