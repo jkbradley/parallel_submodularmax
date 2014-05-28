@@ -19,19 +19,40 @@ Then the optimal solution is $S^* = V\setminus v_0$ with $F(S^*) = k - k\epsilon
 The greedy algorithm of \citet{nemhauser1978} always adds the element with the largest marginal gain. Since $F(v_0) = 1$ and $F(v_i) = 1-\epsilon$ for all $i > 0$, the algorithm would pick $v_0$ first. After that, any additional element only has a negative marginal gain, $F(\{v_0,v_i\}) - F(v_0) = - \epsilon$. Hence, the algorithm would end up with a solution $F(v_0) = 1$ or worse, which means an approximation factor of only approximately $1/k$.
 
 For the double greedy algorithm, the scenario would be the following.
-If $v_0$ happens to be the first element, then it picks it with probability
+If $v_0$ happens to be the first element, then it is picked with probability
 \begin{align}
-  p(v_0) =
+  P(v_0) =
   \frac{[F(v_0) - F(\emptyset)]_+}{[F(v_0) - F(\emptyset)]_+ +
     [F(V\setminus v_0) - F(V)]_-} = \frac{1}{1 + (k-1)} = \frac{1}{k}.
 \end{align}
-If it picks $v_0$, nothing else will be added afterwards, since $[F(v_0,v_i) - F(v_0)]_+ = 0$. If it does not pick $v_0$, then any other element is added with a probability of 
+If $v_0$ is selected, nothing else will be added afterwards, since $[F(v_0,v_i) - F(v_0)]_+ = 0$. If it does not pick $v_0$, then any other element is added with a probability of 
 \begin{align}
-  p(v_i \mid \not v_0) = \frac{[F(v_i) - F(\emptyset)]_+}{[F(v_i) - F(\emptyset)]_+ + F(V\setminus \{v_0,v_i\}) - F(V\setminus v_0)]_-} = \frac{1-\epsilon}{1-\epsilon} = 1.
+  P(v_i \mid \neg v_0) = \frac{[F(v_i) - F(\emptyset)]_+}{[F(v_i) - F(\emptyset)]_+ + F(V\setminus \{v_0,v_i\}) - F(V\setminus v_0)]_-} = \frac{1-\epsilon}{1-\epsilon} = 1.
 \end{align}
 
 If $v_0$ is not the first element, then any element before $v_0$ is added with probability $p(v_i) = 1-\epsilon$, and as soon as an element $v_i$ has been picked, $v_0$ will not be added any more. Hence, with high probability, this algorithm returns the optimal solution. The deterministic version surely does.
 
 
-\subsection{When is coordination needed?}
+\subsection{Coordination vs no coordination?}
+The following example illustrates the differences between coordination and no coordination.
+In this example, let $V$ be split into $m$ disjoint groups $G_j$ of equal size $k = |V|/m$, and let
+\begin{equation}
+  \label{eq:1}
+  F(S) = \sum_{j=1}^m \min\{1, |S \inter G_j|\} - \frac{|S \inter G_j|}{k}.
+\end{equation}
+A maximizing set $S^*$ contains one element from each group, and $F(S^*) = m - m/k$.
 
+If the sequential double greedy algorithm has not picked an element from a group, it will retain the next element from that group with probability
+\begin{equation}
+  \label{eq:2}
+  \frac{1 - 1/k}{1 - 1/k + 1/k} = 1 - 1/k.
+\end{equation}
+Once it has sampled an element from a group $G_j$, it does not pick any more elements from $G_j$, and therefore $|S \inter G_j| \leq 1$ for all $j$ and the set $S$ returned by the algorithm. The probability that $S$ does not contain any element from $G_j$ is $k^{-k}$ -- fairly low. Hence, with probability $1-m/k^k$ the algorithm returns the optimal solution.
+
+Without coordination, the outcome heavily depends on the order of the elements. For simplicity, assume that $k$ is a multiple of the number $q$ of processors (or $q$ is a multiple of $k$). 
+In the worst case, the elements are sorted by their groups and the members of each group are processed in parallel. With $q$ processors working in parallel, the first $q$ elements from a group $G$ (up to shifts) will be processed with a bound $\hat{A}$ that does not contain any element from $G$, and will each be selected with probability $1-1/k$. Hence, in expectation, $|S \inter G_j| = q(1-1/k)$ for all $j$. 
+
+If $q > k$, then that means in expectation $k-1$ elements are selected, which corresponds to an approximation factor of
+\begin{align}
+  \frac{m( 1 - \frac{k-1}{k})}{m(1-1/k)} = \frac{1}{k-1}.
+\end{align}
