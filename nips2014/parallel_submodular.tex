@@ -1175,9 +1175,14 @@ More generally, parameter servers \cite{li2013, ho2013} apply the \hogwildshort{
 
 \section{Discussions \label{sec:discussions}}
 
-Conclusion: \xinghao{link back to intro, motivation}; we present two approaches to parallelizing unconstrained submodular maximization, which allows one to choose between speed and tight approximation guarantees.
+We present two approaches to parallelizing the double greedy algorithm for unconstrained submodular maximization.
+We quantify the weaker approximation guarantee of \hogwild{} and the additional coordination of \occ{}, allowing one to trade-off between performance and objective optimality.
+Our evaluation on large scale data demonstrates the scalability and tradeoffs of the two approaches.
 
-Future work: interpolate between \occ{} and \hogwild{}; constrained maximization, minimization; monotone maximization using lazy greedy; distributed setting, where communication costs and delays are higher, and function evaluations are challenging.
+We believe there are a number of areas for future work.
+One can imagine a system that allows a smooth interpolation between \hogwild{} and \occ{}.
+While both \hogwild{} and \occ{} can be immediately implemented as distributed algorithms, higher communication costs and delays may pose additional challenges.
+Finally, other problems such as constrained maximization of monotone / non-monotone functions could potentially be parallelized with the \hogwildshort{} and \occshort{} frameworks.
 
 
 {\footnotesize
