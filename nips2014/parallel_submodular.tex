@@ -265,6 +265,14 @@
 \newcommand{\muFL}{\mu^{\text{FL}}}
 
 
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+
+
+
+
 \title{Parallel Double Greedy Submodular Maximization}
 
 \author{
@@ -598,8 +606,9 @@ Crucially, having a small number of deferred proposals, leaving the server to ma
         \ParForAll{$p \in \set{1, \ldots, P}$}{
           \While{$\exists$ element to process}{
             $e = $ next element to process\;
-            $\Delta_{+}^{\max}(e) = F(\hat{A}\cup e) - F(\hat{A})$\;\label{alg:hogwild:deltaadd}
-            $\Delta_{-}^{\max}(e) = F(\hat{B}\backslash e) - F(\hat{B})$\;\label{alg:hogwild:deltarem}
+            $\hat{A}_e = \hat{A}$; $\hat{B}_e = \hat{B}$\;
+            $\Delta_{+}^{\max}(e) = F(\hat{A}_e\cup e) - F(\hat{A}_e)$\;\label{alg:hogwild:deltaadd}
+            $\Delta_{-}^{\max}(e) = F(\hat{B}_e\backslash e) - F(\hat{B}_e)$\;\label{alg:hogwild:deltarem}
             Draw $u_e\sim Unif(0,1)$\;\label{alg:hogwild:time}
             \If {$u_e<\frac{[\Delta_{+}^{\max}(e)]_+}{[\Delta_{+}^{\max}(e)]_+ + [\Delta_{-}^{\max}(e)]_+}$}{
               $\hat{A}(e) \leftarrow 1$\;\label{alg:hogwild:add}
@@ -730,10 +739,12 @@ $\Delta_{-}       (e) = F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1})$.
 %   \Delta_{+}       (e) &= F(A^{\iota(e)-1}\cup i) - F(A^{\iota(e)-1}),
 % & \Delta_{-}       (e) &= F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1}) \, .
 % \end{align*}
-
-Note that in \algref{alg:hogwild}, lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem} may be executed in parallel with lines \ref{alg:hogwild:add} and \ref{alg:hogwild:rem}.
-Hence, $\Delta_+^{\max}(e)$ and $\Delta_-^{\max}(e)$ (lines \ref{alg:hogwild:deltaadd} and \ref{alg:hogwild:deltarem}) may be computed with conflicting versions of $\hat{A}$ and $\hat{B}$.
-Denoting these versions by $\hat{A}_e$ and $\hat{B}_e$, \algref{alg:hogwild} computes,
+On the other hand, \hogwild{} uses stale versions\footnote{
+  For clarity, we present the algorithm as creating a copy of $\hat{A}$, $\hat{B}$, $\tilde{A}$, and $\tilde{B}$ for each element. In practice, it is more efficient to update and access them in shared memory. Nevertheless, our theorems hold for both settings.
+  \label{fn:copyvsshared}
+}
+$\hat{A}_e$, $\hat{B}_e$:
+\algref{alg:hogwild} computes
 $\Delta_{+}^{\max}(e) = F(\hat{A}_e\cup e) - F(\hat{A}_e)$
 and
 $\Delta_{-}^{\max}(e) = F(\hat{B}_e\backslash e) - F(\hat{B}_e)$.
@@ -786,9 +797,7 @@ Otherwise, the proposal is deferred to the commit process (\algref{alg:occcommit
 
 The commit order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ:time} of \algref{alg:occ}.
 We define $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with \hogwild{}.
-Additionally, let $\hat{A}_e$, $\hat{B}_e$, $\tilde{A}_e$, and $\tilde{B}_e$ be the sets that are returned by \algref{alg:occsnapshot}\footnote{
-  For clarity, we present the algorithm as creating a copy of $\hat{A}$, $\hat{B}$, $\tilde{A}$, and $\tilde{B}$ for each element. In practice, it is more efficient to update and access them in shared memory. Nevertheless, our theorems hold for both settings.
-}.
+Additionally, let $\hat{A}_e$, $\hat{B}_e$, $\tilde{A}_e$, and $\tilde{B}_e$ be the sets that are returned by \algref{alg:occsnapshot}\footnoteref{fn:copyvsshared}.
 Indeed, these sets are guaranteed to be bounds on $A^{\iota(e)-1}$, $B^{\iota(e)-1}$:
 
 \begin{restatable}{lem}{lemoccsetbound}\label{lem:occ:set_bound}
