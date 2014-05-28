@@ -5,6 +5,13 @@
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
+\bibitem[Mirzasoleiman et~al.(2013)Mirzasoleiman, Karbasi, Sarkar, and
+  Krause]{Mirzasoleiman2013}
+Baharan Mirzasoleiman, Amin Karbasi, Rik Sarkar, and Andreas Krause.
+\newblock Distributed submodular maximization: Identifying representative
+  elements in massive data.
+\newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
+
 \bibitem[Buchbinder et~al.(2012)Buchbinder, Feldman, Naor, and
   Schwartz]{buchbinder2012}
 Niv Buchbinder, Moran Feldman, Joseph~(Seffi) Naor, and Roy Schwartz.
@@ -90,13 +97,6 @@ A.~Badanidiyuru and J.~Vondr\'ak.
 K.~Wei, R.~Iyer, and J.~Bilmes.
 \newblock Fast multi-stage submodular maximization.
 \newblock In \emph{ICML}, 2014.
-
-\bibitem[Mirzasoleiman et~al.(2013)Mirzasoleiman, Karbasi, Sarkar, and
-  Krause]{Mirzasoleiman2013}
-Baharan Mirzasoleiman, Amin Karbasi, Rik Sarkar, and Andreas Krause.
-\newblock Distributed submodular maximization: Identifying representative
-  elements in massive data.
-\newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
 
 \bibitem[Kumar et~al.(2013)Kumar, Moseley, Vassilvitskii, and Vattani]{kumar13}
 R.~Kumar, B.~Moseley, S.~Vassilvitskii, and A.~Vattani.
