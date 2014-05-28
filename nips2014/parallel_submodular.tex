@@ -441,7 +441,8 @@ T_e(A,B) :=
   \label{eqn:greedytransaction}
 \end{equation}
 The transaction $T_e$ is a function from the sets $A$ and $B$ to new sets $A$ and $B$ based on the element $e \in V$ and the predetermined random bits $u_e$ for that element.
-We fixed the source of randomness in advance to simplify the presentation. % as $T_e$ becomes a deterministic function.
+To eliminate exogenous ordering effects, we associate the source of randomness with each element in the set.
+% to simplify the presentation. % as $T_e$ becomes a deterministic function.
 
 
 By composing the transactions $T_n (T_{n-1}(\ldots T_1(\emptyset, V)))$ we recover the serial double-greedy algorithm defined in \algref{alg:submax}.
@@ -456,10 +457,10 @@ T_i(A,B) + T_j(A,B) = \left(T_i(A,B)_A \union T_j(A,B)_A,  \,\, T_i(A,B)_B  \int
 \end{equation}
 the union of the resulting $A$ and the intersection of the resulting $B$.
 While we can easily generalize \eqnref{eqn:merge} to many parallel transactions, we cannot always guarantee that the result will corresponds to a serial composition of transactions.
-As a consequence, we cannot directly apply the analysis of Buchbinder et al.~\cite{buchbinder2012} to derive strong approximation guarantees for our parallel execution.
+As a consequence, we cannot directly apply the analysis of Buchbinder et al.~\cite{buchbinder2012} to derive strong approximation guarantees for the parallel execution.
 
-Fortunately, several decades of research~\citep{Ozsu07,kung1981:occ} in database systems have explored the design of efficient parallel transaction processing systems.
-The systems span a space ranging from extremely fast coordination free approaches which provide minimal guarantees on the composition of transactions to sophisticated concurrency control techniques which ensure a direct correspondence between parallel and serial executions at the cost of slightly reduced performance.
+Fortunately, several decades of research~\citep{Ozsu07,kung1981:occ} in database systems have explored the design of efficient parallel transaction processing.
+These systems span a space ranging from extremely fast coordination free approaches which provide minimal guarantees on the composition of transactions to sophisticated concurrency control techniques which ensure a direct correspondence between parallel and serial executions at the cost of slightly reduced performance.
 
 
 
@@ -483,62 +484,10 @@ The systems span a space ranging from extremely fast coordination free approache
 % By weakening the preconditions we can minimized or even eliminate invalid transactions and the need for validation.
 % Alternatively, by carefully constructing the preconditions we can guarantee a serializable execution potentially at the expense of parallel scalability.
 
-% \xinghao{Casting our meta-algorithm as a generalization of (pessimiistic) concurrency approach.}
-In \algref{alg:generalparallel} we describe a common pattern for concurrency control.
-A transaction begins by requesting a set of guarantees $\mathfrak{g}_e$ and an associated logical time $i$, such that $\mathfrak{g}_e$ is guaranteed to hold at $i$.
-Under these conditions, the transaction attempts to propose and commit an update.
-However, if the guaranteed conditions are insufficient to do so, the transaction fails locally and the computation needs to be deferred to the server when it has the known true state $\mathfrak{S}$.
-% \xinghao{We could add a footnote here that states that an alternative approach which we do not discuss in detail is for the transaction to rollback and re-try.}
-
-The server is in charge of providing and guaranteeing the conditions, and processing commits in the logical order of $i$, producing the output $\partial_n (\partial_{n-1}(\ldots \partial_1(\mathfrak{S})))$.
-A parallel algorithm is said to be \emph{serializable}
-%to a sequential algorithm
-if for any input, the output of the parallel algorithm corresponds to that of some sequential execution.
-
-Typically, the cost of proposing the update $\partial_i$ dominates the overall computation cost.
-Thus, distributing the work of proposals over multiple threads allows database systems to achieve parallelism, even with the strongly serial commit process on the server.
-Crucially, having a small number of deferred proposals, leaving the server to mainly perform the lightweight advancement of program state.
 
 
 
-
-
-%\Joe scratch space.
-
-%  correspond to preconditions
-
-% necessary to maintain an invariant based notion of validity which departs fro more classic validation models.
-
-%  conditional notion validity is a departure from more classic validation models and more closely resembles the notion of
-
-% Finally, a validation function is called which verifies that the conditions $\mathfrak{S}$ are still valid with the current global state and if so atomically applies the operation
-
-% Inspired by the work of Xinghao et al.~\cite{Xinghao13} we adopt a
-
-% In this paper we propose and compare two techniques.  The simplest, inspired by Recht et al.~\cite{Recht11} is a coordination free approach which provides weak guarantees.
-
-% towards coordination free approaches
-
-% several techniques from this literature and propose both a coordination free approach as well as an approach based on optimistic concurrency control
-% to parallel transaction processing with an optimistic concurrency control approach inspired by the recent work of
-
-
-% \subsection{Coordination free}
-% The coord
-
-% \joey{finish}
-% Simply run everything in parallel.
-% Optimized for speed, but does not necessarily provide the correct answer.
-% Requires work to prove correctness.
-
-% \subsection{Concurrency control}
-% Ensures `serial equivalence' -- the outcome of the parallel algorithm is equivalent to some execution of the sequential algorithm.
-% Locally, threads take actions that are guaranteed to be safe (i.e. preserves serial equivalence), and forces additional coordination only when they are unable to execute their action safely.
-% Designed for correctness, but requires coordination that compromises speed.
-% Work is only required to demonstrate that coordination is limited.
-
-
-\begin{figure}[h]
+\begin{figure}[t]
   \footnotesize
   \centering
   \begin{multicols}{2}
@@ -577,13 +526,90 @@ Crucially, having a small number of deferred proposals, leaving the server to ma
         }
       \end{algorithm}
     \end{minipage}
-
-
-
   \end{multicols}
-  \caption{\footnotesize Algorithm for generalized transactions. Each transaction requests for its position $i$ in the commit ordering, as well as the bounds $\mathfrak{g}_e$ that are guaranteed to hold when it commits. Transactions are also guaranteed to be committed according to the given ordering.}
-  \label{fig:submax}
+  \vspace{-1em}
+  \caption{\footnotesize  Algorithm for generalized transactions. Each transaction requests for its position $i$ in the commit ordering, as well as the bounds $\mathfrak{g}_e$ that are guaranteed to hold when it commits. Transactions are also guaranteed to be committed according to the given ordering.}
+  \label{fig:transactionmodel}
 \end{figure}
+
+
+% \xinghao{Casting our meta-algorithm as a generalization of (pessimiistic) concurrency approach.}
+In \figref{fig:transactionmodel} we describe a bounded optimistic pattern for concurrency control.
+The clients (\algref{alg:generalparallel}), in parallel, construct and commit transactions under bounded assumptions about the program state $\mathfrak{S}$ (\ie the sets $A$ and $B$).
+Transactions are constructed by requesting the latest bound $\mathfrak{g}_e$ on $\mathfrak{S}$
+% the program state
+at logical time $i$ and computing a change $\partial_i$ to $\mathfrak{S}$
+%the program state
+(\eg Add $e$ to A).
+If the bound is insufficient to construct the transaction then $\partial_i = \text{FAIL}$ is returned.
+The client then sends the proposed change $\partial_i$ to the server to be committed atomically and proceeds to the next element without waiting for a response.
+
+% begin to construct transaction begins by requesting a set of guarantees $\mathfrak{g}_e$ and an associated logical time $i$, such that the guarantee $\mathfrak{g}_e$ holds at time $i$.
+% Under these conditions, the transaction attempts to propose and commit an update.
+% However, if the guaranteed conditions are insufficient to do so, the transaction fails locally and the computation needs to be deferred to the server where it will have atomic access to the known true state $\mathfrak{S}$.
+% \xinghao{We could add a footnote here that states that an alternative approach which we do not discuss in detail is for the transaction to rollback and re-try.}
+
+The server (\algref{alg:generalparallel:commit}) \emph{serially} applies the transactions advancing the program state (\ie adding elements to $A$ or removing elements from $B$).
+If the bounds were insufficient and the transaction failed at the client (\ie $\partial_i = \text{FAIL}$) then the server \emph{serially} reconstruct and applies the transaction under the true program state.
+Moreover, the server is responsible for deriving bounds, processing transactions in the logical order $i$, and producing the serializable output $\partial_n (\partial_{n-1}(\ldots \partial_1(\mathfrak{S})))$.
+% A parallel algorithm is said to be \emph{serializable}
+% if for any input, the output of the parallel algorithm corresponds to that of some sequential execution.
+
+
+% The server is in charge of providing and guaranteeing the conditions, and processing commits in the logical order of $i$, producing the output $\partial_n (\partial_{n-1}(\ldots \partial_1(\mathfrak{S})))$.
+% A parallel algorithm is said to be \emph{serializable}
+% %to a sequential algorithm
+% if for any input, the output of the parallel algorithm corresponds to that of some sequential execution.
+
+% is in charge of providing and guaranteeing the conditions, and processing commits in the logical order of $i$, producing the output $\partial_n (\partial_{n-1}(\ldots \partial_1(\mathfrak{S})))$.
+
+
+This model achieves a high degree of parallelism when the cost of constructing the transaction dominates the cost of applying the transaction.
+For example, in the case of submodular maximization, the cost of constructing the transaction depends on evaluating the marginal gains with respect to changes in $A$ and $B$ while the cost of applying the transaction reduces to setting a bit.
+% Thus, distributing the work of proposals over multiple threads allows database systems to achieve parallelism, even with the strongly serial commit process on the server.
+It is also essential that the only a few transactions fail at the client.
+Indeed, the analysis of these systems focuses on ensuring that the majority of the transactions succeed.
+%Crucially, having a small number of deferred proposals, leaving the server to mainly perform the lightweight advancement of program state.
+
+
+
+
+
+
+
+%\Joe scratch space.
+
+%  correspond to preconditions
+
+% necessary to maintain an invariant based notion of validity which departs fro more classic validation models.
+
+%  conditional notion validity is a departure from more classic validation models and more closely resembles the notion of
+
+% Finally, a validation function is called which verifies that the conditions $\mathfrak{S}$ are still valid with the current global state and if so atomically applies the operation
+
+% Inspired by the work of Xinghao et al.~\cite{Xinghao13} we adopt a
+
+% In this paper we propose and compare two techniques.  The simplest, inspired by Recht et al.~\cite{Recht11} is a coordination free approach which provides weak guarantees.
+
+% towards coordination free approaches
+
+% several techniques from this literature and propose both a coordination free approach as well as an approach based on optimistic concurrency control
+% to parallel transaction processing with an optimistic concurrency control approach inspired by the recent work of
+
+
+% \subsection{Coordination free}
+% The coord
+
+% \joey{finish}
+% Simply run everything in parallel.
+% Optimized for speed, but does not necessarily provide the correct answer.
+% Requires work to prove correctness.
+
+% \subsection{Concurrency control}
+% Ensures `serial equivalence' -- the outcome of the parallel algorithm is equivalent to some execution of the sequential algorithm.
+% Locally, threads take actions that are guaranteed to be safe (i.e. preserves serial equivalence), and forces additional coordination only when they are unable to execute their action safely.
+% Designed for correctness, but requires coordination that compromises speed.
+% Work is only required to demonstrate that coordination is limited.
 
 
 
