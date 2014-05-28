@@ -15,7 +15,7 @@ parallel_submodular.aux: *.tex *.tex *.bib
 	pdflatex -halt-on-error  parallel_submodular.tex
 
 clean:
-	\rm -f *.dvi *.aux *.bbl *.log *.blg *.toc *~ *.out *.idx \
+	\rm -f *.dvi *.aux *.bbl *.log *.blg *.toc *~ *.out *.idx *.fdb_latexmk \
 
 spotless: clean
 	\rm -f parallel_submodular.pdf parallel_submodular.ps

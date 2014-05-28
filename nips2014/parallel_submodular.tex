@@ -294,15 +294,20 @@ Berkeley, CA USA 94720\\
 
 
 \begin{abstract}
-Many machine learning problems can be reduced to the maximization of a submodular function. While this insight can gain theoretical guarantees, exploiting these results in a large scale parallel setting remains an open research topic, in particular for \emph{non-monotone} functions for which recently proposed scalable greedy algorithms do not apply. Recently, \citet{buchbinder2012} achieved a tight 1/2-approximation for unconstrained non-monotone submodular maximization using a double greedy algorithm. This algorithm was developed and analyzed in the serial setting, limiting our ability to leverage parallel hardware. In this work, we bridge this gap and make the theoretical benefits available in a scalable setting.
-% between those theoretical benefits and scalable computing. 
-We propose and analyze two parallel double greedy algorithms.
+Many machine learning problems can be reduced to the maximization of  submodular functions.
+Although well understood in the serial setting, the parallel maximization of submodular functions remains an open area of research with recent results \cite{Mirzasoleiman2013} only addressing monotone functions.
+The optimal algorithm for maximizing the more general class of non-monotone submodular functions was introduced by \citet{buchbinder2012} and follows a strongly serial double-greedy logic and program analysis.
+In this work, we propose two methods to parallelize the double-greedy algorithm.
+% bridge this gap and make the theoretical benefits available in a scalable setting.
+% % between those theoretical benefits and scalable computing.
+% We propose and analyze two parallel double greedy algorithms.
 The first, \emph{coordination-free} approach emphasizes speed at the cost of a weaker approximation guarantee.
-The second, \emph{concurrency control} approach guarantees the tight 1/2-approximation, at the potential, quantifiable cost of additional coordination and reduced parallelism.
+The second, \emph{concurrency control} approach guarantees the tight 1/2-approximation, at the quantifiable cost of additional coordination and reduced parallelism.
+As a consequence we explore the trade-off space between guaranteed performance and objective optimality.
 % We bound both the weaker approximation factor and the reduction in parallelism.
 We implement and evaluate both algorithms on multi-core hardware and billion edge graphs, demonstrating both the scalability and tradeoffs of each approach.
 %
-%Many machine learning problems can be reduced to the maximization of a submodular function. 
+%Many machine learning problems can be reduced to the maximization of a submodular function.
 %Recently, \citet{buchbinder2012} achieved a tight 1/2-approximation for unconstrained submodular maximization using a double greedy algorithm.
 %Unfortunately, the double greedy algorithm was developed and analyzed in the serial setting limiting our ability to leverage parallel hardware.
 %In this work we propose and analyze two parallel extensions to the \cite{buchbinder2012} double greedy algorithm.
@@ -325,19 +330,19 @@ We implement and evaluate both algorithms on multi-core hardware and billion edg
 
 
 Many important problems including sensor placement \cite{krauseGuestrin11}, image co-segmentation \cite{kim11}, MAP inference in the determinantal point processes \cite{gillenwater12}, influence maximization \cite{kkt03}, and document summarization \cite{lin11} may be expressed as the maximization of a submodular functions.
-The submodular formulation enables the use of target algorithms \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution. 
-For several maximization problems of \emph{monotone} submodular functions (satisfying $F(A) \leq F(B)$ for all $A \subseteq B$), a simple greedy algorithm \cite{nemhauser1978} achieves the optimal approximation factor of $1-\frac{1}{e}$. 
+The submodular formulation enables the use of targeted algorithms \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution.
+For several maximization problems of \emph{monotone} submodular functions (satisfying $F(A) \leq F(B)$ for all $A \subseteq B$), a simple greedy algorithm \cite{nemhauser1978} achieves the optimal approximation factor of $1-\frac{1}{e}$.
 The optimal result for the wider, important class of \emph{non-monotone} functions  -- an approximation guarantee of $1/2$ --  is much more recent, and achieved by a \emph{double greedy} algorithm by \citet{buchbinder2012}.
 
 
 While these algorithms are both theoretically optimal and perform well in practice, their design is inherently serial limiting their scalability to large problem instances and advances in parallel hardware.
-% Increasingly often, real-world applications demand 
-% % one wishes 
-% to solve the above-mentioned problems at very large scale. 
-This limitation raises the question of parallel algorithms for submodular maximization that ideally preserve the theoretical bounds, or weaken them gracefully, in a quantifiable manner. 
+% Increasingly often, real-world applications demand
+% % one wishes
+% to solve the above-mentioned problems at very large scale.
+This limitation raises the question of parallel algorithms for submodular maximization that ideally preserve the theoretical bounds, or weaken them gracefully, in a quantifiable manner.
 
 
-In this paper, we study the parallelization of greedy algorithms, in particular the double greedy algorithm from the perspective of \emph{parallel transaction processing systems}. 
+In this paper, we study the parallelization of greedy algorithms, in particular the double greedy algorithm from the perspective of \emph{parallel transaction processing systems}.
 This alternative perspective allows us to apply advances in database research ranging from fast coordination free approaches with limited guarantees to sophisticated concurrency control techniques which ensure a direct correspondence between parallel and serial executions at the expense of increased coordination. % cost of slightly reduced performance.
 
 
@@ -348,16 +353,16 @@ By bounding the possible outcomes of concurrent transactions we introduce the \o
 
 The primary contributions of this paper are:
 \begin{enumerate}
-\item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which allows one to choose between speed and tight approximation guarantees.
-\item We prove that \occ{} produces an outcome equivalent to the sequential double greedy algorithm, thus preserving the tight approximation guarantee of 1/2.
-\item We analytically bound the amount of coordination of \occ{} for example problems.
-\item We provide approximation guarantees for \hogwild{} and analytically bound the expected loss in objective value for example problems.
+\item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which trade-off parallelism and tight approximation guarantees.
+\item We prove that \occ{} produces an outcome equivalent to the sequential double greedy algorithm, thus preserving the tight 1/2-approximation guarantee.
+\item We analytically bound the amount of coordination of \occ{} for set-cover and max-cut.
+\item We provide approximation guarantees for \hogwild{} and analytically bound the expected loss in objective value for set-cover and max-cut.
 \item We demonstrate empirically using two synthetic and three real datasets that our parallel algorithms perform well in terms of both speed and objective values.
 \end{enumerate}
 
 The rest of the paper is organized as follows.
 \secref{sec:submodularmax} discusses the problem of subdmoular maximization and introduces the double greedy algorithm.
-\secref{sec:concurrencycontrol} provides background on concurrency control in databases.
+\secref{sec:concurrencycontrol} provides background on concurrency control mechanisms.
 We describe and provide intuition for our \hogwild{} and \occ{} algorithms in \secref{sec:alghogwild} and \secref{sec:algocc}.
 \secref{sec:analysis} analyzes the parallel algorithms.
 Both algorithms are evaluated in \secref{sec:evaluation}, and we conclude with related work and discussions in \secref{sec:related} and \secref{sec:discussions}.
@@ -376,12 +381,12 @@ Both algorithms are evaluated in \secref{sec:evaluation}, and we conclude with r
 
 
 \section{Submodular Maximization \label{sec:submodularmax}}
-A set function $F: 2^V \to \mathbb{R}$ defined over subsets of a ground set $V$ is \emph{submodular} if it satisfies \emph{diminishing marginal returns}: for all $A \subseteq B \subseteq V$ and  $e \notin V$, it holds that $F(A \union \{e\}) - F(A) \geq F(B \union \{e\}) - F(B)$. Throughout this paper, we will assume that $F$ is nonnegative and $F(\emptyset)=0$. Submodular functions have emerged in areas such as game theory \cite{shapley71}, graph theory \cite{frank93}, combinatorial optimization \cite{schrijver02}, %stochastic processes \cite{}, 
+A set function $F: 2^V \to \mathbb{R}$ defined over subsets of a ground set $V$ is \emph{submodular} if it satisfies \emph{diminishing marginal returns}: for all $A \subseteq B \subseteq V$ and  $e \notin V$, it holds that $F(A \union \{e\}) - F(A) \geq F(B \union \{e\}) - F(B)$. Throughout this paper, we will assume that $F$ is nonnegative and $F(\emptyset)=0$. Submodular functions have emerged in areas such as game theory \cite{shapley71}, graph theory \cite{frank93}, combinatorial optimization \cite{schrijver02}, %stochastic processes \cite{},
 and, more recently, in machine learning \cite{tutorial,tutorial2}. Phrasing machine learning problems as submodular optimization problems enables e.g.\ the use of algorithms for submodular maximization \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution.
 %Problems like as sensor placement \cite{krauseGuestrin11}, image co-segmentation \cite{kim11}, MAP inference with determinantal point process priors \cite{gillenwater12}, influence maximization \cite{kkt03} or document summarization \cite{lin11} may be phrased as the maximization of a submodular function, which enables the use of algorithms for submodular maximization \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution.
 
-While those algorithms are theoretically beneficial and tend to work very well in practice, their design is inherently sequential. 
-% But increasingly often, one wishes to solve the above-mentioned problems at very large scale. This development raises the question of parallel algorithms for submodular maximization that ideally preserve the theoretical bounds, or weaken them gracefully, in a quantifiable manner. 
+While those algorithms are theoretically beneficial and tend to work very well in practice, their design is inherently sequential.
+% But increasingly often, one wishes to solve the above-mentioned problems at very large scale. This development raises the question of parallel algorithms for submodular maximization that ideally preserve the theoretical bounds, or weaken them gracefully, in a quantifiable manner.
 %
 Recent work has addressed faster \cite{badan14,wei14} and parallel \cite{Mirzasoleiman2013,kumar13} versions of the greedy algorithm by \citet{nemhauser1978} for maximizing \emph{monotone} submodular functions that satisfy $F(A) \leq F(B)$ for any $A \subseteq B \subseteq V$. However, in several important cases such as inference \cite{Gillenwater12,reed13}, and when trading off gains with (linear) cost functions (functions of the form $F(S) = G(S) + \lambda M(S)$, where $G(S)$ is monotone submodular and $M(S)$ is a linear (modular) cost function), we aim to maximize a \emph{non-monotone} submodular function. For non-monotone functions, the simple greedy algorithm in \cite{nemhauser1978} can fail terribly (see the Appendix for an example). Intuitively, while for non-monotone functions, including more elements eventually neither helps nor hurts, for non-monotone functions it can hurt to the extent of reducing the function value back to zero.
 For non-monotone functions, \citet{buchbinder2012} recently proposed an optimal double greedy algorithm that works well in a serial setting. In this paper, we study parallelizations of this algorithm.
@@ -466,8 +471,8 @@ However, if the guaranteed conditions are insufficient to do so, the transaction
 % \xinghao{We could add a footnote here that states that an alternative approach which we do not discuss in detail is for the transaction to rollback and re-try.}
 
 The server is in charge of providing and guaranteeing the conditions, and processing commits in the logical order of $i$, producing the output $\partial_n (\partial_{n-1}(\ldots \partial_1(\mathfrak{S})))$.
-A parallel algorithm is said to be \emph{serializable} 
-%to a sequential algorithm 
+A parallel algorithm is said to be \emph{serializable}
+%to a sequential algorithm
 if for any input, the output of the parallel algorithm corresponds to that of some sequential execution.
 
 Typically, the cost of proposing the update $\partial_i$ dominates the overall computation cost.
