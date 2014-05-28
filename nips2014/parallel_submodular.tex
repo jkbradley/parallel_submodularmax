@@ -787,9 +787,9 @@ Indeed, the analysis of these systems focuses on ensuring that the majority of t
     \end{subfigure}
   \end{tabular}
   \caption{\footnotesize Illustration of algorithms.
-  \seqalg{} computes a threshold based on the true values $\Delta_+$, $\Delta_-$, and chooses an action based by comparing a uniform random $u_i$ against the threshold.
-  \hogwild{} approximates the threshold based on stale $\hat{A}$, $\hat{B}$, possibly choosing the wrong action.
-  \occ{} computes two thresholds based on the bounds on $A$, $B$, which defines an uncertainty region where it is not possible to choose the correct action locally.
+  \textbf{(a)} \seqalg{} computes a threshold based on the true values $\Delta_+$, $\Delta_-$, and chooses an action based by comparing a uniform random $u_i$ against the threshold.
+  \textbf{(b)} \hogwild{} approximates the threshold based on stale $\hat{A}$, $\hat{B}$, possibly choosing the wrong action.
+  \textbf{(c)} \occ{} computes two thresholds based on the bounds on $A$, $B$, which defines an uncertainty region where it is not possible to choose the correct action locally.  If the random value $u_e$ falls inside the uncertainty interval than the transaction FAILS and must be recomputed serially by the server otherwise the transaction holds under all possible global states. % at the time the transaction will be processed.
   }
 \end{figure}
 
