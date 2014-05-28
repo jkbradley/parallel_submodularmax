@@ -7,19 +7,29 @@ The following examples illustrate how (i) the simple (uni-directional) greedy al
 For illustration, consider the following toy example of a non-monotone submodular function. We are given a ground set $V = \{v_0, v_1, v_2, \ldots, v_k\}$ of $k+1$ elements, and a universe $U = \{u_1, \ldots, u_k\}$. Each element $v_i$ in $V$ covers elements $\mathrm{Cov}(v_i) \subseteq U$ of the universe. In addition, each element in $V$ has a cost $c(v_i)$. We are aiming to maximize the submodular function
 \begin{equation}
   \label{eq:1}
-  F(S) = |\bigcup_{v \in S}\mathrm{Cov}(v)| - \sum_{v \in S}c(v).
+  F(S) = \Big|\bigcup_{v \in S}\mathrm{Cov}(v)\Big| - \sum_{v \in S}c(v).
 \end{equation}
 Let the costs and coverings be as follows:
 \begin{align}
-  \mathrm{Cov}(v_0) &= U \qquad c(v_0) &= k-1\\
-  \mathrm{Cov}(v_i) &= u_i  \qquad c(v_i) &= \epsilon \ll 1/k \text{ for all } i > 0.
+  \mathrm{Cov}(v_0) &= U \qquad c(v_0) = k-1\\
+  \mathrm{Cov}(v_i) &= u_i  \qquad c(v_i) = \epsilon < 1/k^2\;\; \text{ for all } i > 0.
 \end{align}
-Then the optimal solution is $S^* = V\setminus v_0$ with $FS^*) = k - k\epsilon$. 
+Then the optimal solution is $S^* = V\setminus v_0$ with $F(S^*) = k - k\epsilon$. 
 
-The greedy algorithm of \citet{nemhauser1978} always adds the element with the largest marginal gain. Since $F(v_0) = 1$ and $F(v_i) = 1-\epsilon$ for all $i > 0$, the algorithm would pick $v_0$ first. After that, any additional element only has a negative marginal gain, $F(\{v_0,v_i\}) - F(v_0) = - \epsilon$. Hence, the algorithm would end up with a solution $F(v_0) = 1$ or worse.
+The greedy algorithm of \citet{nemhauser1978} always adds the element with the largest marginal gain. Since $F(v_0) = 1$ and $F(v_i) = 1-\epsilon$ for all $i > 0$, the algorithm would pick $v_0$ first. After that, any additional element only has a negative marginal gain, $F(\{v_0,v_i\}) - F(v_0) = - \epsilon$. Hence, the algorithm would end up with a solution $F(v_0) = 1$ or worse, which means an approximation factor of only approximately $1/k$.
 
 For the double greedy algorithm, the scenario would be the following.
-If $v_0$ happens to be the first element, then it picks it with probability $p(v_0) = \frac{1}{1 + k-1} = \frac{1}{k}$. If it picks $v_0$, nothing else will be added afterwards. If it does not pick $v_0$, then any other element has a probability of $\frac{1-\epsilon}{1-\epsilon} = 1$ of being added.
+If $v_0$ happens to be the first element, then it picks it with probability
+\begin{align}
+  p(v_0) =
+  \frac{[F(v_0) - F(\emptyset)]_+}{[F(v_0) - F(\emptyset)]_+ +
+    [F(V\setminus v_0) - F(V)]_-} = \frac{1}{1 + (k-1)} = \frac{1}{k}.
+\end{align}
+If it picks $v_0$, nothing else will be added afterwards, since $[F(v_0,v_i) - F(v_0)]_+ = 0$. If it does not pick $v_0$, then any other element is added with a probability of 
+\begin{align}
+  p(v_i \mid \not v_0) = \frac{[F(v_i) - F(\emptyset)]_+}{[F(v_i) - F(\emptyset)]_+ + F(V\setminus \{v_0,v_i\}) - F(V\setminus v_0)]_-} = \frac{1-\epsilon}{1-\epsilon} = 1.
+\end{align}
+
 If $v_0$ is not the first element, then any element before $v_0$ is added with probability $p(v_i) = 1-\epsilon$, and as soon as an element $v_i$ has been picked, $v_0$ will not be added any more. Hence, with high probability, this algorithm returns the optimal solution. The deterministic version surely does.
 
 

@@ -1,4 +1,4 @@
-\begin{thebibliography}{28}
+\begin{thebibliography}{29}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -107,6 +107,12 @@ R.~Kumar, B.~Moseley, S.~Vassilvitskii, and A.~Vattani.
 C.~Reed and Z.~Ghahramani.
 \newblock Scaling the indian buffet process via submodular maximization.
 \newblock In \emph{ICML}, 2013.
+
+\bibitem[Krause and Horvitz(2010)]{krause10priv}
+A.~Krause and E.~Horvitz.
+\newblock A utility-theoretic approach to privacy in online services.
+\newblock \emph{Journal of Artificial Intelligence Research}, 39:\penalty0
+  633--622, 2010.
 
 \bibitem[Ozsu(2007)]{Ozsu07}
 M.~Tamer Ozsu.
