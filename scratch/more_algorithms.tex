@@ -320,9 +320,11 @@ Given random thresholds, and an initial set of active nodes $A_0$, in step $t$, 
 \begin{equation*}
   \sum_{(u,v) \in \Es, u \in A_{t-1}} b(u,v) \geq \theta_v.
 \end{equation*}
+THis can be generalized to the expectation of any (monotone?) submodular function computed on the ultimately active set of nodes, not only the cardinality \cite{mossel07}.
 
 \subsubsection{Independent Cascade Model}
 When node $v$ becomes active in a step $t$, it has a single chance of activating its neighbors. It succeeds to activate neighbor $w$ with probability $p(v,w)$, independent of what other nodes are activated. If this is successful, then $w$ becomes active in step $t+1$. 
+Equivalently, one can describe this process as follows: Create a random graph by sampling edge $(v,w)$ with probability $p(v,w)$. The set of nodes influenced is the set reachable from $A_0$. Then we take the expectation over all those graphs. \emph{Note: we could take an expectation for any distribution over graphs, and would remain submodular.}
 
 \subsubsection{Submodular function}
 The influence $F(S) = \mathbb{E}|A_n(S)|$ of a set $S \subseteq \Vs$ of initially activated nodes is the expected number of active nodes $A_n(S)$ at the end of the process. Submodularity is proved by looking at a specific outcome (fix edges to be successful or unsuccessful). Given those successes, a node is active itf it is reachable from an active node $v \in A_0$ by an active path.
