@@ -1,4 +1,4 @@
-\begin{thebibliography}{27}
+\begin{thebibliography}{28}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -102,6 +102,11 @@ K.~Wei, R.~Iyer, and J.~Bilmes.
 R.~Kumar, B.~Moseley, S.~Vassilvitskii, and A.~Vattani.
 \newblock Fast greedy algorithms in {M}ap{R}educe and streaming.
 \newblock In \emph{SPAA}, 2013.
+
+\bibitem[Reed and Ghahramani(2013)]{reed13}
+C.~Reed and Z.~Ghahramani.
+\newblock Scaling the indian buffet process via submodular maximization.
+\newblock In \emph{ICML}, 2013.
 
 \bibitem[Ozsu(2007)]{Ozsu07}
 M.~Tamer Ozsu.
