@@ -21,6 +21,8 @@
 \usepackage{thm-restate}
 
 
+\usepackage{tikz}
+
 \usepackage{multirow}
 
 % For algorithms
@@ -701,9 +703,34 @@ Crucially, having a small number of deferred proposals, leaving the server to ma
 
 
 
-
-
-
+\begin{figure}[ht]
+  \centering
+  \begin{tabular}{cccc}
+    \begin{subfigure}[h]{0.30\textwidth}
+      \centering
+      \includegraphics[width=130pt]{images/probvec_seq.pdf}
+      \label{fig:probvecseq}
+      \caption{\footnotesize\seqalg{}}
+    \end{subfigure} &
+    \begin{subfigure}[h]{0.30\textwidth}
+      \centering
+      \includegraphics[width=130pt]{images/probvec_CF.pdf}
+      \label{fig:probveccf}
+      \caption{\footnotesize\hogwild{}}
+    \end{subfigure} &
+    \begin{subfigure}[h]{0.30\textwidth}
+      \centering
+      \includegraphics[width=130pt]{images/probvec_CC.pdf}
+      \label{fig:probveccc}
+      \caption{\footnotesize\occ{}}
+    \end{subfigure} 
+  \end{tabular}
+  \caption{\footnotesize Illustration of algorithms.
+  \seqalg{} computes a threshold based on the true values $\Delta_+$, $\Delta_-$, and chooses an action based by comparing a uniform random $u_i$ against the threshold.
+  \hogwild{} approximates the threshold based on stale $\hat{A}$, $\hat{B}$, possibly choosing the wrong action.
+  \occ{} computes two thresholds based on the bounds on $A$, $B$, which defines an uncertainty region where it is not possible to choose the correct action locally.
+  }
+\end{figure}
 
 
 \section{Coordination Free Double Greedy Algorithm \label{sec:alghogwild}}
