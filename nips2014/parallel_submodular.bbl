@@ -150,13 +150,6 @@ Paolo Boldi, Bruno Codenotti, Massimo Santini, and Sebastiano Vigna.
 \newblock \emph{Software: Practice \& Experience}, 34\penalty0 (8):\penalty0
   711--726, 2004.
 
-\bibitem[Pan et~al.(2013)Pan, Gonzalez, Jegelka, Broderick, and
-  Jordan]{pan2013}
-Xinghao Pan, Joseph~E Gonzalez, Stefanie Jegelka, Tamara Broderick, and Michael
-  Jordan.
-\newblock Optimistic concurrency control for distributed unsupervised learning.
-\newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
-
 \bibitem[Recht et~al.(2011)Recht, Re, Wright, and Niu]{Recht11}
 Benjamin Recht, Christopher Re, Stephen~J. Wright, and Feng Niu.
 \newblock Hogwild: A lock-free approach to parallelizing stochastic gradient
@@ -184,6 +177,13 @@ Qirong Ho, James Cipar, Henggang Cui, Seunghak Lee, Jin~Kyu Kim, Phillip~B.
   Gibbons, Garth~A Gibson, Greg Ganger, and Eric Xing.
 \newblock More effective distributed ml via a stale synchronous parallel
   parameter server.
+\newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
+
+\bibitem[Pan et~al.(2013)Pan, Gonzalez, Jegelka, Broderick, and
+  Jordan]{pan2013}
+Xinghao Pan, Joseph~E Gonzalez, Stefanie Jegelka, Tamara Broderick, and Michael
+  Jordan.
+\newblock Optimistic concurrency control for distributed unsupervised learning.
 \newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
 
 \end{thebibliography}

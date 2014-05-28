@@ -1162,9 +1162,11 @@ On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but
 
 
 \section{Related Work \label{sec:related}}
-\textbf{Similar approach, different problem: } OCC DP-means \cite{pan2013}; Hogwild SGD \cite{Recht11}; Coordination-free LDA \cite{Ahmed12} / parameter servers \cite{li2013, ho2013}
-
-\textbf{Similar problem, different approach: } distributed greedy submodular maximization for monotone functions \cite{Mirzasoleiman2013}
+\textbf{Similar approach: }
+Coordination-free solutions have been proposed for stochastic gradient descent \cite{Recht11} and collapsed Gibbs sampling \cite{Ahmed12}.
+More generally, parameter servers \cite{li2013, ho2013} apply the \hogwildshort{} approach to larger classes of problems.
+\cite{pan2013} applied concurrency control to parallelize some unsupervised learning algorithms.
+\textbf{Similar problem: } \cite{Mirzasoleiman2013} explored distributed greedy submodular maximization, but only applied to monotone functions.
 
 
 
