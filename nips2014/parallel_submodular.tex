@@ -932,7 +932,7 @@ Assuming a bounded delay $\tau$ and non-overlapping sets $S_l$'s, the expected \
 \section{Evaluation \label{sec:evaluation}}
 
 We implemented the parallel and sequential double greedy algorithms in Java / Scala.
-Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16 threads, for 10 iterations.
+Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16 threads, for 10 repetitions.
 
 We measured the runtime and speedup (ratio of runtime on 1 thread to runtime on $p$ threads).
 For \hogwild{}, we measured $F(A_{\hogwildshort})-F(A_{\seqalgshort})$, the difference between the objective value on the sets returned by \hogwild{} and \seqalg{}.
@@ -1040,7 +1040,7 @@ This causes \hogwild{} to make more mistakes, and \occ{} to defer more proposals
 % Secondly, when faced with an adversarial ordering, the partitioning scheme allows big jumps / re-orderings, which reduces the number of validations and \textit{increases} the objective value of both parallel algorithms.}
 \footnote{
 We point out by using a partitioning scheme, it is possible to avoid the problems caused by the adversarial ordering, and to improve scalability.
-Nevertheless, we present results that do use the partitioning scheme, so as to better highlight the differences between the two parallel algorithms.
+Nevertheless, we present results that do \emph{not} use the partitioning scheme, so as to better highlight the differences between the two parallel algorithms.
 }
 
 As \figref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually deferring $>90\%$ of elements.
@@ -1095,7 +1095,7 @@ The adversarial ordering forces more concurrent atomic updates, and hence, \hogw
 
 Conclusion: \xinghao{link back to intro, motivation}; we present two approaches to parallelizing unconstrained submodular maximization, which allows one to choose between speed and tight approximation guarantees.
 
-Future work: constrained maximization, minimization; monotone maximization using lazy greedy; distributed setting, where communication costs and delays are higher, and function evaluations are challenging.
+Future work: interpolate between \occ{} and \hogwild{}; constrained maximization, minimization; monotone maximization using lazy greedy; distributed setting, where communication costs and delays are higher, and function evaluations are challenging.
 
 
 {\footnotesize
