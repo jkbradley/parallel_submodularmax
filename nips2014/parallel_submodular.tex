@@ -310,7 +310,7 @@ In this work, we propose two methods to parallelize the double-greedy algorithm.
 % % between those theoretical benefits and scalable computing.
 % We propose and analyze two parallel double greedy algorithms.
 The first, \emph{coordination-free} approach emphasizes speed at the cost of a weaker approximation guarantee.
-The second, \emph{concurrency control} approach guarantees the tight 1/2-approximation, at the quantifiable cost of additional coordination and reduced parallelism.
+The second, \emph{concurrency control} approach guarantees a tight 1/2-approximation, at the quantifiable cost of additional coordination and reduced parallelism.
 As a consequence we explore the trade-off space between guaranteed performance and objective optimality.
 % We bound both the weaker approximation factor and the reduction in parallelism.
 We implement and evaluate both algorithms on multi-core hardware and billion edge graphs, demonstrating both the scalability and tradeoffs of each approach.
@@ -337,20 +337,20 @@ We implement and evaluate both algorithms on multi-core hardware and billion edg
 
 
 
-Many important problems including sensor placement \cite{krauseGuestrin11}, image co-segmentation \cite{kim11}, MAP inference in the determinantal point processes \cite{gillenwater12}, influence maximization \cite{kkt03}, and document summarization \cite{lin11} may be expressed as the maximization of a submodular functions.
+Many important problems including sensor placement \cite{krauseGuestrin11}, image co-segmentation \cite{kim11}, MAP inference for determinantal point processes \cite{gillenwater12}, influence maximization \cite{kkt03}, and document summarization \cite{lin11} may be expressed as the maximization of a submodular function.
 The submodular formulation enables the use of targeted algorithms \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution.
 For several maximization problems of \emph{monotone} submodular functions (satisfying $F(A) \leq F(B)$ for all $A \subseteq B$), a simple greedy algorithm \cite{nemhauser1978} achieves the optimal approximation factor of $1-\frac{1}{e}$.
 The optimal result for the wider, important class of \emph{non-monotone} functions  -- an approximation guarantee of $1/2$ --  is much more recent, and achieved by a \emph{double greedy} algorithm by \citet{buchbinder2012}.
 
 
-While these algorithms are both theoretically optimal and perform well in practice, their design is inherently serial limiting their scalability to large problem instances and advances in parallel hardware.
+While these algorithms are both theoretically optimal and perform well in practice, their design is inherently serial, limiting their scalability to large problem instances and advances in parallel hardware.
 % Increasingly often, real-world applications demand
 % % one wishes
 % to solve the above-mentioned problems at very large scale.
 This limitation raises the question of parallel algorithms for submodular maximization that ideally preserve the theoretical bounds, or weaken them gracefully, in a quantifiable manner.
 
 
-In this paper, we study the parallelization of greedy algorithms, in particular the double greedy algorithm from the perspective of \emph{parallel transaction processing systems}.
+In this paper, we study the parallelization of greedy algorithms, in particular the double greedy algorithm, from the perspective of \emph{parallel transaction processing systems}.
 This alternative perspective allows us to apply advances in database research ranging from fast coordination free approaches with limited guarantees to sophisticated concurrency control techniques which ensure a direct correspondence between parallel and serial executions at the expense of increased coordination. % cost of slightly reduced performance.
 
 
@@ -369,11 +369,11 @@ The primary contributions of this paper are:
 \end{enumerate}
 
 The rest of the paper is organized as follows.
-\secref{sec:submodularmax} discusses the problem of subdmoular maximization and introduces the double greedy algorithm.
+\secref{sec:submodularmax} discusses the problem of submodular maximization and introduces the double greedy algorithm.
 \secref{sec:concurrencycontrol} provides background on concurrency control mechanisms.
-We describe and provide intuition for our \hogwild{} and \occ{} algorithms in \secref{sec:alghogwild} and \secref{sec:algocc}.
-\secref{sec:analysis} analyzes the parallel algorithms.
-Both algorithms are evaluated in \secref{sec:evaluation}, and we conclude with related work and discussions in \secref{sec:related} and \secref{sec:discussions}.
+We describe and provide intuition for our \hogwild{} and \occ{} algorithms in \secref{sec:alghogwild} and \secref{sec:algocc}, and then analyze the algorithms both theoretically (\secref{sec:analysis}) and empirically (\secref{sec:evaluation}).
+%\secref{sec:analysis} analyzes the parallel algorithms.
+%Both algorithms are evaluated in \secref{sec:evaluation}, and we conclude with related work and discussions in \secref{sec:related} and \secref{sec:discussions}.
 
 
 
@@ -400,10 +400,12 @@ While those algorithms confer strong guarantees and tend to work very well in pr
 %
 Recent work has addressed faster \cite{badan14,wei14} and parallel \cite{Mirzasoleiman2013,kumar13} versions of the greedy algorithm by \citet{nemhauser1978} for maximizing \emph{monotone} submodular functions that satisfy $F(A) \leq F(B)$ for any $A \subseteq B \subseteq V$.
 However, many important applications in machine learning lead to \emph{non-monotone} submodular functions.
-For example, graphical model inference \cite{gillenwater12,reed13} and feature selection with a modular cost function \joey{Is there a better example or at least a citation?} (\eg functions of the form $F(S) = G(S) - \lambda M(S)$, where $G(S)$ is monotone submodular and $M(S)$ is a linear (modular) cost function) require maximizing non-monotone submodular functions.
+For example, graphical model inference \cite{gillenwater12,reed13}, or trading off any submodular gain maximization with costs (functions of the form $F(S) = G(S) - \lambda M(S)$, where $G(S)$ is monotone submodular and $M(S)$ a linear (modular) cost function), such as for utility-privacy tradeoffs \cite{krause10priv}, 
+%and feature selection with a modular cost function \joey{Is there a better example or at least a citation?} 
+ require maximizing non-monotone submodular functions.
 % and when trading off gains with (linear) cost functions (functions of the form $F(S) = G(S) + \lambda M(S)$, where $G(S)$ is monotone submodular and $M(S)$ is a linear (modular) cost function), we aim to maximize a \emph{non-monotone} submodular function.
-For non-monotone functions, the simple greedy algorithm in \cite{nemhauser1978} can perform arbitrarily poorly (see the Appendix for an example).
-Intuitively, the introduction of additional elements to monotone submodular functions never decreases the objective while introducing elements to non-monotone submodular functions can \emph{decrease} the objective to its minimum.
+For non-monotone functions, the simple greedy algorithm in \cite{nemhauser1978} can perform arbitrarily poorly (see Appendix~\ref{app:greedyfail} for an example).
+Intuitively, the introduction of additional elements with monotone submodular functions never decreases the objective while introducing elements with non-monotone submodular functions can \emph{decrease} the objective to its minimum.
 % Intuitively, for monotone functions including more elements eventually neither helps nor hurts, while for non-monotone functions it can hurt to the extent of reducing the function value back to zero.
 For non-monotone functions, \citet{buchbinder2012} recently proposed an optimal double greedy algorithm that works well in a serial setting. In this paper, we study parallelizations of this algorithm.
 
@@ -415,7 +417,7 @@ Initially, $A^0 = \emptyset$ and $B^0 = V$.
 In iteration $i$, the set $A^i$ contains the items selected before item/iteration $i$, and $B^i$ contains $A^i$ and the items that are so far undecided.
 The algorithm sequentially passes through the items in $V$ and determines online whether to keep item $i$ (add to $A^i$) or discard it (remove from $B^i$).
 The decision depends on the gain of $i$ with respect to $A^i$, and the gain of removing $i$ from $B^i$.
-If the submodular function is monotone, then the double greedy algorithm essentially becomes a randomized version of the well-known greedy algorithm for monotone functions \citep{nemhauser1978}.
+% If the submodular function is monotone, then the double greedy algorithm essentially becomes a randomized version of the well-known greedy algorithm for monotone functions \citep{nemhauser1978}.
 %Describe the double greedy algorithm:
 %The sequential double greedy \cite{buchbinder2012} algorithm monotonically grows $A^i$ and shrinks $B^i$.
 
@@ -1221,7 +1223,7 @@ Future work: interpolate between \occ{} and \hogwild{}; constrained maximization
 
 \newpage\input{exptresults}
 
-
+\newpage\input{examples}
 
 \end{document}
 
