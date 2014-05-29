@@ -802,15 +802,17 @@ In using these weak guarantees, \hogwild{} is overly optimistically assuming tha
 % Thus, to understand hogwild, we analyze the approximate algorithm.
 % The concept of CC buys us two things: firstly, to extend sequential algorithms into parallel ones; secondly, to project a parallel algorithm into a sequential algorithm, which aids our understanding and analysis.}
 
-\algref{alg:hogwild} is the coordination free parallel double greedy algorithm.\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}. Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; \hogwild{} can also be extended to the multilinear version of \cite{buchbinder2012}.}
-\hogwild{} closely resembles the serial \seqalg{}, but the elements $e \in V$ are no longer processed in a fixed order.  Thus, the sets $A, B$ are replaced by potentially stale ``bounds'' $\hat{A}, \hat{B}$, where $\hat{A}$ is a subset of the ``true'' $A$ and $\hat{B}$ is a superset of the ``actual'' $B$ on each iteration.
+\algref{alg:hogwild} is the coordination free parallel double greedy algorithm.\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}.
+Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; \hogwild{} can also be extended to the multilinear version of \cite{buchbinder2012}.}
+\hogwild{} closely resembles the serial \seqalg{}, but the elements $e \in V$ are no longer processed in a fixed order.
+Thus, the sets $A, B$ are replaced by potentially stale local estimates (bounds) $\hat{A}, \hat{B}$, where $\hat{A}$ is a subset of the true $A$ and $\hat{B}$ is a superset of the actual $B$ on each iteration.
 These bounding sets allow us to compute bounds $\Delta_{+}^{\max}, \Delta_{-}^{\max}$ which approximate $\Delta_{+}, \Delta_{-}$ from the serial algorithm.
 We now formalize this idea.
 
-We order the elements $e \in V$ according to the commit time, i.e. when \algref{alg:hogwild} line \ref{alg:hogwild:time} is executed.
+To analyze the \hogwild{} algorithm we order the elements $e \in V$ according to the commit time (\eg when \algref{alg:hogwild} line \ref{alg:hogwild:time} is executed).
 Let $\iota(e)$ be the position of $e$ in this total ordering on elements.
-This ordering allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
-These ``true'' sets $A^i, B^i$ provide a serialization against which we can compare \hogwild{}; in this serialization, \algref{alg:submax} computes:
+This ordering allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$ where $A$ is the final returned set, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
+The sets $A^i, B^i$ provide a serialization against which we can compare \hogwild{}; in this serialization, \algref{alg:submax} computes:
 $\Delta_{+}       (e) = F(A^{\iota(e)-1}\cup i) - F(A^{\iota(e)-1})$
 and
 $\Delta_{-}       (e) = F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1})$.
@@ -867,12 +869,12 @@ We analyze this in \secref{sec:analysis:hogwild}.
 \section{Concurrency Control for Double Greedy Algorithm \label{sec:algocc}}
 % \xinghao{Provide more intuition for what \occ{} is doing.}
 
-\occ{}, the `concurrency-control double greedy' algorithm, is presented in \algref{alg:occ}, and closely follows the meta-algorithm of \algref{alg:generalparallel} and \algref{alg:generalparallel:commit}.
+The concurrency-control based double greedy algorithm, \occ{}, is presented in \algref{alg:occ}, and closely follows the meta-algorithm of \algref{alg:generalparallel} and \algref{alg:generalparallel:commit}.
 Unlike in \hogwild{}, the concurrency control mechanisms of \occ{} ensures that when concurrent transactions are serialized when they not indpendent.
 
 Serializability is achieved by maintaining sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$ at commit time.
-Each thread can determine locally if a decision to include / exclude an element can be taken safely.
-Otherwise, the proposal is deferred to the commit process (\algref{alg:occcommit}) which waits until it is certain about $A$, $B$ before proceeding.
+Each thread can determine locally if a decision to include or exclude an element can be taken safely.
+Otherwise, the proposal is deferred to the commit process (\algref{alg:occcommit}) which waits until it is certain about $A$ and $B$ before proceeding.
 
 The commit order is given by $\iota(e)$, which is the value of $\iota$ at line \ref{alg:occ:time} of \algref{alg:occ}.
 We define $A^{\iota(e)-1}$, $B^{\iota(e)-1}$ as before with \hogwild{}.
@@ -888,7 +890,7 @@ we leave the full proof to Appendix \ref{app:algoproof}.
 Furthermore, since later transactions are blocked, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$ at commit.
 
 \begin{restatable}{lem}{lemoccdefer}\label{lem:occ:defer}
-In \occ{}, during the commit process for deferred element $e$, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
+In \occ{}, during the commit process for deferred element $e$, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$. \joey{what is a deferred element?}
 \end{restatable}
 
 % \algref{alg:occ} computes
@@ -899,13 +901,24 @@ In \occ{}, during the commit process for deferred element $e$, we have $\hat{A} 
 % & \Delta_-^{\max}(e) &= F(\hat{B}_e \backslash e) - F(\hat{B}).
 % \end{align*}
 
-\begin{cor}\label{cor:occ:delta_bound} Submodularity of $F$ implies that the $\Delta$'s computed by \occ{} satisfy: $\Delta_+^{\min}(e) \leq \Delta_+(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_+^{\max}(e)$, and $\Delta_-^{\min}(e) \leq \Delta_-(e) = \Delta_+^{\text{exact}}(e) \leq \Delta_-^{\max}(e)$.
+\joey{Since we don't seem to use the lemma perhaps we can move it to the proof and state the corollary as the key lemma?}
+
+\begin{cor}\label{cor:occ:delta_bound} Submodularity of $F$ implies that the $\Delta$'s computed by \occ{} satisfy $\Delta_+^{\min}(e) \leq \Delta_+(e) \leq \Delta_+^{\max}(e)$ and $\Delta_-^{\min}(e) \leq \Delta_-(e) \leq \Delta_-^{\max}(e)$.
+% \begin{align}
+% \Delta_+^{\min}(e) \leq \Delta_+(e)
+% % = \Delta_+^{\text{exact}}(e)
+% & \leq \Delta_+^{\max}(e) \\
+% \Delta_-^{\min}(e) \leq \Delta_-(e)
+% % = \Delta_+^{\text{exact}}(e)
+% & \leq \Delta_-^{\max}(e).
+% \end{align}
 \end{cor}
 
 % Like \hogwild{}, \occ{} can maintain statistics / sketches when dealing with functions of the form $F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$.
 % We leave this discussion to Appendix \ref{sec:sepsum}.
 
 
+\joey{What does this all mean?  Interpret the consequences of these results.}
 
 
 
@@ -925,9 +938,12 @@ In \occ{}, during the commit process for deferred element $e$, we have $\hat{A} 
 % We want to say that we have a choice between a slower but serially equivalent algorithm and a faster algorithm which is not serially equivalent.
 % Nevertheless, the slower algorithm is not too slow, and the approximation guarantee of the algorithm that is not serially equivalent is not too weak.}
 
-Our two algorithms appear to be diametrically opposed in their parallelization strategies.
-However, we show that \hogwild{} emphasizes speed but nevertheless suffers a bounded loss in its approximation.
-On the other hand, \occ{} is a scalable algorithm that guarantees the tight 1/2 approximation.
+Our two algorithms trade-off performance and strong approximation guarantees.
+The \hogwild{} algorithm emphasizes speed at the expense of the approximation objective.
+On the other hand, \occ{} emphasize the tight $1/2$-approximation at the expense of increased coordination.
+In this section we more precisely characterize the reduction in the approximation objective as well as the increased coordination.
+
+%is a scalable algorithm that guarantees the tight 1/2 approximation.
 
 
 \subsection{Approximation of \hogwild{} double greedy \label{sec:analysis:hogwild}}
