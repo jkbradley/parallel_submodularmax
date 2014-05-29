@@ -33,7 +33,7 @@ If $v_0$ is selected, nothing else will be added afterwards, since $[F(v_0,v_i) 
 If $v_0$ is not the first element, then any element before $v_0$ is added with probability $p(v_i) = 1-\epsilon$, and as soon as an element $v_i$ has been picked, $v_0$ will not be added any more. Hence, with high probability, this algorithm returns the optimal solution. The deterministic version surely does.
 
 
-\subsection{Coordination vs no coordination?}
+\subsection{Coordination vs no coordination}
 The following example illustrates the differences between coordination and no coordination.
 In this example, let $V$ be split into $m$ disjoint groups $G_j$ of equal size $k = |V|/m$, and let
 \begin{equation}
@@ -47,12 +47,18 @@ If the sequential double greedy algorithm has not picked an element from a group
   \label{eq:2}
   \frac{1 - 1/k}{1 - 1/k + 1/k} = 1 - 1/k.
 \end{equation}
-Once it has sampled an element from a group $G_j$, it does not pick any more elements from $G_j$, and therefore $|S \inter G_j| \leq 1$ for all $j$ and the set $S$ returned by the algorithm. The probability that $S$ does not contain any element from $G_j$ is $k^{-k}$ -- fairly low. Hence, with probability $1-m/k^k$ the algorithm returns the optimal solution.
+Once it has sampled an element from a group $G_j$, it does not pick any more elements from $G_j$, and therefore $|S \inter G_j| \leq 1$ for all $j$ and the set $S$ returned by the algorithm. The probability that $S$ does not contain any element from $G_j$ is $k^{-k}$ ---fairly low. Hence, with probability $1-m/k^k$ the algorithm returns the optimal solution.
 
 Without coordination, the outcome heavily depends on the order of the elements. For simplicity, assume that $k$ is a multiple of the number $q$ of processors (or $q$ is a multiple of $k$). 
-In the worst case, the elements are sorted by their groups and the members of each group are processed in parallel. With $q$ processors working in parallel, the first $q$ elements from a group $G$ (up to shifts) will be processed with a bound $\hat{A}$ that does not contain any element from $G$, and will each be selected with probability $1-1/k$. Hence, in expectation, $|S \inter G_j| = q(1-1/k)$ for all $j$. 
+In the worst case, the elements are sorted by their groups and the members of each group are processed in parallel. With $q$ processors working in parallel, the first $q$ elements from a group $G$ (up to shifts) will be processed with a bound $\hat{A}$ that does not contain any element from $G$, and will each be selected with probability $1-1/k$. Hence, in expectation, $|S \inter G_j| = \min\{q,k\}(1-1/k)$ for all $j$. 
 
-If $q > k$, then that means in expectation $k-1$ elements are selected, which corresponds to an approximation factor of
+If $q > k$, then in expectation $k-1$ elements from each group are selected, which corresponds to an approximation factor of
 \begin{align}
   \frac{m( 1 - \frac{k-1}{k})}{m(1-1/k)} = \frac{1}{k-1}.
 \end{align}
+If $k > q$, then in expectation we obtain an approximation factor of
+\begin{align}
+  \frac{m(1 - \frac{q(1-1/k)}{k})}{m(1-1/k)} = 1 - \frac{q}{k} + \frac{1}{k-1} %\leq 1 - \frac{q-1}{k-1},
+\end{align}
+which decreases linearly in $q$.
+If $q=k$, then the factor is $1/(q-1)$ instead of $1/2$.
