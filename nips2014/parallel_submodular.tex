@@ -400,8 +400,8 @@ While those algorithms confer strong guarantees and tend to work very well in pr
 %
 Recent work has addressed faster \cite{badan14,wei14} and parallel \cite{Mirzasoleiman2013,kumar13} versions of the greedy algorithm by \citet{nemhauser1978} for maximizing \emph{monotone} submodular functions that satisfy $F(A) \leq F(B)$ for any $A \subseteq B \subseteq V$.
 However, many important applications in machine learning lead to \emph{non-monotone} submodular functions.
-For example, graphical model inference \cite{gillenwater12,reed13}, or trading off any submodular gain maximization with costs (functions of the form $F(S) = G(S) - \lambda M(S)$, where $G(S)$ is monotone submodular and $M(S)$ a linear (modular) cost function), such as for utility-privacy tradeoffs \cite{krause10priv}, 
-%and feature selection with a modular cost function \joey{Is there a better example or at least a citation?} 
+For example, graphical model inference \cite{gillenwater12,reed13}, or trading off any submodular gain maximization with costs (functions of the form $F(S) = G(S) - \lambda M(S)$, where $G(S)$ is monotone submodular and $M(S)$ a linear (modular) cost function), such as for utility-privacy tradeoffs \cite{krause10priv},
+%and feature selection with a modular cost function \joey{Is there a better example or at least a citation?}
  require maximizing non-monotone submodular functions.
 % and when trading off gains with (linear) cost functions (functions of the form $F(S) = G(S) + \lambda M(S)$, where $G(S)$ is monotone submodular and $M(S)$ is a linear (modular) cost function), we aim to maximize a \emph{non-monotone} submodular function.
 For non-monotone functions, the simple greedy algorithm in \cite{nemhauser1978} can perform arbitrarily poorly (see Appendix~\ref{app:greedyfail} for an example).
@@ -435,7 +435,7 @@ In this paper we adopt a transactional view of the program state and explore par
 We recast the program state, the sets $A$ and $B$, as data, and the operations, adding elements to $A$ and removing elements from $B$, as transactions.
 More precisely we reformulate the double greedy algorithm (\algref{alg:submax}) as a series of \emph{exchangeable}, \emph{Read-Write} transactions of the form:
 \begin{equation}
-T_e(A,B) :=
+T_e(A,B) \triangleq
 \begin{cases}
    (A \union e, B) & \text{if } u_e \leq \frac{\hinge{\Delta_+(A,e)}}{ \hinge{\Delta_+(A,e)} + \hinge{\Delta_-(B,e)}}  \\
    (A, B \backslash e) & \text{otherwise. }
@@ -454,15 +454,22 @@ If we execute transactions $T_i$ and $T_j$, with $i \neq j$, in parallel we
 need a method to merge the resulting program states.
 In the context of the double greedy algorithm, we could define the parallel execution of two transactions as:
 \begin{equation}
-T_i(A,B) + T_j(A,B) = \left(T_i(A,B)_A \union T_j(A,B)_A,  \,\, T_i(A,B)_B  \inter T_j(A,B)_B \right).
+T_i(A,B) + T_j(A,B) \triangleq \left(T_i(A,B)_A \union T_j(A,B)_A,  \,\, T_i(A,B)_B  \inter T_j(A,B)_B \right).
 \label{eqn:merge}
 \end{equation}
 the union of the resulting $A$ and the intersection of the resulting $B$.
 While we can easily generalize \eqnref{eqn:merge} to many parallel transactions, we cannot always guarantee that the result will corresponds to a serial composition of transactions.
 As a consequence, we cannot directly apply the analysis of Buchbinder et al.~\cite{buchbinder2012} to derive strong approximation guarantees for the parallel execution.
 
-Fortunately, several decades of research~\citep{Ozsu07,kung1981:occ} in database systems have explored the design of efficient parallel transaction processing.
-These systems span a space ranging from extremely fast coordination free approaches which provide minimal guarantees on the composition of transactions to sophisticated concurrency control techniques which ensure a direct correspondence between parallel and serial executions at the cost of slightly reduced performance.
+Fortunately, several decades of research~\citep{Ozsu07,kung1981:occ} in database systems have explored efficient parallel transaction processing.
+In this paper we adopt a bounded optimistic approach to parallel transaction processing in which parallel transactions are constructed under bounds on the possible program state.
+If the transaction could violate the bound then it is processed serially on the server.
+By adjusting the definition of the bound we can span a space of coordination free to serializable executions.
+
+
+
+
+% These systems span a space ranging from extremely fast coordination free approaches which provide minimal guarantees on the composition of transactions to sophisticated concurrency control techniques which ensure a direct correspondence between parallel and serial executions at the cost of slightly reduced performance.
 
 
 
@@ -536,7 +543,7 @@ These systems span a space ranging from extremely fast coordination free approac
 
 
 % \xinghao{Casting our meta-algorithm as a generalization of (pessimiistic) concurrency approach.}
-In \figref{fig:transactionmodel} we describe a bounded optimistic pattern for concurrency control.
+In \figref{fig:transactionmodel} we describe the bounded optimistic transaction pattern.
 The clients (\algref{alg:generalparallel}), in parallel, construct and commit transactions under bounded assumptions about the program state $\mathfrak{S}$ (\ie the sets $A$ and $B$).
 Transactions are constructed by requesting the latest bound $\mathfrak{g}_e$ on $\mathfrak{S}$
 % the program state
@@ -569,7 +576,7 @@ Moreover, the server is responsible for deriving bounds, processing transactions
 This model achieves a high degree of parallelism when the cost of constructing the transaction dominates the cost of applying the transaction.
 For example, in the case of submodular maximization, the cost of constructing the transaction depends on evaluating the marginal gains with respect to changes in $A$ and $B$ while the cost of applying the transaction reduces to setting a bit.
 % Thus, distributing the work of proposals over multiple threads allows database systems to achieve parallelism, even with the strongly serial commit process on the server.
-It is also essential that the only a few transactions fail at the client.
+It is also essential that only a few transactions fail at the client.
 Indeed, the analysis of these systems focuses on ensuring that the majority of the transactions succeed.
 %Crucially, having a small number of deferred proposals, leaving the server to mainly perform the lightweight advancement of program state.
 
@@ -780,9 +787,9 @@ Indeed, the analysis of these systems focuses on ensuring that the majority of t
     \end{subfigure}
   \end{tabular}
   \caption{\footnotesize Illustration of algorithms.
-  \seqalg{} computes a threshold based on the true values $\Delta_+$, $\Delta_-$, and chooses an action based by comparing a uniform random $u_i$ against the threshold.
-  \hogwild{} approximates the threshold based on stale $\hat{A}$, $\hat{B}$, possibly choosing the wrong action.
-  \occ{} computes two thresholds based on the bounds on $A$, $B$, which defines an uncertainty region where it is not possible to choose the correct action locally.
+  \textbf{(a)} \seqalg{} computes a threshold based on the true values $\Delta_+$, $\Delta_-$, and chooses an action based by comparing a uniform random $u_i$ against the threshold.
+  \textbf{(b)} \hogwild{} approximates the threshold based on stale $\hat{A}$, $\hat{B}$, possibly choosing the wrong action.
+  \textbf{(c)} \occ{} computes two thresholds based on the bounds on $A$, $B$, which defines an uncertainty region where it is not possible to choose the correct action locally.  If the random value $u_e$ falls inside the uncertainty interval than the transaction FAILS and must be recomputed serially by the server otherwise the transaction holds under all possible global states. % at the time the transaction will be processed.
   }
 \end{figure}
 
