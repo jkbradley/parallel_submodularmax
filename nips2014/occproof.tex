@@ -1,4 +1,4 @@
-\section{Upper bound on expected number of elements sent for validation}
+\section{Upper bound on expected number of failed transactions}
 \label{app:proofocc}
 Let $N$ be the number of elements, i.e. the cardinality of the ground set.
 Let $C_i = (A^{i-1} \backslash \hat{A}_i) \cup (\hat{B}_i \backslash B^{i-1})$.
@@ -8,12 +8,12 @@ We call element $i$ \textit{dependent} on $i'$ if $\exists A, F(A\cup i)-F(A) \n
 For example, for the graph cut problem, every vertex is dependent on its neighbors; for the separable sums problem, $i$ is dependent on $\{i': \exists S_l, i\in S_l, i'\in S_l\}$.
 
 Let $n_i$ be the number of elements that $i$ is dependent on.
-Now, we note that if $C_i$ does not contain any elements on which $i$ is dependent, then $\Delta_{+}^\text{max}(i) = \Delta_{+}(i) = \Delta_{+}^\text{min}(i)$ and $\Delta_{-}^\text{max}(i) = \Delta_{-}(i) = \Delta_{-}^\text{min}(i)$, so $i$ will not be validated.
-Conversely, if $i$ is validated, there must be some element $i'\in C_i$ such that $i$ is dependent on $i'$.
+Now, we note that if $C_i$ does not contain any elements on which $i$ is dependent, then $\Delta_{+}^\text{max}(i) = \Delta_{+}(i) = \Delta_{+}^\text{min}(i)$ and $\Delta_{-}^\text{max}(i) = \Delta_{-}(i) = \Delta_{-}^\text{min}(i)$, so $i$ will not fail.
+Conversely, if $i$ fails, there must be some element $i'\in C_i$ such that $i$ is dependent on $i'$.
 
 \begin{align*}
-E(\text{number of validated elements})
-=& \sum_i P(i \text{ validated})\\
+E(\text{number of failed transactions})
+=& \sum_i P(i \text{ fails})\\
 \leq& \sum_i P(\exists i'\in C_i, i \text{ depends on } i')\\
 \leq& \sum_i E\left[\sum_{i'\in C_i} 1\{i \text{ depends on } i'\}\right]\\
 \leq& \sum_i \frac{\tau n_i}{N}
@@ -26,7 +26,7 @@ Note that the bound established above is generic to functions $F$, and additiona
 
 
 \subsection{Upper bound for max graph cut}
-By applying the above generic bound, we see that the number of validated elements for max graph cut is upper bounded by $\frac{\tau}{N}\sum_i n_i = \tau \frac{2\#\text{edges}}{N}$.
+By applying the above generic bound, we see that the number of failed transactions for max graph cut is upper bounded by $\frac{\tau}{N}\sum_i n_i = \tau \frac{2\#\text{edges}}{N}$.
 
 
 % \begin{comment}
@@ -43,8 +43,8 @@ By applying the above generic bound, we see that the number of validated element
 
 % Thus,
 % \begin{align*}
-% &E(\text{number of validated elements})\\
-% =& \sum_i P(i \text{ validated})\\
+% &E(\text{number of failed transactions})\\
+% =& \sum_i P(i \text{ fails})\\
 % =& \sum_i P\left(\frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}} \leq u_i \leq \frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}}\right)\\
 % =& \sum_i\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}}\\
 % \leq& \sum_i\frac{\Delta_+^{\min}+\rho_i}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \rho_i + \Delta_-^{\min}}\\
@@ -97,7 +97,7 @@ By applying the above generic bound, we see that the number of validated element
 
 % Thus,
 % \begin{align*}
-% E(\text{\# of validated elements})
+% E(\text{\# of failed transactions})
 % = \sum_i\frac{\Delta_+^{\max}}{\Delta_+^{\max} + \Delta_-^{\min}} - \frac{\Delta_+^{\min}}{\Delta_+^{\min} + \Delta_-^{\max}}
 % \leq \sum_i \min\left(1,\frac{ w_i(C^{ji})}{w_i(D^i)}\right)
 % \end{align*}
@@ -115,7 +115,7 @@ By applying the above generic bound, we see that the number of validated element
 
 \subsection{Upper bound for set cover}
 
-For the set cover problem, we can provide a tighter bound on the number of validated items.
+For the set cover problem, we can provide a tighter bound on the number of failed items.
 We make the same assumptions as before in the \hogwild{} analysis, i.e. the sets $S_l$ form a partition of $V$, there is a bounded delay $\tau$.
 
 Observe that for any $e\in S_l$, $\Delta_-^{\min}(e) \neq \Delta_-^{\max}(e)$ if $\hat{B}_e\backslash e \cap S_l \neq\emptyset$ and $\tilde{B}_e\backslash e \cap S_l = \emptyset$.
@@ -144,18 +144,18 @@ The above expression is therefore
 &= \lambda^{(n_l-\tau)_+} \frac{n_l}{N} \tau.
 \end{align*}
 
-Now we consider any element $e \in S_l$ with $\pi(e) < \pi(e_l^{n_l}) - \tau$ that is validated.
+Now we consider any element $e \in S_l$ with $\pi(e) < \pi(e_l^{n_l}) - \tau$ that fails.
 (Note that $e_l^{n_l} \in \hat{B}_e$ and $\tilde{B}_e$, so $\Delta_-^{\min}(e) = \Delta_-^{\max}(e) = \lambda$.)
-It must be the case that $\hat{A}_e \cap S_l = \emptyset$, for otherwise $\Delta_+^{\min}(e) = \Delta_+^{\max}(e) = -\lambda$ and we do not need to validate.
+It must be the case that $\hat{A}_e \cap S_l = \emptyset$, for otherwise $\Delta_+^{\min}(e) = \Delta_+^{\max}(e) = -\lambda$ and it does not fail.
 This implies that $\Delta_+^{\max}(e) = 1-\lambda \geq u_i$.
-At validation, if $A^{\iota(e)-1} \cap S_l = \emptyset$, we accept $e$ into $A$.
+At commit, if $A^{\iota(e)-1} \cap S_l = \emptyset$, we accept $e$ into $A$.
 Otherwise, $A^{\iota(e)-1} \cap S_l \neq \emptyset$, which implies that some other element $e' \in S_l$ has been accepted.
-Thus, we conclude that every element $e\in S_l$ that is validated must be within $\tau$ of the first accepted element $e_l^\eta \ in S_l$.
+Thus, we conclude that every element $e\in S_l$ that fails must be within $\tau$ of the first accepted element $e_l^\eta \ in S_l$.
 The expected number of such elements is exactly as we computed in the \hogwild analysis: $\frac{n_l}{N}\tau$.
 
-Hence, the expected number of elements that we need to validate is upper bounded as
+Hence, the expected number of elements that fails is upper bounded as
 \begin{align*}
-\mathbb{E}[\#\text{validated}]
+\mathbb{E}[\#\text{failed transactions}]
 &\leq \sum_l (1+\lambda^{(n_l-\tau)_+}) \frac{n_l}{N} \tau\\
 &\leq \sum_l 2\frac{n_l}{N} \tau\\
 &= 2\tau.

@@ -769,19 +769,19 @@ Indeed, the analysis of these systems focuses on ensuring that the majority of t
   \begin{tabular}{cccc}
     \begin{subfigure}[h]{0.30\textwidth}
       \centering
-      \includegraphics[width=130pt]{images/probvec_seq.pdf}
+      \includegraphics[width=100pt]{images/probvec_seq.pdf}
       \label{fig:probvecseq}
       \caption{\footnotesize\seqalg{}}
     \end{subfigure} &
     \begin{subfigure}[h]{0.30\textwidth}
       \centering
-      \includegraphics[width=130pt]{images/probvec_CF.pdf}
+      \includegraphics[width=100pt]{images/probvec_CF.pdf}
       \label{fig:probveccf}
       \caption{\footnotesize\hogwild{}}
     \end{subfigure} &
     \begin{subfigure}[h]{0.30\textwidth}
       \centering
-      \includegraphics[width=130pt]{images/probvec_CC.pdf}
+      \includegraphics[width=100pt]{images/probvec_CC.pdf}
       \label{fig:probveccc}
       \caption{\footnotesize\occ{}}
     \end{subfigure}
@@ -890,7 +890,7 @@ we leave the full proof to Appendix \ref{app:algoproof}.
 Furthermore, since later transactions are blocked, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$ at commit.
 
 \begin{restatable}{lem}{lemoccdefer}\label{lem:occ:defer}
-In \occ{}, during the commit process for deferred element $e$, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$. \joey{what is a deferred element?}
+In \occ{}, during the commit process, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{restatable}
 
 % \algref{alg:occ} computes
@@ -901,9 +901,7 @@ In \occ{}, during the commit process for deferred element $e$, we have $\hat{A} 
 % & \Delta_-^{\max}(e) &= F(\hat{B}_e \backslash e) - F(\hat{B}).
 % \end{align*}
 
-\joey{Since we don't seem to use the lemma perhaps we can move it to the proof and state the corollary as the key lemma?}
-
-\begin{cor}\label{cor:occ:delta_bound} Submodularity of $F$ implies that the $\Delta$'s computed by \occ{} satisfy $\Delta_+^{\min}(e) \leq \Delta_+(e) \leq \Delta_+^{\max}(e)$ and $\Delta_-^{\min}(e) \leq \Delta_-(e) \leq \Delta_-^{\max}(e)$.
+\begin{cor}\label{cor:occ:delta_bound} Submodularity of $F$ implies that the $\Delta$'s computed by \occ{} satisfy $\Delta_+^{\min}(e) \leq \Delta_+^{\text{exact}}(e) = \Delta_+(e) \leq \Delta_+^{\max}(e)$ and $\Delta_-^{\min}(e) \leq \Delta_-^{\text{exact}}(e) = \Delta_-(e) \leq \Delta_-^{\max}(e)$.
 % \begin{align}
 % \Delta_+^{\min}(e) \leq \Delta_+(e)
 % % = \Delta_+^{\text{exact}}(e)
@@ -914,11 +912,13 @@ In \occ{}, during the commit process for deferred element $e$, we have $\hat{A} 
 % \end{align}
 \end{cor}
 
+By using these bounds, \occ{} can determine when it is safe to construct the transaction locally.
+For failed transactions, the server constructs the correct transaction since it has the true program state.
+
 % Like \hogwild{}, \occ{} can maintain statistics / sketches when dealing with functions of the form $F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$.
 % We leave this discussion to Appendix \ref{sec:sepsum}.
 
 
-\joey{What does this all mean?  Interpret the consequences of these results.}
 
 
 
@@ -1004,18 +1004,18 @@ where $A_{\occshort{}}$ is the output of the algorithm, and $F^*$ is the optimal
 
 
 \subsection{Scalability of \occ{}}
-Whenever an element deferred for computation the server, it needs to wait for all earlier elements to be processed, and the server is blocked from committing all later elements.
-Each deferment effectively constitutes a barrier to the parallel processing.
-Hence, the scalability of \occ{} is dependent on the number of deferments.
-Nevertheless, we show for a couple of example problems that the number of deferments can be bounded.
+Whenever a transaction is reconstructed on the server, it needs to wait for all earlier elements to be processed, and the server is blocked from committing all later elements.
+Each failed transaction effectively constitutes a barrier to the parallel processing.
+Hence, the scalability of \occ{} is dependent on the number of failed transactions.
+Nevertheless, we bound this number for a couple of example problems.
 Full details of the bounds are given in Appendix \ref{app:proofocc}.
 
 \textbf{Example: max graph cut.}
 Assume that there is a bounded delay $\tau$.
-The expected \emph{fraction} of deferred elements is upper bounded by $\tau \frac{2\#edges}{N^2}$.
+The expected \emph{fraction} of failed transactions is upper bounded by $\tau \frac{2\#edges}{N^2}$.
 
 \textbf{Example: set cover.}
-Assuming a bounded delay $\tau$ and non-overlapping sets $S_l$'s, the expected \emph{number} of deferred elements is upper bounded by $2\tau$.
+Assuming a bounded delay $\tau$ and non-overlapping sets $S_l$'s, the expected \emph{number} of failed transactions is upper bounded by $2\tau$.
 
 
 
@@ -1041,7 +1041,7 @@ Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16
 We measured the runtime and speedup (ratio of runtime on 1 thread to runtime on $p$ threads).
 For \hogwild{}, we measured $F(A_{\hogwildshort})-F(A_{\seqalgshort})$, the difference between the objective value on the sets returned by \hogwild{} and \seqalg{}.
 We verified the correctness of \occ{} by comparing the output of \occ{} with \seqalg{}.
-We also the fraction of elements deferred by \occ{}.
+We also the fraction of transactions that fail in \occ{}.
 
 %\begin{table}[h]
 %\centering
@@ -1124,7 +1124,7 @@ To reduce this dependency, we randomly permuted the ordering of vertices.
   \figref{fig:relruntime} -- runtime of the parallel algorithms as a ratio to that of the sequential algorithm. Each curve shows the runtime of a parallel algorithm on a particular graph for a particular function $F$.
   \figref{fig:speedup_maxgraphcut}, \ref{fig:speedup_setcover} -- speedup (ratio of runtime on one thread to that on $p$ threads).
   \figref{fig:difffa_maxgraphcut}, \ref{fig:difffa_setcover} -- \% difference between objective values of \seqalg{} and \hogwild{}, i.e. $[F(A_{\hogwildshort{}}) / F(A_{\seqalgshort{}}) - 1] \times 100\%$.
-  \figref{fig:validated_maxgraphcut} -- percentage of elements deferred by \occ{} on the max graph cut problem.
+  \figref{fig:validated_maxgraphcut} -- percentage of transactions that fail in \occ{} on the max graph cut problem.
   }
 \label{fig:results_quality}
 \end{figure}
@@ -1133,20 +1133,20 @@ To reduce this dependency, we randomly permuted the ordering of vertices.
 Due to space constraints, we only present part of our results in \figref{fig:results_quality}, deferring full results to Appendix \ref{app:exptresults}.
 \textbf{Runtime, Speedup:} Both parallel algorithms are faster than the sequential algorithm with three or more threads, and show good speedup properties as more threads are added ($\sim$ 10x or more for all graphs and both functions).
 \textbf{Objective value:} The objective value of \hogwild{} decreases with the number of threads, but differs from the sequential objective value by less than $0.01\%$.
-\textbf{Deferments:} \occ{} defers more elements as threads are added, but less than 0.015\% are deferred with 16 threads, which has negligible effect on the runtime / speedup.
+\textbf{Failed transactions:} \occ{} fails more transactions as threads are added, but even with 16 threads, less than 0.015\% transactions fail, which has negligible effect on the runtime / speedup.
 
 \subsection{Adversarial ordering}
 
 To highlight the differences in approaches between the two parallel algorithms, we conducted experiments on a ring Cayley graph on $\mathbb{Z}_{10^6}$ with generating set $\{\pm 1,\dots, \pm 1000\}$.
 The algorithms are presented with an adversarial ordering, without permutation, so vertices close in the ordering are adjacent to one another, and tend to be processed concurrently.
-This causes \hogwild{} to make more mistakes, and \occ{} to defer more proposals.
+This causes \hogwild{} to make more mistakes, and \occ{} fail more transactions.
 % \xinghao{These experiments were conducted by using an atomic integer to select elements to process. We could instead use a partitioning scheme, which has 2 advantages. Firstly, there is less coordination -- for \hogwild{}, we essentially have no coordination.
 % Secondly, when faced with an adversarial ordering, the partitioning scheme allows big jumps / re-orderings, which reduces the number of validations and \textit{increases} the objective value of both parallel algorithms.}
 \footnote{
 We point out by using a partitioning scheme, it is possible to avoid the problems caused by the adversarial ordering, and to improve scalability.
 Nevertheless, we present results that do \emph{not} use the partitioning scheme, so as to better highlight the differences between the two parallel algorithms.
 }
-As \figref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually deferring $>90\%$ of elements.
+As \figref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually failing $>90\%$ of transactions.
 On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwildshort{}})$ that is $20\%$ of $F(A_{\seqalgshort{}})$.
 % For the set cover problem, we maintain statistics that are updated atomically by both algorithms.
 % The adversarial ordering forces more concurrent atomic updates, and hence, \hogwild{} does not achieve good speedup.
