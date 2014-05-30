@@ -526,7 +526,7 @@ By adjusting the definition of the bound we can span a space of coordination fre
         \label{alg:generalparallel:commit}
         \WaitUntil $\forall j < i$, processed$(j) = true$\;
         \Atomically{
-        \If{$\partial_i =\text{Fail}$}{
+        \If{$\partial_i =\text{FAIL}$}{
           \tcp{Deferred proposal}
           $\partial_i$ = propose($e$, $\mathfrak{S}$)\;
         }
@@ -544,6 +544,7 @@ By adjusting the definition of the bound we can span a space of coordination fre
 
 % \xinghao{Casting our meta-algorithm as a generalization of (pessimiistic) concurrency approach.}
 In \figref{fig:transactionmodel} we describe the bounded optimistic transaction pattern.
+\xinghao{I think this pattern fits pessimistic better than optimistic, since we're obtaining / releasing guarantees, a la read/write locks in DBMSes.}
 The clients (\algref{alg:generalparallel}), in parallel, construct and commit transactions under bounded assumptions about the program state $\mathfrak{S}$ (\ie the sets $A$ and $B$).
 Transactions are constructed by requesting the latest bound $\mathfrak{g}_e$ on $\mathfrak{S}$
 % the program state
@@ -724,7 +725,7 @@ Indeed, the analysis of these systems focuses on ensuring that the majority of t
           result$~\leftarrow 1$
         }\ElseIf {$u_e > \frac{[\Delta_+^{\max}(e)]_+}{[\Delta_+^{\max}(e)]_+ + [\Delta_-^{\min}(e)]_+}$}{
           result$~\leftarrow -1$\;
-        }\lElse{result$~\leftarrow fail$}
+        }\lElse{result$~\leftarrow \text{FAIL}$}
         \Return (result, $u_e$)
       \end{algorithm}
 
@@ -734,7 +735,7 @@ Indeed, the analysis of these systems focuses on ensuring that the majority of t
         \label{alg:occcommit}
         % \WaitUntil $\forall j<i$, result$(j) \neq 0$\;\label{alg:occ:resultwait}
         \WaitUntil $\forall j < i$, processed$(j) = true$\;\label{alg:occ:processedwait}
-        \If{result$~= fail$}{
+        \If{result$~= \text{FAIL}$}{
           $\Delta_+^{\text{exact}}(e) = F(\hat{A} \cup e) - F(\hat{A})$\;\label{alg:occcommit:deltaplus}
           $\Delta_-^{\text{exact}}(e) = F(\hat{B} \backslash e) - F(\hat{B})$\;\label{alg:occcommit:deltaminus}
           \lIf {$u_e < \frac{[\Delta_+^{\text{exact}}(e)]_+}{[\Delta_+^{\text{exact}}(e)]_+ + [\Delta_-^{\text{exact}}(e)]_+}$}{\label{alg:occcommit:decisioninclude}
