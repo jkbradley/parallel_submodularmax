@@ -458,7 +458,7 @@ T_i(A,B) + T_j(A,B) \triangleq \left(T_i(A,B)_A \union T_j(A,B)_A,  \,\, T_i(A,B
 \label{eqn:merge}
 \end{equation}
 the union of the resulting $A$ and the intersection of the resulting $B$.
-While we can easily generalize \eqnref{eqn:merge} to many parallel transactions, we cannot always guarantee that the result will corresponds to a serial composition of transactions.
+While we can easily generalize \eqnref{eqn:merge} to many parallel transactions, we cannot always guarantee that the result will correspond to a serial composition of transactions.
 As a consequence, we cannot directly apply the analysis of Buchbinder et al.~\cite{buchbinder2012} to derive strong approximation guarantees for the parallel execution.
 
 Fortunately, several decades of research~\citep{Ozsu07,kung1981:occ} in database systems have explored efficient parallel transaction processing.
