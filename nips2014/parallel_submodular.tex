@@ -355,6 +355,7 @@ This alternative perspective allows us to apply advances in database research ra
 
 
 By exploiting the exchangeability of the greedy ordering and the sparsity of  the submodular functions we develop two parallel algorithms for the maximization of non-monotone submodular functions.
+% \xinghao{Do we explain what we mean by `exchangeability' and `sparsity'?}
 We propose \hogwild{} as a coordination free double greedy algorithm and characterize the effect of reduced coordination on the approximation ratio.
 By bounding the possible outcomes of concurrent transactions we introduce the \occ{} algorithm which guarantees serializable parallel execution and retains the optimality of the double greedy algorithm at the expense of increased coordination.
 
@@ -365,7 +366,7 @@ The primary contributions of this paper are:
 \item We prove that \occ{} produces an outcome equivalent to the sequential double greedy algorithm, thus preserving the tight 1/2-approximation guarantee.
 \item We analytically bound the amount of coordination of \occ{} for set-cover and max-cut.
 \item We provide approximation guarantees for \hogwild{} and analytically bound the expected loss in objective value for set-cover and max-cut.
-\item We demonstrate empirically using two synthetic and three real datasets that our parallel algorithms perform well in terms of both speed and objective values.
+\item We demonstrate empirically using two synthetic and four real datasets that our parallel algorithms perform well in terms of both speed and objective values.
 \end{enumerate}
 
 The rest of the paper is organized as follows.
@@ -496,7 +497,7 @@ By adjusting the definition of the bound we can span a space of coordination fre
 
 
 
-\begin{figure}[t]
+\begin{figure}[h]
   \footnotesize
   \centering
   \begin{multicols}{2}
@@ -542,9 +543,8 @@ By adjusting the definition of the bound we can span a space of coordination fre
 \end{figure}
 
 
-% \xinghao{Casting our meta-algorithm as a generalization of (pessimiistic) concurrency approach.}
 In \figref{fig:transactionmodel} we describe the bounded optimistic transaction pattern.
-\xinghao{I think this pattern fits pessimistic better than optimistic, since we're obtaining / releasing guarantees, a la read/write locks in DBMSes.}
+% \xinghao{I think this pattern fits pessimistic better than optimistic, since we're obtaining / releasing guarantees, a la read/write locks in DBMSes.}
 The clients (\algref{alg:generalparallel}), in parallel, construct and commit transactions under bounded assumptions about the program state $\mathfrak{S}$ (\ie the sets $A$ and $B$).
 Transactions are constructed by requesting the latest bound $\mathfrak{g}_e$ on $\mathfrak{S}$
 % the program state
@@ -804,7 +804,7 @@ In using these weak guarantees, \hogwild{} is overly optimistically assuming tha
 % The concept of CC buys us two things: firstly, to extend sequential algorithms into parallel ones; secondly, to project a parallel algorithm into a sequential algorithm, which aids our understanding and analysis.}
 
 \algref{alg:hogwild} is the coordination free parallel double greedy algorithm.\footnote{We present only the parallelized probabilistic versions of \cite{buchbinder2012}.
-Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; \hogwild{} can also be extended to the multilinear version of \cite{buchbinder2012}.}
+Both parallel algorithms can be easily extended to the deterministic version of \cite{buchbinder2012}; \hogwild{} can also be extended to the multilinear version of \cite{buchbinder2012}.\label{fn:extension}}
 \hogwild{} closely resembles the serial \seqalg{}, but the elements $e \in V$ are no longer processed in a fixed order.
 Thus, the sets $A, B$ are replaced by potentially stale local estimates (bounds) $\hat{A}, \hat{B}$, where $\hat{A}$ is a subset of the true $A$ and $\hat{B}$ is a superset of the actual $B$ on each iteration.
 These bounding sets allow us to compute bounds $\Delta_{+}^{\max}, \Delta_{-}^{\max}$ which approximate $\Delta_{+}, \Delta_{-}$ from the serial algorithm.
@@ -870,7 +870,7 @@ We analyze this in \secref{sec:analysis:hogwild}.
 \section{Concurrency Control for Double Greedy Algorithm \label{sec:algocc}}
 % \xinghao{Provide more intuition for what \occ{} is doing.}
 
-The concurrency-control based double greedy algorithm, \occ{}, is presented in \algref{alg:occ}, and closely follows the meta-algorithm of \algref{alg:generalparallel} and \algref{alg:generalparallel:commit}.
+The concurrency-control based double greedy algorithm\footnoteref{fn:extension}, \occ{}, is presented in \algref{alg:occ}, and closely follows the meta-algorithm of \algref{alg:generalparallel} and \algref{alg:generalparallel:commit}.
 Unlike in \hogwild{}, the concurrency control mechanisms of \occ{} ensures that when concurrent transactions are serialized when they not indpendent.
 
 Serializability is achieved by maintaining sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$ at commit time.
@@ -888,10 +888,11 @@ $\hat{A}_e \subseteq A^{\iota(e)-1} \subseteq \tilde{A}_e \backslash e$, and $\h
 \end{restatable}
 Intuitively, these bounds are maintained by recording potential effects of concurrent transactions in $\tilde{A}$, $\tilde{B}$, and only recording the actual effects in $\hat{A}$, $\hat{B}$;
 we leave the full proof to Appendix \ref{app:algoproof}.
-Furthermore, since later transactions are blocked, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$ at commit.
+Furthermore, by committing transactions in order $\iota$, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$ during commit.
+% Furthermore, since later transactions are blocked, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$ at commit.
 
 \begin{restatable}{lem}{lemoccdefer}\label{lem:occ:defer}
-In \occ{}, during the commit process, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
+In \occ{}, when committing element $e$, we have $\hat{A} = A^{\iota(e)-1}$ and $\hat{B} = B^{\iota(e)-1}$.
 \end{restatable}
 
 % \algref{alg:occ} computes
@@ -914,11 +915,8 @@ In \occ{}, during the commit process, we have $\hat{A} = A^{\iota(e)-1}$ and $\h
 \end{cor}
 
 By using these bounds, \occ{} can determine when it is safe to construct the transaction locally.
-For failed transactions, the server constructs the correct transaction since it has the true program state.
-
-% Like \hogwild{}, \occ{} can maintain statistics / sketches when dealing with functions of the form $F(X) = \sum_{l=1}^L g\left(\sum_{i\in X\cup S_l} w_l(i)\right) - \lambda\sum_{i\in X} v(i)$.
-% We leave this discussion to Appendix \ref{sec:sepsum}.
-
+For failed transactions, the server is able to construct the correct transaction using the true program state.
+This would allow us to conclude that \occ{} produces a serializable result.
 
 
 
@@ -941,7 +939,7 @@ For failed transactions, the server constructs the correct transaction since it 
 
 Our two algorithms trade-off performance and strong approximation guarantees.
 The \hogwild{} algorithm emphasizes speed at the expense of the approximation objective.
-On the other hand, \occ{} emphasize the tight $1/2$-approximation at the expense of increased coordination.
+On the other hand, \occ{} emphasizes the tight $1/2$-approximation at the expense of increased coordination.
 In this section we more precisely characterize the reduction in the approximation objective as well as the increased coordination.
 
 %is a scalable algorithm that guarantees the tight 1/2 approximation.
@@ -962,7 +960,7 @@ In this section we more precisely characterize the reduction in the approximatio
 \begin{restatable}{thm}{thmrandomapprox}\label{thm:randomapprox} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
 \hogwild{} solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
 $
-E[F(A_{\hogwildshort{}})] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^n E[\rho_i]$,
+E[F(A_{\hogwildshort{}})] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^N E[\rho_i]$,
 where $A_{\hogwildshort{}}$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i = \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$.
 \end{restatable}
 
@@ -972,9 +970,9 @@ The proof of \thmref{thm:randomapprox} follows the structure in \cite{buchbinder
 
 \textbf{Example: max graph cut.}
 Assuming bounded delay of $\tau$ and edges with unit weight, we can bound $\sum_i E[\rho_i] \leq 2\tau\frac{\text{\#edges}}{2N}$
-The approximation of \hogwild{} is then $E[F(A^n)] \geq = \frac{1}{2} F(OPT) - \tau\frac{\#\text{edges}}{2N}$.
+The approximation of \hogwild{} is then $E[F(A^N)] \geq = \frac{1}{2} F(OPT) - \tau\frac{\#\text{edges}}{2N}$.
 In sparse graphs, \hogwild{} is off by a small additional term, which albeit grows linearly in $\tau$.
-In a complete graph, $F^* = \frac{1}{2}\#\text{edges}$, so $E[F(A^n)] \geq F^*\left(\frac{1}{2} - \frac{\tau}{N}\right)$, which makes it possible to scale $\tau$ linearly with $N$ while retaining the same approximation factor.
+In a complete graph, $F^* = \frac{1}{2}\#\text{edges}$, so $E[F(A^N)] \geq F^*\left(\frac{1}{2} - \frac{\tau}{N}\right)$, which makes it possible to scale $\tau$ linearly with $N$ while retaining the same approximation factor.
 
 
 \textbf{Example: set cover.}
@@ -1005,7 +1003,7 @@ where $A_{\occshort{}}$ is the output of the algorithm, and $F^*$ is the optimal
 
 
 \subsection{Scalability of \occ{}}
-Whenever a transaction is reconstructed on the server, it needs to wait for all earlier elements to be processed, and the server is blocked from committing all later elements.
+Whenever a transaction is reconstructed on the server, the server needs to wait for all earlier elements to be committed, and is also blocked from committing all later elements.
 Each failed transaction effectively constitutes a barrier to the parallel processing.
 Hence, the scalability of \occ{} is dependent on the number of failed transactions.
 Nevertheless, we bound this number for a couple of example problems.
@@ -1013,7 +1011,7 @@ Full details of the bounds are given in Appendix \ref{app:proofocc}.
 
 \textbf{Example: max graph cut.}
 Assume that there is a bounded delay $\tau$.
-The expected \emph{fraction} of failed transactions is upper bounded by $\tau \frac{2\#edges}{N^2}$.
+The expected \emph{fraction} of failed transactions is upper bounded by $2\tau \frac{\#edges}{N^2}$.
 
 \textbf{Example: set cover.}
 Assuming a bounded delay $\tau$ and non-overlapping sets $S_l$'s, the expected \emph{number} of failed transactions is upper bounded by $2\tau$.
@@ -1042,7 +1040,7 @@ Experiments were conducted on Amazon EC2 using one cc2.8xlarge machine, up to 16
 We measured the runtime and speedup (ratio of runtime on 1 thread to runtime on $p$ threads).
 For \hogwild{}, we measured $F(A_{\hogwildshort})-F(A_{\seqalgshort})$, the difference between the objective value on the sets returned by \hogwild{} and \seqalg{}.
 We verified the correctness of \occ{} by comparing the output of \occ{} with \seqalg{}.
-We also the fraction of transactions that fail in \occ{}.
+We also measured the fraction of transactions that fail in \occ{}.
 
 %\begin{table}[h]
 %\centering
@@ -1147,8 +1145,8 @@ This causes \hogwild{} to make more mistakes, and \occ{} fail more transactions.
 We point out by using a partitioning scheme, it is possible to avoid the problems caused by the adversarial ordering, and to improve scalability.
 Nevertheless, we present results that do \emph{not} use the partitioning scheme, so as to better highlight the differences between the two parallel algorithms.
 }
-As \figref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually failing $>90\%$ of transactions.
-On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivering an objective value $F(A_{\hogwildshort{}})$ that is $20\%$ of $F(A_{\seqalgshort{}})$.
+As \figref{fig:results_adversarial} shows, \occ{}  sacrifices speed to ensure serial equivalence, eventually failing on $>90\%$ of transactions.
+On the other hand, \hogwild{} focuses on speed, resulting in faster runtime, but delivers an objective value $F(A_{\hogwildshort{}})$ that is $20\%$ of $F(A_{\seqalgshort{}})$.
 % For the set cover problem, we maintain statistics that are updated atomically by both algorithms.
 % The adversarial ordering forces more concurrent atomic updates, and hence, \hogwild{} does not achieve good speedup.
 % \footnote{We could have reduced coordination by computing $F$ directly, but doing so would result in longer runtimes.}
