@@ -11,7 +11,7 @@ So $\hat{A}_e \subseteq A^{\iota(e)-1}$.
 Similarly, if $e'\not\in \hat{B}_e$, then the algorithm set $\hat{B}(e')$ to 0 (line \ref{alg:hogwild:rem}) before $T_e$, so $\iota(e') < \iota(e)$.
 Also, $e'\not\in A$ because the execution of line \ref{alg:hogwild:rem} excludes the execution of line \ref{alg:hogwild:add}.
 Therefore, $e'\not\in A^{\iota(e)-1}$, and $e'\not\in B^{\iota(e)-1}$.
-So $\hat{B}_e \subseteq B^{\iota(e)-1}$.
+So $\hat{B}_e \supseteq B^{\iota(e)-1}$.
 \end{proof}
 
 
@@ -25,7 +25,7 @@ So $\hat{B}_e \subseteq B^{\iota(e)-1}$.
 
 Clearly, $e \in \tilde{B}_e\cup e$ but $e\not\in \tilde{A}_e\backslash e$.
 By definition, $e \in B^{\iota(e)-1}$ but $e\not\in A^{\iota(e)-1}$.
-\occ{} only modifies $\hat{A}(e)$ and $\hat{B}(e)$ on when committing the transaction on $e$, which occurs after obtaining the bounds in getGuarantee$(e)$, so $e \in \hat{B}_e$ but $e\not\in \hat{A}_e$.
+\occ{} only modifies $\hat{A}(e)$ and $\hat{B}(e)$ when committing the transaction on $e$, which occurs after obtaining the bounds in getGuarantee$(e)$, so $e \in \hat{B}_e$ but $e\not\in \hat{A}_e$.
 
 Consider any $e'\neq e$.
 Suppose $e' \in \hat{A}_e$.

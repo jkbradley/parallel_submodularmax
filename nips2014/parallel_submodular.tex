@@ -337,7 +337,7 @@ We implement and evaluate both algorithms on multi-core hardware and billion edg
 
 
 
-Many important problems including sensor placement \cite{krauseGuestrin11}, image co-segmentation \cite{kim11}, MAP inference for determinantal point processes \cite{gillenwater12}, influence maximization \cite{kkt03}, and document summarization \cite{lin11} may be expressed as the maximization of a submodular function.
+Many important problems including sensor placement \cite{krauseGuestrin11}, image co-segmentation \cite{kim11}, MAP inference for determinantal point processes \cite{gillenwater12}, influence maximization in social networks \cite{kkt03}, and document summarization \cite{lin11} may be expressed as the maximization of a submodular function.
 The submodular formulation enables the use of targeted algorithms \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution.
 For several maximization problems of \emph{monotone} submodular functions (satisfying $F(A) \leq F(B)$ for all $A \subseteq B$), a simple greedy algorithm \cite{nemhauser1978} achieves the optimal approximation factor of $1-\frac{1}{e}$.
 The optimal result for the wider, important class of \emph{non-monotone} functions  -- an approximation guarantee of $1/2$ --  is much more recent, and achieved by a \emph{double greedy} algorithm by \citet{buchbinder2012}.
@@ -363,7 +363,7 @@ By bounding the possible outcomes of concurrent transactions we introduce the \o
 The primary contributions of this paper are:
 \begin{enumerate}
 \item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which trade-off parallelism and tight approximation guarantees.
-\item We prove that \occ{} produces an outcome equivalent to the sequential double greedy algorithm, thus preserving the tight 1/2-approximation guarantee.
+\item We prove that \occ{} produces an outcome equivalent to the sequential double greedy algorithm, thus preserving the tight expected 1/2-approximation guarantee.
 \item We analytically bound the amount of coordination of \occ{} for set-cover and max-cut.
 \item We provide approximation guarantees for \hogwild{} and analytically bound the expected loss in objective value for set-cover and max-cut.
 \item We demonstrate empirically using two synthetic and four real datasets that our parallel algorithms perform well in terms of both speed and objective values.
@@ -813,8 +813,8 @@ We now formalize this idea.
 To analyze the \hogwild{} algorithm we order the elements $e \in V$ according to the commit time (\eg when \algref{alg:hogwild} line \ref{alg:hogwild:time} is executed).
 Let $\iota(e)$ be the position of $e$ in this total ordering on elements.
 This ordering allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$ where $A$ is the final returned set, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
-The sets $A^i, B^i$ provide a serialization against which we can compare \hogwild{}; in this serialization, \algref{alg:submax} computes:
-$\Delta_{+}       (e) = F(A^{\iota(e)-1}\cup i) - F(A^{\iota(e)-1})$
+The sets $A^i, B^i$ provide a serialization against which we can compare \hogwild{}; in this serialization, \algref{alg:submax} computes
+$\Delta_{+}       (e) = F(A^{\iota(e)-1}\cup e) - F(A^{\iota(e)-1})$
 and
 $\Delta_{-}       (e) = F(B^{\iota(e)-1}\backslash e) - F(B^{\iota(e)-1})$.
 % \begin{align*}
@@ -871,9 +871,9 @@ We analyze this in \secref{sec:analysis:hogwild}.
 % \xinghao{Provide more intuition for what \occ{} is doing.}
 
 The concurrency-control based double greedy algorithm\footnoteref{fn:extension}, \occ{}, is presented in \algref{alg:occ}, and closely follows the meta-algorithm of \algref{alg:generalparallel} and \algref{alg:generalparallel:commit}.
-Unlike in \hogwild{}, the concurrency control mechanisms of \occ{} ensures that when concurrent transactions are serialized when they not indpendent.
+Unlike in \hogwild{}, the concurrency control mechanisms of \occ{} ensure that concurrent transactions are serialized when they are not independent.
 
-Serializability is achieved by maintaining sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper and lower bounds on $A$ and $B$ at commit time.
+Serializability is achieved by maintaining sets $\hat{A}$, $\tilde{A}$, $\hat{B}$, $\tilde{B}$, which serve as upper \emph{and} lower bounds on the true state of $A$ and $B$ at commit time.
 Each thread can determine locally if a decision to include or exclude an element can be taken safely.
 Otherwise, the proposal is deferred to the commit process (\algref{alg:occcommit}) which waits until it is certain about $A$ and $B$ before proceeding.
 
@@ -957,8 +957,10 @@ In this section we more precisely characterize the reduction in the approximatio
 % where $\kappa_F$ is the total curvature of $F$.
 % % Summing over $e$ then gives us $\sum_e \rho_e \leq \kappa_F\sum_e F(e)$.
 
-\begin{restatable}{thm}{thmrandomapprox}\label{thm:randomapprox} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
-\hogwild{} solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
+\begin{restatable}{thm}{thmrandomapprox}\label{thm:randomapprox} Let $F$ be a non-negative 
+%(monotone or non-monotone) 
+submodular function.
+\hogwild{} solves the unconstrained problem $\max_{A\subset V} F(A)$ with worst-case approximation factor
 $
 E[F(A_{\hogwildshort{}})] \geq \frac{1}{2}F^* - \frac{1}{4}\sum_{i=1}^N E[\rho_i]$,
 where $A_{\hogwildshort{}}$ is the output of the algorithm, $F^*$ is the optimal value, and $\rho_i = \max\{\Delta_+^{\max}(e) - \Delta_+(e), \Delta_-^{\max}(e) - \Delta_-(e)\}$.
@@ -993,7 +995,8 @@ It suffices to show that \occ{} takes the same decision as \seqalg{} for each el
 Full details of the proof are given in Appendix \ref{app:occserializable}.
 As an immediate consequence, theoretical properties of \seqalg{} are preserved by \occ{}, including the approximation guarantees:
 
-\begin{thm} Let $F$ be a non-negative (monotone or non-monotone) submodular function.
+\begin{thm} Let $F$ be a non-negative %(monotone or non-monotone) 
+submodular function.
 \occ{} solves the unconstrained problem $\max_{A\subset V} F(A)$ with approximation
 $E[F(A_{\occshort{}})] \geq \frac{1}{2}F^*$,
 where $A_{\occshort{}}$ is the output of the algorithm, and $F^*$ is the optimal value.
