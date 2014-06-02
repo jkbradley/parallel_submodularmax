@@ -355,7 +355,7 @@ This alternative perspective allows us to apply advances in database research ra
 
 
 By exploiting the exchangeability of the greedy ordering and the sparsity of  the submodular functions we develop two parallel algorithms for the maximization of non-monotone submodular functions.
-\xinghao{Do we explain what we mean by `exchangeability' and `sparsity'?}
+% \xinghao{Do we explain what we mean by `exchangeability' and `sparsity'?}
 We propose \hogwild{} as a coordination free double greedy algorithm and characterize the effect of reduced coordination on the approximation ratio.
 By bounding the possible outcomes of concurrent transactions we introduce the \occ{} algorithm which guarantees serializable parallel execution and retains the optimality of the double greedy algorithm at the expense of increased coordination.
 
@@ -544,7 +544,7 @@ By adjusting the definition of the bound we can span a space of coordination fre
 
 
 In \figref{fig:transactionmodel} we describe the bounded optimistic transaction pattern.
-\xinghao{I think this pattern fits pessimistic better than optimistic, since we're obtaining / releasing guarantees, a la read/write locks in DBMSes.}
+% \xinghao{I think this pattern fits pessimistic better than optimistic, since we're obtaining / releasing guarantees, a la read/write locks in DBMSes.}
 The clients (\algref{alg:generalparallel}), in parallel, construct and commit transactions under bounded assumptions about the program state $\mathfrak{S}$ (\ie the sets $A$ and $B$).
 Transactions are constructed by requesting the latest bound $\mathfrak{g}_e$ on $\mathfrak{S}$
 % the program state

@@ -12,8 +12,9 @@ Define $O^i := (OPT \cup A^i) \cap B^i$.
 Note that $O^i$ coincides with $A^i$ and $B^i$ on elements $1,\dots,i$, and $O^i$ coincides with $OPT$ on elements $i+1,\dots, n$.
 Hence,
 \begin{align*}
-O^i \backslash i+1 &\supseteq A^i \text{\stef{Is this $(i+1)$ or adding one?}}\\
-O^i \cup i+1 &\subseteq B^i.
+O^i \backslash (i+1) &\supseteq A^i \\
+%\text{\stef{Is this $(i+1)$ or adding one?}}\\
+O^i \cup (i+1) &\subseteq B^i.
 \end{align*}
 
 \begin{lem}\label{lem:positivesum} For every $1 \leq i \leq n$, $\Delta_+(i) + \Delta_-(i) \geq 0$.
@@ -170,16 +171,18 @@ Note that $O^0 = OPT$ and $O^n = A^n = B^n$, so $E[F(A^n)] \geq \frac{1}{2} F^* 
 
 \subsection{Example: max graph cut}
 Let $C_i = (A^{i-1}\backslash \hat{A}_i) \cup (\hat{B}_i\backslash B^{i-1})$ be the set of elements concurrently processed with $i$ but ordered after $i$, and $D_i = B^i\backslash A^i$ be the set of elements ordered after $i$.
-Denote $\bar{A}_j = V\backslash \hat{A}_i\backslash C_i\backslash D_i = \{1,\dots,j\}\backslash \hat{A}_i$ be the elements up to $j$ that are not included in $A$ \stef{$\hat{A}^i$?}. \stef{Parentheses to help parse multiple setminuses}
+Denote $\bar{A}_i = V\backslash (\hat{A}_i\cup C_i\cup D_i) = \{1,\dots,i\}\backslash \hat{A}_i$ be the elements up to $i$ that are not included in $\hat{A}_i$.
+% \stef{$\hat{A}^i$?}. \stef{Parentheses to help parse multiple setminuses}
 Let $w_i(S) = \sum_{j\in S, (i,j)\in E} w(i,j)$.
-For the max graph cut function, it is easy to see that \stef{what is the index $j$? any arbitrary index?}
+For the max graph cut function, it is easy to see that
+%\stef{what is the index $j$? any arbitrary index?}
 \begin{align*}
-\Delta_+        &\geq - w_i(\hat{A}_i) -w_i(C_i) + w_i(D_i) + w_i(\bar{A}_j)\\
-\Delta_+^{\max} &=    - w_i(\hat{A}_i) + w_i(C_i) + w_i(D_i) + w_i(\bar{A}_j)\\
-\Delta_-        &\geq + w_i(\hat{A}_i) - w_i(C_i) + w_i(D_i) - w_i(\bar{A}_j)\\
-\Delta_-^{\max} &= + w_i(\hat{A}_i) + w_i(C_i) + w_i(D_i) - w_i(\bar{A}_j)
+\Delta_+        &\geq - w_i(\hat{A}_i) -w_i(C_i) + w_i(D_i) + w_i(\bar{A}_i)\\
+\Delta_+^{\max} &=    - w_i(\hat{A}_i) + w_i(C_i) + w_i(D_i) + w_i(\bar{A}_i)\\
+\Delta_-        &\geq + w_i(\hat{A}_i) - w_i(C_i) + w_i(D_i) - w_i(\bar{A}_i)\\
+\Delta_-^{\max} &= + w_i(\hat{A}_i) + w_i(C_i) + w_i(D_i) - w_i(\bar{A}_i)
 \end{align*}
-\stef{If there is time, an illustration would maybe make things clear.}
+% \stef{If there is time, an illustration would maybe make things clear.}
 
 Thus, we can see that $\rho_i \leq 2w_i(C_i)$.
 
