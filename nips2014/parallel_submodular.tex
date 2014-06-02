@@ -342,15 +342,19 @@ The submodular formulation enables the use of targeted algorithms \cite{buchbind
 For several maximization problems of \emph{monotone} submodular functions (satisfying $F(A) \leq F(B)$ for all $A \subseteq B$), a simple greedy algorithm \cite{nemhauser1978} achieves the optimal approximation factor of $1-\frac{1}{e}$.
 The optimal result for the wider, important class of \emph{non-monotone} functions  -- an approximation guarantee of $1/2$ --  is much more recent, and achieved by a \emph{double greedy} algorithm by \citet{buchbinder2012}.
 
-
-While these algorithms are both theoretically optimal and perform well in practice, their design is inherently serial, limiting their scalability to large problem instances and advances in parallel hardware.
-% Increasingly often, real-world applications demand
-% % one wishes
-% to solve the above-mentioned problems at very large scale.
+While theoretically optimal, in practice these algorithms do not scale to large real world problems.
+The inherently serial nature of the algorithms poses a challenge to leveraging advances in parallel hardware.
 This limitation raises the question of parallel algorithms for submodular maximization that ideally preserve the theoretical bounds, or weaken them gracefully, in a quantifiable manner.
 
 
-In this paper, we study the parallelization of greedy algorithms, in particular the double greedy algorithm, from the perspective of \emph{parallel transaction processing systems}.
+% While these algorithms are both theoretically optimal and perform well in practice, their design is inherently serial, limiting their scalability to large problem instances and advances in parallel hardware.
+% % Increasingly often, real-world applications demand
+% % % one wishes
+% % to solve the above-mentioned problems at very large scale.
+% This limitation raises the question of parallel algorithms for submodular maximization that ideally preserve the theoretical bounds, or weaken them gracefully, in a quantifiable manner.
+
+
+In this paper, we address the challenge of parallelization of greedy algorithms, in particular the double greedy algorithm, from the perspective of \emph{parallel transaction processing systems}.
 This alternative perspective allows us to apply advances in database research ranging from fast coordination free approaches with limited guarantees to sophisticated concurrency control techniques which ensure a direct correspondence between parallel and serial executions at the expense of increased coordination. % cost of slightly reduced performance.
 
 
@@ -396,7 +400,7 @@ and machine learning \cite{tutorial,tutorial2}.
 Casting machine learning as submodular optimization enables the use of algorithms for submodular maximization \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution.
 %Problems like as sensor placement \cite{krauseGuestrin11}, image co-segmentation \cite{kim11}, MAP inference with determinantal point process priors \cite{gillenwater12}, influence maximization \cite{kkt03} or document summarization \cite{lin11} may be phrased as the maximization of a submodular function, which enables the use of algorithms for submodular maximization \cite{buchbinder2012,nemhauser1978} that offer theoretical worst-case guarantees on the quality of the solution.
 
-While those algorithms confer strong guarantees and tend to work very well in practice, their design is inherently serial.
+While those algorithms confer strong guarantees, their design is inherently serial, limiting their usability in Big Data problems.
 % But increasingly often, one wishes to solve the above-mentioned problems at very large scale. This development raises the question of parallel algorithms for submodular maximization that ideally preserve the theoretical bounds, or weaken them gracefully, in a quantifiable manner.
 %
 Recent work has addressed faster \cite{badan14,wei14} and parallel \cite{Mirzasoleiman2013,kumar13} versions of the greedy algorithm by \citet{nemhauser1978} for maximizing \emph{monotone} submodular functions that satisfy $F(A) \leq F(B)$ for any $A \subseteq B \subseteq V$.
