@@ -311,7 +311,7 @@ In this work, we propose two methods to parallelize the double-greedy algorithm.
 % We propose and analyze two parallel double greedy algorithms.
 The first, \emph{coordination-free} approach emphasizes speed at the cost of a weaker approximation guarantee.
 The second, \emph{concurrency control} approach guarantees a tight 1/2-approximation, at the quantifiable cost of additional coordination and reduced parallelism.
-As a consequence we explore the trade-off space between guaranteed performance and objective optimality.
+As a consequence we explore the trade off space between guaranteed performance and objective optimality.
 % We bound both the weaker approximation factor and the reduction in parallelism.
 We implement and evaluate both algorithms on multi-core hardware and billion edge graphs, demonstrating both the scalability and tradeoffs of each approach.
 %
@@ -362,7 +362,7 @@ By bounding the possible outcomes of concurrent transactions we introduce the \o
 
 The primary contributions of this paper are:
 \begin{enumerate}
-\item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which trade-off parallelism and tight approximation guarantees.
+\item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which trade off parallelism and tight approximation guarantees.
 \item We prove that \occ{} produces an outcome equivalent to the sequential double greedy algorithm, thus preserving the tight expected 1/2-approximation guarantee.
 \item We analytically bound the amount of coordination of \occ{} for set-cover and max-cut.
 \item We provide approximation guarantees for \hogwild{} and analytically bound the expected loss in objective value for set-cover and max-cut.
@@ -810,7 +810,7 @@ Thus, the sets $A, B$ are replaced by potentially stale local estimates (bounds)
 These bounding sets allow us to compute bounds $\Delta_{+}^{\max}, \Delta_{-}^{\max}$ which approximate $\Delta_{+}, \Delta_{-}$ from the serial algorithm.
 We now formalize this idea.
 
-To analyze the \hogwild{} algorithm we order the elements $e \in V$ according to the commit time (\eg when \algref{alg:hogwild} line \ref{alg:hogwild:time} is executed).
+To analyze the \hogwild{} algorithm we order the elements $e \in V$ according to the commit time (\ie when \algref{alg:hogwild} line \ref{alg:hogwild:time} is executed).
 Let $\iota(e)$ be the position of $e$ in this total ordering on elements.
 This ordering allows us to define monotonically non-decreasing sets $A^i = \{e' : e' \in A, \iota(e') < i\}$ where $A$ is the final returned set, and monotonically non-increasing sets $B^i = A^i \cup \{e': \iota(e') \geq i\}$.
 The sets $A^i, B^i$ provide a serialization against which we can compare \hogwild{}; in this serialization, \algref{alg:submax} computes
@@ -916,7 +916,7 @@ In \occ{}, when committing element $e$, we have $\hat{A} = A^{\iota(e)-1}$ and $
 
 By using these bounds, \occ{} can determine when it is safe to construct the transaction locally.
 For failed transactions, the server is able to construct the correct transaction using the true program state.
-This would allow us to conclude that \occ{} produces a serializable result.
+This allows us to conclude that \occ{} produces a serializable result.
 
 
 
@@ -937,7 +937,7 @@ This would allow us to conclude that \occ{} produces a serializable result.
 % We want to say that we have a choice between a slower but serially equivalent algorithm and a faster algorithm which is not serially equivalent.
 % Nevertheless, the slower algorithm is not too slow, and the approximation guarantee of the algorithm that is not serially equivalent is not too weak.}
 
-Our two algorithms trade-off performance and strong approximation guarantees.
+Our two algorithms trade off performance and strong approximation guarantees.
 The \hogwild{} algorithm emphasizes speed at the expense of the approximation objective.
 On the other hand, \occ{} emphasizes the tight $1/2$-approximation at the expense of increased coordination.
 In this section we more precisely characterize the reduction in the approximation objective as well as the increased coordination.
@@ -1201,7 +1201,7 @@ More generally, parameter servers \cite{li2013, ho2013} apply the \hogwildshort{
 \section{Discussions \label{sec:discussions}}
 
 We present two approaches to parallelizing the double greedy algorithm for unconstrained submodular maximization.
-We quantify the weaker approximation guarantee of \hogwild{} and the additional coordination of \occ{}, allowing one to trade-off between performance and objective optimality.
+We quantify the weaker approximation guarantee of \hogwild{} and the additional coordination of \occ{}, allowing one to trade off between performance and objective optimality.
 Our evaluation on large scale data demonstrates the scalability and tradeoffs of the two approaches.
 
 We believe there are a number of areas for future work.
