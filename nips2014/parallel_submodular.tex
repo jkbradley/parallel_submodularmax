@@ -371,9 +371,9 @@ By bounding the possible outcomes of concurrent transactions we introduce the \o
 The primary contributions of this paper are:
 \begin{enumerate}
 \item We propose two parallel algorithms for unconstrained non-monotone submodular maximization, which trade off parallelism and tight approximation guarantees.
+\item We provide approximation guarantees for \hogwild{} and analytically bound the expected loss in objective value for set-cover and max-cut.
 \item We prove that \occ{} produces an outcome equivalent to the sequential double greedy algorithm, thus preserving the tight expected 1/2-approximation guarantee.
 \item We analytically bound the amount of coordination of \occ{} for set-cover and max-cut.
-\item We provide approximation guarantees for \hogwild{} and analytically bound the expected loss in objective value for set-cover and max-cut.
 \item We demonstrate empirically using two synthetic and four real datasets that our parallel algorithms perform well in terms of both speed and objective values.
 \end{enumerate}
 
