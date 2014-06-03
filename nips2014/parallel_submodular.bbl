@@ -17,8 +17,7 @@ B.~Mirzasoleiman, A.~Karbasi, R.~Sarkar, and A.~Krause.
 N.~Buchbinder, M.~Feldman, J.~Naor, and R.~Schwartz.
 \newblock A tight linear time (1/2)-approximation for unconstrained submodular
   maximization.
-\newblock In \emph{Proc. of the 2012 IEEE 53rd Annual Symposium on Foundations
-  of Computer Science}, Washington, DC, USA, 2012.
+\newblock In \emph{FOCS}, 2012.
 
 \bibitem[Krause and Guestrin(2011)]{krauseGuestrin11}
 A.~Krause and C.~Guestrin.
@@ -108,8 +107,7 @@ C.~Reed and Z.~Ghahramani.
 \bibitem[Krause and Horvitz(2010)]{krause10priv}
 A.~Krause and E.~Horvitz.
 \newblock A utility-theoretic approach to privacy in online services.
-\newblock \emph{Journal of Artificial Intelligence Research}, 39:\penalty0
-  633--622, 2010.
+\newblock \emph{JAIR}, 39, 2010.
 
 \bibitem[Ozsu(2007)]{Ozsu07}
 M.~Tamer Ozsu.
@@ -120,8 +118,7 @@ M.~Tamer Ozsu.
 \bibitem[Kung and Robinson(1981)]{kung1981:occ}
 H.~Kung and J.T. Robinson.
 \newblock On optimistic methods for concurrency control.
-\newblock \emph{ACM Transactions on Database Systems (TODS)}, 6\penalty0
-  (2):\penalty0 213--226, 1981.
+\newblock \emph{TODS}, 6\penalty0 (2), 1981.
 
 \bibitem[Leskovec(2011)]{snap}
 J.~Leskovec.
@@ -131,15 +128,13 @@ J.~Leskovec.
 \bibitem[Boldi and Vigna(2004)]{BoVWFI}
 P.~Boldi and S.~Vigna.
 \newblock The {W}eb{G}raph framework {I}: {C}ompression techniques.
-\newblock In \emph{Proc. of the Thirteenth International World Wide Web
-  Conference (WWW 2004)}, Manhattan, USA, 2004.
+\newblock In \emph{WWW}, 2004.
 
 \bibitem[Boldi et~al.(2011)Boldi, Rosa, Santini, and Vigna]{BRSLLP}
 P.~Boldi, M.~Rosa, M.~Santini, and S.~Vigna.
 \newblock Layered label propagation: A multiresolution coordinate-free ordering
   for compressing social networks.
-\newblock In \emph{Proc. of the 20th international conference on World Wide
-  Web}. ACM Press, 2011.
+\newblock In \emph{WWW}. ACM Press, 2011.
 
 \bibitem[Boldi et~al.(2004)Boldi, Codenotti, Santini, and Vigna]{BCSU3}
 P.~Boldi, B.~Codenotti, M.~Santini, and S.~Vigna.
@@ -173,7 +168,7 @@ Q.~Ho, J.~Cipar, H.~Cui, S.~Lee, J.K. Kim, P.B. Gibbons, G.A. Gibson,
   G.~Ganger, and E.~Xing.
 \newblock More effective distributed ml via a stale synchronous parallel
   parameter server.
-\newblock In \emph{Advances in Neural Information Processing Systems 26}. 2013.
+\newblock In \emph{NIPS}. 2013.
 
 \bibitem[Pan et~al.(2013)Pan, Gonzalez, Jegelka, Broderick, and
   Jordan]{pan2013}
