@@ -1033,10 +1033,11 @@ Whenever a transaction is reconstructed on the server, the server needs to wait 
 Each failed transaction effectively constitutes a barrier to the parallel processing.
 Hence, the scalability of \occ{} is dependent on the number of failed transactions.
 
-For the max-cut and set cover example problems we can directly bound the number of failed transactions (details in \appendref{app:proofocc}).
+We can directly bound the number of failed transactions (details in \appendref{app:proofocc}) for both the max-cut and set cover example problems.
 For the max-cut problem with with a maximum inter processor message delay $\tau$ we obtain the upper bound $2 \tau \frac{\#edges}{N}$.
-Similarly for for set cover the expected \emph{number} of failed transactions is upper bounded by $2\tau$.
+Similarly for set cover the expected \emph{number} of failed transactions is upper bounded by $2\tau$.
 As a consequence, the coordination costs of \occ{} grows at the same rate as the reduction in accuracy of \hogwild{}.
+Moreover, the \occ{} algorithm will slow down in settings where the \hogwild{} algorithm produces sub-optimal solutions.
 
 
 % Assume that there is a bounded delay $\tau$.
@@ -1246,7 +1247,7 @@ One can imagine a system that allows a smooth interpolation between \hogwild{} a
 While both \hogwild{} and \occ{} can be immediately implemented as distributed algorithms, higher communication costs and delays may pose additional challenges.
 Finally, other problems such as constrained maximization of monotone / non-monotone functions could potentially be parallelized with the \hogwildshort{} and \occshort{} frameworks.
 
-%\newpage
+\newpage
 {\footnotesize
 %\subsection*{Acknowledgments}
 %This research is supported in part by NSF CISE Expeditions award CCF-1139158 and DARPA XData Award FA8750-12-2-0331, and  gifts from Amazon Web Services, Google, SAP,  Blue Goji, Cisco, Clearstory Data, Cloudera, Ericsson, Facebook, General Electric, Hortonworks, Intel, Microsoft, NetApp, Oracle, Samsung, Splunk, VMware and Yahoo!.
